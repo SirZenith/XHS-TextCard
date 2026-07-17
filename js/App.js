@@ -21,6 +21,7 @@ class App {
         
         this.elements = {};
         this.debounceTimer = null;
+        this.previewGenerationId = 0;
         this.shouldScrollToStart = false;
     }
 
@@ -291,6 +292,7 @@ class App {
     }
 
     async generatePreview() {
+        const generationId = ++this.previewGenerationId;
         const text = this.elements.textInput.value;
         if (!text) {
             this.showEmptyState('请输入文字内容');
@@ -318,7 +320,9 @@ class App {
             } else {
                 this.splitter.updateConfig(this.currentTemplateConfig, this.currentTemplate);
             }
-            this.splitPages = await this.splitter.split(text);
+            const splitPages = await this.splitter.split(text);
+            if (generationId !== this.previewGenerationId) return;
+            this.splitPages = splitPages;
 
             this.elements.previewCount.textContent = `共 ${this.splitPages.length} 张图片`;
 
@@ -347,6 +351,7 @@ class App {
             });
 
             const items = await Promise.all(renderPromises);
+            if (generationId !== this.previewGenerationId) return;
             
             // 渲染完成后一次性更新 DOM
             this.elements.previewList.innerHTML = '';
@@ -363,6 +368,7 @@ class App {
                 this.updateActiveIndicator();
             });
         } catch (error) {
+            if (generationId !== this.previewGenerationId) return;
             console.error('[App] Preview generation failed:', error);
             this.elements.loading.classList.remove('active');
             this.showEmptyState(`生成预览出错: ${error.message}`);

@@ -1,6 +1,6 @@
 /**
  * CanvasTextEngine - 帆布排版引擎
- * 
+ *
  * 设计原则：
  * 1. 最小单位测量：基于单个字符的测量进行精确换行，确保排版在不同字体下的稳定性。
  * 2. 语义化布局：将 Markdown Token 转换为具有层级关系的 Layout Blocks。
@@ -14,6 +14,7 @@ class CanvasTextEngine {
         this.widthCache = new Map(); // 字符宽度缓存
         this.mathJaxReadyPromise = null;
         this.highlightReadyPromise = null;
+        this.mermaidReadyPromise = null;
         this.updateConfig(config);
     }
 
@@ -28,18 +29,18 @@ class CanvasTextEngine {
             fontFamily: defaultFont, textPadding: 35, cardWidth: PREVIEW_WIDTH || 500,
             ...config
         };
-        
+
         if (this.config.fontFamily === 'inherit' || !this.config.fontFamily) {
             this.config.fontFamily = defaultFont;
         }
-        
+
         // 如果字体或基本参数变了，清空缓存
-        if (oldConfig.fontFamily !== this.config.fontFamily || 
+        if (oldConfig.fontFamily !== this.config.fontFamily ||
             oldConfig.fontSize !== this.config.fontSize ||
             oldConfig.letterSpacing !== this.config.letterSpacing) {
             this.widthCache.clear();
         }
-        
+
         this.drawWidth = config.drawWidth || (this.config.cardWidth - (parseFloat(this.config.textPadding) * 2 || 70));
     }
 
@@ -51,7 +52,7 @@ class CanvasTextEngine {
 
     measureTextWidth(text, fontSize = this.config.fontSize, fontWeight = 'normal', fontStyle = 'normal', fontFamily = this.config.fontFamily) {
         if (!text) return 0;
-        
+
         // 生成缓存键
         const cacheKey = `${text}_${fontSize}_${fontWeight}_${fontStyle}_${fontFamily}`;
         if (this.widthCache.has(cacheKey)) {
@@ -61,12 +62,12 @@ class CanvasTextEngine {
         this.setFont({ fontSize, fontWeight, fontStyle, fontFamily });
         const letterSpacing = parseFloat(this.config.letterSpacing) || 0;
         const width = CanvasUtils.measureTextWidth(this.ctx, text, letterSpacing);
-        
+
         // 只有短文本才缓存，防止缓存无限增长
         if (text.length < 10) {
             this.widthCache.set(cacheKey, width);
         }
-        
+
         return width;
     }
 
@@ -252,6 +253,33 @@ class CanvasTextEngine {
         return this.highlightReadyPromise;
     }
 
+    async waitForMermaid(timeoutMs = 5000) {
+        if (!this.mermaidReadyPromise) {
+            this.mermaidReadyPromise = (async () => {
+                if (window.mermaid) return window.mermaid;
+
+                try {
+                    if (window.mermaidReady) {
+                        return await Promise.race([
+                            window.mermaidReady,
+                            new Promise((_, reject) => setTimeout(() => reject(new Error('Mermaid load timeout')), timeoutMs))
+                        ]);
+                    }
+                } catch (e) {
+                    console.warn('[CanvasTextEngine] Mermaid initialization failed:', e);
+                }
+
+                const started = Date.now();
+                while (Date.now() - started < timeoutMs) {
+                    if (window.mermaid) return window.mermaid;
+                    await new Promise(resolve => setTimeout(resolve, 100));
+                }
+                return null;
+            })();
+        }
+        return this.mermaidReadyPromise;
+    }
+
     async renderMath(text, display = false, fontSize = this.config.fontSize) {
         if (!text) return null;
         const hasMathJax = await this.waitForMathJax();
@@ -313,6 +341,263 @@ class CanvasTextEngine {
         }
     }
 
+    isColorLight(colorStr) {
+        if (!colorStr) return false;
+        colorStr = colorStr.trim().toLowerCase();
+        if (colorStr.startsWith('#')) {
+            const hex = colorStr.substring(1);
+            if (hex.length === 3) {
+                const r = parseInt(hex[0] + hex[0], 16);
+                const g = parseInt(hex[1] + hex[1], 16);
+                const b = parseInt(hex[2] + hex[2], 16);
+                return (r * 0.299 + g * 0.587 + b * 0.114) > 186;
+            } else if (hex.length === 6) {
+                const r = parseInt(hex.substring(0, 2), 16);
+                const g = parseInt(hex.substring(2, 4), 16);
+                const b = parseInt(hex.substring(4, 6), 16);
+                return (r * 0.299 + g * 0.587 + b * 0.114) > 186;
+            }
+        } else if (colorStr.startsWith('rgb')) {
+            const match = colorStr.match(/\d+/g);
+            if (match && match.length >= 3) {
+                const r = parseInt(match[0]);
+                const g = parseInt(match[1]);
+                const b = parseInt(match[2]);
+                return (r * 0.299 + g * 0.587 + b * 0.114) > 186;
+            }
+        }
+        return false;
+    }
+
+    getSvgDimensions(svgElement) {
+        if (!svgElement) return { width: 400, height: 300 };
+        const viewBox = svgElement.viewBox && svgElement.viewBox.baseVal;
+        if (viewBox && viewBox.width > 0 && viewBox.height > 0) {
+            return { width: viewBox.width, height: viewBox.height };
+        }
+
+        const width = parseFloat(svgElement.getAttribute('width'));
+        const height = parseFloat(svgElement.getAttribute('height'));
+        return {
+            width: Number.isFinite(width) && width > 0 ? width : 400,
+            height: Number.isFinite(height) && height > 0 ? height : 300
+        };
+    }
+
+    createRenderErrorLayout(message) {
+        const marginBottom = this.config.fontSize * 0.8;
+        return {
+            type: 'render-error',
+            message,
+            height: this.config.fontSize * 3.2 + marginBottom,
+            marginTop: 0,
+            marginBottom
+        };
+    }
+
+    async loadSvgImage(svgText) {
+        const blob = new Blob([svgText], { type: 'image/svg+xml;charset=utf-8' });
+        const objectUrl = URL.createObjectURL(blob);
+        try {
+            return await new Promise((resolve) => {
+                const img = new Image();
+                img.onload = () => resolve(img);
+                img.onerror = () => resolve(null);
+                img.src = objectUrl;
+            });
+        } finally {
+            URL.revokeObjectURL(objectUrl);
+        }
+    }
+
+    async renderMermaid(text, maxHeight = this.config.maxBlockHeight || Infinity) {
+        if (!text) return this.createRenderErrorLayout('Mermaid 图表内容为空');
+        const mermaidApi = await this.waitForMermaid();
+        if (!mermaidApi) {
+            console.warn('[CanvasTextEngine] Mermaid library is not loaded.');
+            return this.createRenderErrorLayout('Mermaid 图表加载失败');
+        }
+
+        try {
+            const id = 'mermaid-' + Math.random().toString(36).substring(2, 9);
+            const isLightText = this.isColorLight(this.config.textColor || '#111111');
+            const theme = isLightText ? 'dark' : 'neutral';
+
+            let diagramText = text;
+            if (!text.trim().startsWith('%%{init')) {
+                diagramText = `%%{init: {'theme': '${theme}', 'flowchart': {'htmlLabels': false}}}%%\n` + text;
+            }
+
+            const { svg: svgHtml } = await mermaidApi.render(id, diagramText);
+            if (!svgHtml) return this.createRenderErrorLayout('Mermaid 图表生成失败');
+
+            const documentNode = new DOMParser().parseFromString(svgHtml, 'image/svg+xml');
+            const svgElement = documentNode.documentElement;
+            if (!svgElement || svgElement.nodeName.toLowerCase() !== 'svg') {
+                return this.createRenderErrorLayout('Mermaid 图表生成失败');
+            }
+            const { width, height } = this.getSvgDimensions(svgElement);
+            svgElement.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+            svgElement.setAttribute('width', String(width));
+            svgElement.setAttribute('height', String(height));
+            svgElement.style.removeProperty('max-width');
+            const serializedSvg = new XMLSerializer().serializeToString(svgElement);
+            const image = await this.loadSvgImage(serializedSvg);
+
+            if (!image) return this.createRenderErrorLayout('Mermaid 图表载入失败');
+
+            const maxWidth = this.drawWidth;
+            const safeMaxHeight = Number.isFinite(maxHeight) ? Math.max(1, maxHeight - 20) : Infinity;
+            const scale = Math.min(1, maxWidth / width, safeMaxHeight / height);
+            const finalWidth = width * scale;
+            const contentHeight = height * scale;
+            const paddingY = 10;
+            const marginBottom = this.config.fontSize * 0.8;
+
+            return {
+                type: 'mermaid-block',
+                image,
+                width: finalWidth,
+                contentHeight,
+                height: contentHeight + (paddingY * 2) + marginBottom,
+                paddingY,
+                marginTop: 0,
+                marginBottom
+            };
+        } catch (e) {
+            console.error('[CanvasTextEngine] Mermaid rendering failed:', e);
+            return this.createRenderErrorLayout('Mermaid 图表解析失败');
+        }
+    }
+
+    async layoutTable(token) {
+        if (!token) return null;
+        const C = token.header.length;
+        const colLengths = new Array(C).fill(0);
+        for (let c = 0; c < C; c++) {
+            colLengths[c] = Math.max(colLengths[c], token.header[c].text.length);
+        }
+        for (let r = 0; r < token.rows.length; r++) {
+            const row = token.rows[r];
+            for (let c = 0; c < C; c++) {
+                if (row[c]) {
+                    colLengths[c] = Math.max(colLengths[c], row[c].text.length);
+                }
+            }
+        }
+
+        const totalLen = colLengths.reduce((a, b) => a + b, 0) || 1;
+        const colWidths = [];
+        let allocatedWidth = 0;
+        for (let c = 0; c < C; c++) {
+            let w = Math.round((colLengths[c] / totalLen) * this.drawWidth);
+            w = Math.max(60, w);
+            colWidths.push(w);
+            allocatedWidth += w;
+        }
+
+        const scale = this.drawWidth / allocatedWidth;
+        for (let c = 0; c < C; c++) {
+            colWidths[c] = Math.floor(colWidths[c] * scale);
+        }
+        const currentSum = colWidths.reduce((a, b) => a + b, 0);
+        colWidths[C - 1] += (this.drawWidth - currentSum);
+
+        const cellPaddingX = 8;
+        const cellPaddingY = 8;
+        const baseLineHeight = this.config.fontSize * (parseFloat(this.config.lineHeight) || 1.6);
+
+        const rowsLayout = [];
+        let totalTableHeight = 0;
+
+        const headerRowCells = [];
+        let headerRowHeight = 0;
+        for (let c = 0; c < C; c++) {
+            const cell = token.header[c];
+            const cellWidth = colWidths[c];
+            const lines = await this.layoutInlineText(
+                cell.tokens || [{ type: 'text', text: cell.text }],
+                cellWidth - (cellPaddingX * 2),
+                { fontWeight: '700' }
+            );
+            const cellHeight = (lines.length * baseLineHeight) + (cellPaddingY * 2);
+            headerRowHeight = Math.max(headerRowHeight, cellHeight);
+            headerRowCells.push({
+                lines,
+                width: cellWidth,
+                align: token.align[c] || 'left',
+                isHeader: true
+            });
+        }
+        rowsLayout.push({ cells: headerRowCells, height: headerRowHeight, isHeaderRow: true });
+        totalTableHeight += headerRowHeight;
+
+        for (let r = 0; r < token.rows.length; r++) {
+            const row = token.rows[r];
+            const dataRowCells = [];
+            let dataRowHeight = 0;
+            for (let c = 0; c < C; c++) {
+                const cell = row[c] || { text: '' };
+                const cellWidth = colWidths[c];
+                const lines = await this.layoutInlineText(cell.tokens || [{ type: 'text', text: cell.text }], cellWidth - (cellPaddingX * 2));
+                const cellHeight = (lines.length * baseLineHeight) + (cellPaddingY * 2);
+                dataRowHeight = Math.max(dataRowHeight, cellHeight);
+                dataRowCells.push({
+                    lines,
+                    width: cellWidth,
+                    align: token.align[c] || 'left',
+                    isHeader: false
+                });
+            }
+            rowsLayout.push({ cells: dataRowCells, height: dataRowHeight, isHeaderRow: false });
+            totalTableHeight += dataRowHeight;
+        }
+
+        const marginBottom = this.config.fontSize * 0.8;
+        return {
+            type: 'table-grid',
+            rows: rowsLayout,
+            colWidths,
+            height: totalTableHeight + marginBottom,
+            cellPaddingX,
+            cellPaddingY,
+            marginTop: 0,
+            marginBottom
+        };
+    }
+
+    createTablePart(layout, rows, includeMarginBottom) {
+        const marginBottom = includeMarginBottom ? (layout.marginBottom || 0) : 0;
+        return {
+            ...layout,
+            rows,
+            height: rows.reduce((sum, row) => sum + row.height, 0) + marginBottom,
+            marginBottom
+        };
+    }
+
+    splitTableLayout(layout, availableHeight) {
+        if (!layout || layout.type !== 'table-grid' || !layout.rows || layout.rows.length < 3) return null;
+        const header = layout.rows[0];
+        let usedHeight = header.height;
+        let splitIndex = 1;
+
+        while (splitIndex < layout.rows.length && usedHeight + layout.rows[splitIndex].height <= availableHeight) {
+            usedHeight += layout.rows[splitIndex].height;
+            splitIndex += 1;
+        }
+
+        if (splitIndex <= 1) {
+            return { part1: null, part2: layout };
+        }
+        if (splitIndex >= layout.rows.length) return null;
+
+        return {
+            part1: this.createTablePart(layout, layout.rows.slice(0, splitIndex), false),
+            part2: this.createTablePart(layout, [header, ...layout.rows.slice(splitIndex)], true)
+        };
+    }
+
     /**
      * 测量图片尺寸并计算缩放后的高度
      */
@@ -320,7 +605,7 @@ class CanvasTextEngine {
         return new Promise((resolve) => {
             const img = new Image();
             img.crossOrigin = 'anonymous';
-            
+
             const timeout = setTimeout(() => {
                 img.onload = null;
                 img.onerror = null;
@@ -444,9 +729,9 @@ class CanvasTextEngine {
                 const scales = { 1: this.config.h1Scale || 1.6, 2: this.config.h2Scale || 1.4, 3: this.config.h3Scale || 1.2 };
                 const fontSize = this.config.fontSize * (scales[token.depth] || 1.1);
                 const lines = await this.layoutInlineText(token.tokens || [{ type: 'text', text: token.text }], this.drawWidth, {
-                    fontSize, fontWeight: '800', headingLevel: token.depth 
+                    fontSize, fontWeight: '800', headingLevel: token.depth
                 });
-                
+
                 const marginTop = fontSize * 0.6, marginBottom = fontSize * 0.4;
                 layouts.push({
                     type: 'heading', depth: token.depth, lines,
@@ -470,13 +755,13 @@ class CanvasTextEngine {
                 if (token.tokens && token.tokens.length === 1 && token.tokens[0].type === 'image') {
                     return await this.layoutToken(token.tokens[0]);
                 }
-                
+
                 // 如果段落包含多个图片和其他文本，提取出来作为独立块
                 const hasImage = token.tokens && token.tokens.some(t => t.type === 'image');
                 if (hasImage) {
                     const subLayouts = [];
                     let currentTextTokens = [];
-                    
+
                     for (const subToken of token.tokens) {
                         if (subToken.type === 'image') {
                             if (currentTextTokens.length > 0) {
@@ -488,7 +773,7 @@ class CanvasTextEngine {
                             currentTextTokens.push(subToken);
                         }
                     }
-                    
+
                     if (currentTextTokens.length > 0) {
                         subLayouts.push(...await this.layoutToken({ type: 'paragraph', tokens: currentTextTokens, text: '' }));
                     }
@@ -522,7 +807,7 @@ class CanvasTextEngine {
                     if (inlineTokens.length === 1 && inlineTokens[0].type === 'paragraph') {
                         inlineTokens = inlineTokens[0].tokens || [];
                     }
-                    
+
                     // 检查列表项中是否有图片
                     const hasImage = inlineTokens.some(t => t.type === 'image');
                     if (hasImage) {
@@ -544,7 +829,22 @@ class CanvasTextEngine {
                 layouts.push({ type: 'space', height: this.config.fontSize });
                 break;
             }
+            case 'table': {
+                const tableLayout = await this.layoutTable(token);
+                if (tableLayout) {
+                    layouts.push(tableLayout);
+                }
+                break;
+            }
             case 'code': {
+                const language = String(token.lang || '').trim().toLowerCase();
+                if (language === 'mermaid') {
+                    const mermaidBlock = await this.renderMermaid(token.text);
+                    if (mermaidBlock) {
+                        layouts.push(mermaidBlock);
+                        break;
+                    }
+                }
                 await this.waitForHighlightJs();
                 const paddingX = 14;
                 const lines = this.splitCodeSegments(this.highlightCode(token.text || '', token.lang), this.drawWidth - (paddingX * 2));
@@ -652,7 +952,7 @@ class CanvasTextEngine {
                         } else {
                             const last = currentLine[currentLine.length - 1];
                             if (last && !last.isMath && last.fontWeight === style.fontWeight && last.fontStyle === style.fontStyle &&
-                                last.isHighlight === style.isHighlight && last.isCode === style.isCode && 
+                                last.isHighlight === style.isHighlight && last.isCode === style.isCode &&
                                 last.fontSize === style.fontSize && last.textDecoration === style.textDecoration &&
                                 last.headingLevel === style.headingLevel) {
                                 last.text += char;
@@ -673,7 +973,7 @@ class CanvasTextEngine {
 
     getLineHeight(line, config) {
          const configFontSize = parseFloat(config.fontSize) || 16;
-         const maxFontSize = Array.isArray(line) 
+         const maxFontSize = Array.isArray(line)
             ? Math.max(...line.map(s => parseFloat(s.height) || parseFloat(s.fontSize) || configFontSize))
             : (parseFloat(line.fontSize) || configFontSize);
          return maxFontSize * (parseFloat(config.lineHeight) || 1.6);
@@ -703,13 +1003,13 @@ class CanvasTextEngine {
 
         const part1 = { ...layout, lines: lines.slice(0, splitIndex), height: currentHeight + paddingY, marginBottom: 0 };
         const part2 = { ...layout, lines: lines.slice(splitIndex), marginTop: 0 };
-        
+
         let part2ContentHeight = paddingY * 2;
         part2.lines.forEach(line => part2ContentHeight += this.getLineHeight(line, this.config));
         part2.height = part2ContentHeight + (layout.marginBottom || 0);
 
         if (layout.type === 'list-item') {
-            part2.type = 'paragraph'; part2.prefix = ''; 
+            part2.type = 'paragraph'; part2.prefix = '';
         }
 
         return { part1, part2 };

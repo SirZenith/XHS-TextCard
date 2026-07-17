@@ -45,6 +45,19 @@
     
     <script src="js/lib/jszip.min.js"></script>
     <script src="js/lib/marked.umd.min.js"></script>
+    <script src="js/lib/mermaid.min.js?v=10.9.1"></script>
+    <script>
+        window.mermaidReady = Promise.resolve(window.mermaid).then((mermaid) => {
+            if (!mermaid) throw new Error('Mermaid 本地库加载失败');
+            mermaid.initialize({
+                startOnLoad: false,
+                theme: 'neutral',
+                securityLevel: 'strict',
+                flowchart: { htmlLabels: false }
+            });
+            return mermaid;
+        });
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.11.1/lib/common.min.js"></script>
     <script>
         window.MathJax = {
@@ -577,15 +590,15 @@
     <!-- JavaScript 模块 -->
     <script src="js/constants.js"></script>
     <script src="js/utils/markdown.js"></script>
-    <script src="js/utils/canvas-text-engine.js"></script>
+    <script src="js/utils/canvas-text-engine.js?v=20260717-rich-blocks"></script>
     <script src="js/utils/canvas-utils.js"></script>
     <script src="js/TemplateDefinitions.js"></script>
-    <script src="js/CanvasRenderer.js"></script>
+    <script src="js/CanvasRenderer.js?v=20260717-rich-blocks"></script>
     <script src="js/TemplateManager.js"></script>
-    <script src="js/TextSplitter.js"></script>
+    <script src="js/TextSplitter.js?v=20260717-rich-blocks"></script>
     <script src="js/PreviewGenerator.js"></script>
     <script src="js/DownloadManager.js"></script>
     <script src="js/EditorController.js"></script>
-    <script src="js/App.js"></script>
+    <script src="js/App.js?v=20260717-rich-blocks"></script>
 </body>
 </html>
