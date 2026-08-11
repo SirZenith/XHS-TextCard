@@ -15,7 +15,8 @@ class TextSplitter {
         
         this.engine.updateConfig({
             ...config,
-            drawWidth: this.contentWidth
+            drawWidth: this.contentWidth,
+            maxBlockHeight: this.maxHeight
         });
     }
 
@@ -29,7 +30,8 @@ class TextSplitter {
         this.calculateLayout();
         this.engine.updateConfig({
             ...config,
-            drawWidth: this.contentWidth
+            drawWidth: this.contentWidth,
+            maxBlockHeight: this.maxHeight
         });
     }
 
@@ -102,16 +104,24 @@ class TextSplitter {
             }
 
             // 情况 B：尝试拆分布局块（如将段落切分为前N行和剩余行）
-            const splitResult = this.engine.splitLayout(layout, availableHeight);
+            const splitResult = layout.type === 'table-grid'
+                ? this.engine.splitTableLayout(layout, availableHeight)
+                : this.engine.splitLayout(layout, availableHeight);
             
             if (splitResult) {
-                if (splitResult.part1.height > 0) {
+                const hadContentBeforeSplit = currentPage.layouts.length > 0;
+                if (splitResult.part1 && splitResult.part1.height > 0) {
                     currentPage.layouts.push(splitResult.part1);
                 }
-                pages.push(currentPage.layouts);
+                if (currentPage.layouts.length > 0) pages.push(currentPage.layouts);
                 currentPage = { layouts: [], totalHeight: 0 };
                 // 递归处理剩余部分
-                processLayout(splitResult.part2);
+                if (splitResult.part1 || hadContentBeforeSplit) {
+                    processLayout(splitResult.part2);
+                } else {
+                    currentPage.layouts.push(layout);
+                    currentPage.totalHeight += layout.height;
+                }
             } else {
                 // 情况 C：无法拆分（如单行标题过长或图片）
                 if (currentPage.layouts.length > 0) {

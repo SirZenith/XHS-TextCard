@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <title>Rich block layout tests</title>
+</head>
+<body>
+    <pre id="results">Running…</pre>
+    <script src="../js/lib/marked.umd.min.js"></script>
+    <script src="../js/constants.js"></script>
+    <script src="../js/utils/canvas-utils.js"></script>
+    <script src="../js/utils/canvas-text-engine.js"></script>
+    <script>
+        const results = [];
+        const assert = (condition, message) => {
+            if (!condition) throw new Error(message);
+        };
+        const test = async (name, fn) => {
+            try {
+                await fn();
+                results.push({ name, status: 'pass' });
+            } catch (error) {
+                results.push({ name, status: 'fail', error: error.message });
+            }
+        };
+
+        window.mermaid = {
+            initialize() {},
+            async render(id, source) {
+                if (source.includes('INVALID')) throw new Error('Parse error');
+                return {
+                    svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1200"><rect width="800" height="1200" fill="#fff"/></svg>'
+                };
+            }
+        };
+        window.mermaidReady = Promise.resolve(window.mermaid);
+
+        const config = {
+            cardWidth: 500,
+            drawWidth: 360,
+            fontSize: 16,
+            lineHeight: 1.6,
+            letterSpacing: 0,
+            textPadding: 35,
+            textColor: '#111111'
+        };
+        const engine = new CanvasTextEngine(config);
+
+        (async () => {
+            await test('reads SVG viewBox dimensions', async () => {
+                const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                svg.setAttribute('viewBox', '0 0 800 400');
+                const dimensions = engine.getSvgDimensions(svg);
+                assert(dimensions.width === 800, `expected width 800, got ${dimensions.width}`);
+                assert(dimensions.height === 400, `expected height 400, got ${dimensions.height}`);
+            });
+
+            await test('bounds Mermaid by available height', async () => {
+                const layout = await engine.renderMermaid('flowchart TD\nA --> B', 300);
+                assert(layout.type === 'mermaid-block', `expected mermaid-block, got ${layout.type}`);
+                assert(layout.contentHeight <= 300, `expected height <= 300, got ${layout.contentHeight}`);
+                assert(layout.width <= config.drawWidth, `expected width <= ${config.drawWidth}, got ${layout.width}`);
+                assert(Math.abs((layout.width / layout.contentHeight) - (800 / 1200)) < 0.01, 'expected SVG aspect ratio to be preserved');
+            });
+
+            await test('returns visible Mermaid error layout', async () => {
+                const layout = await engine.renderMermaid('INVALID');
+                assert(layout.type === 'render-error', `expected render-error, got ${layout && layout.type}`);
+            });
+
+            await test('splits tables by row and repeats the header', async () => {
+                const token = marked.lexer('| A | B |\n| :-- | --: |\n| one | a long value that wraps across lines |\n| two | another value |')[0];
+                const table = await engine.layoutTable(token);
+                assert(table.rows[0].isHeaderRow === true, 'expected first row to be marked as header');
+                assert(table.rows[0].cells[0].align === 'left', 'expected first column left aligned');
+                assert(table.rows[0].cells[1].align === 'right', 'expected second column right aligned');
+                const available = table.rows[0].height + table.rows[1].height + 1;
+                const split = engine.splitTableLayout(table, available);
+                assert(split && split.part1 && split.part2, 'expected two table parts');
+                assert(split.part1.rows.length === 2, `expected header and one row, got ${split.part1.rows.length}`);
+                assert(split.part2.rows[0].isHeaderRow === true, 'expected repeated header in second part');
+                assert(split.part2.rows.length === 2, `expected repeated header and remaining row, got ${split.part2.rows.length}`);
+            });
+
+            window.__richBlockTestResults = results;
+            document.querySelector('#results').textContent = JSON.stringify(results, null, 2);
+            document.body.dataset.status = results.every(result => result.status === 'pass') ? 'pass' : 'fail';
+        })();
+    </script>
+</body>
+</html>

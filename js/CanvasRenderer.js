@@ -1,6 +1,6 @@
 /**
  * CanvasRenderer - 核心画布渲染引擎
- * 
+ *
  * 设计原则：
  * 1. 声明式渲染：通过 Render Options 描述期望的画布状态。
  * 2. 分层绘制：严格遵循 背景 -> 文本背景 -> 水印 -> 文本 -> 前景 -> 签名 -> 社交图标 的层级顺序。
@@ -32,7 +32,7 @@ class CanvasRenderer {
             if (this.socialIconImageCache.has(iconName)) return;
             const iconData = SOCIAL_ICONS[iconName];
             if (!iconData || !iconData.src) return;
-            
+
             try {
                 const img = await this.loadImage(iconData.src);
                 this.socialIconImageCache.set(iconName, img);
@@ -68,7 +68,7 @@ class CanvasRenderer {
 
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
-        
+
         canvas.width = width * scale;
         canvas.height = height * scale;
         ctx.scale(scale, scale);
@@ -134,7 +134,7 @@ class CanvasRenderer {
     drawCoverContent(ctx, layout, config, width, height, templateId) {
         const img = this.imageCache.get(layout.image);
         const padding = parseFloat(config.textPadding) || 40;
-        
+
         // 定义分栏比例 (0.6 = 60% 图片高度)
         const splitRatio = 0.6;
         const imageH = height * splitRatio;
@@ -142,19 +142,19 @@ class CanvasRenderer {
         const textY = imageH;
 
         ctx.save();
-        
+
         // 1. 绘制上半部分：图片
         if (img) {
             const scale = Math.max(width / img.width, imageH / img.height);
             const x = (width / 2) - (img.width / 2) * scale;
             const y = (imageH / 2) - (img.height / 2) * scale;
-            
+
             ctx.beginPath();
             ctx.rect(0, 0, width, imageH);
             ctx.clip();
-            
+
             ctx.drawImage(img, x, y, img.width * scale, img.height * scale);
-            
+
             // 可选：添加轻微内阴影增加层次感
             // ctx.shadowColor = 'rgba(0,0,0,0.1)';
             // ctx.shadowBlur = 20;
@@ -162,7 +162,7 @@ class CanvasRenderer {
             // ctx.shadowOffsetX = 0;
             // ctx.rect(0, 0, width, imageH);
             // ctx.stroke();
-            
+
             ctx.restore(); // 恢复 clip
         } else {
             // 占位图
@@ -177,18 +177,18 @@ class CanvasRenderer {
 
         // 2. 绘制下半部分：标题
         // 背景色已经由 drawTemplateBackground 绘制，此处只需绘制文字
-        
+
         ctx.save();
-        
+
         const fontSize = parseFloat(config.coverFontSize) || 48;
         const fontFamily = config.fontFamily === 'inherit' ? "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'PingFang SC', 'Helvetica Neue', sans-serif" : (config.fontFamily || "sans-serif");
-        
+
         // 字体颜色使用 accentColor (强调色)
         ctx.fillStyle = config.accentColor || '#000000';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.font = `800 ${fontSize}px ${fontFamily}`;
-        
+
         // 支持配置换行: 既支持真实换行，也支持 "\\n" 字面量
         const titleText = String(layout.title || '未命名文档').replace(/\\n/g, '\n');
         const maxWidth = width - (padding * 2);
@@ -223,7 +223,7 @@ class CanvasRenderer {
         const totalTextHeight = lines.length * lineHeight;
         // 垂直居中于下半部分
         let startY = textY + (textH / 2) - (totalTextHeight / 2) + (fontSize * 0.4);
-        
+
         lines.forEach((l, i) => {
             ctx.shadowColor = 'transparent'; // 移除阴影
             ctx.fillText(l, width / 2, startY + (i * lineHeight));
@@ -236,7 +236,7 @@ class CanvasRenderer {
             ctx.fillStyle = config.accentColor || '#000';
             // 移到文字区域左上角
             ctx.fillText('SPECIAL EDITION', padding, textY + 40);
-            
+
             ctx.beginPath();
             ctx.moveTo(padding, textY + 55);
             ctx.lineTo(padding + 100, textY + 55);
@@ -291,7 +291,7 @@ class CanvasRenderer {
              ctx.fillStyle = 'rgba(200, 184, 154, 0.25)';
              ctx.fillText('KODAK  5222  DOUBLE-X', width - 14, letterboxH - 6);
         }
-        
+
         ctx.restore();
     }
 
@@ -303,10 +303,10 @@ class CanvasRenderer {
         ctx.strokeStyle = 'rgba(255, 0, 0, 0.3)';
         ctx.lineWidth = 1;
         ctx.strokeRect(textAreaRect.x, textAreaRect.y, textAreaRect.width, textAreaRect.height);
-        
+
         let currentY = textAreaRect.y;
         ctx.strokeStyle = 'rgba(0, 0, 255, 0.2)';
-        
+
         layouts.forEach(layout => {
             if (layout.type !== 'space') {
                 const y = currentY + (layout.marginTop || 0);
@@ -362,7 +362,7 @@ class CanvasRenderer {
 
     drawTemplateForeground(ctx, templateId, config, width, height, index = 0, totalCount = 1, isCover = false) {
         if (isCover) return; // 封面不绘制页码等通用装饰
-        
+
         const template = TemplateDefinitions[templateId];
         if (template && template.drawForeground) {
             ctx.save();
@@ -418,6 +418,12 @@ class CanvasRenderer {
                 this.drawInlineImage(ctx, layout, textAreaRect.x, contentY);
             } else if (layout.type === 'math-block') {
                 this.drawMathBlock(ctx, layout, textAreaRect.x, contentY, textAreaRect.width);
+            } else if (layout.type === 'mermaid-block') {
+                this.drawMermaidBlock(ctx, layout, textAreaRect.x, contentY, textAreaRect.width);
+            } else if (layout.type === 'table-grid') {
+                this.drawTableGrid(ctx, layout, textAreaRect.x, contentY, config, templateId);
+            } else if (layout.type === 'render-error') {
+                this.drawRenderError(ctx, layout, textAreaRect.x, contentY, textAreaRect.width, config);
             } else if (layout.type === 'code-block') {
                 this.drawCodeBlock(ctx, layout, textAreaRect.x, contentY, config, templateId, textAreaRect.width);
             } else if (layout.lines) {
@@ -432,6 +438,114 @@ class CanvasRenderer {
         if (!layout.image) return;
         const drawX = layout.align === 'center' ? x + (maxWidth - layout.width) / 2 : x;
         ctx.drawImage(layout.image, drawX, y, layout.width, layout.contentHeight);
+    }
+
+    drawMermaidBlock(ctx, layout, x, y, maxWidth) {
+        if (!layout.image) return;
+        const drawX = x + (maxWidth - layout.width) / 2;
+        const drawY = y + (layout.paddingY || 0);
+        ctx.drawImage(layout.image, drawX, drawY, layout.width, layout.contentHeight);
+    }
+
+    drawRenderError(ctx, layout, x, y, maxWidth, config) {
+        const boxHeight = layout.height - (layout.marginBottom || 0);
+        const isLightText = this.isColorLight(config.textColor || '#111111');
+        const background = isLightText ? 'rgba(248, 113, 113, 0.12)' : 'rgba(185, 28, 28, 0.06)';
+        const border = isLightText ? 'rgba(252, 165, 165, 0.35)' : 'rgba(185, 28, 28, 0.20)';
+        const textColor = isLightText ? '#fecaca' : '#991b1b';
+        const fontSize = parseFloat(config.fontSize) || 16;
+        const fontFamily = config.fontFamily === 'inherit'
+            ? "-apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif"
+            : (config.fontFamily || 'sans-serif');
+
+        ctx.save();
+        CanvasUtils.drawRoundedRect(ctx, x, y, maxWidth, boxHeight, 8, background, true, border);
+        ctx.fillStyle = textColor;
+        ctx.font = `600 ${fontSize * 0.9}px ${fontFamily}`;
+        ctx.textAlign = 'left';
+        ctx.fillText(`⚠ ${layout.message}`, x + 14, y + (boxHeight - fontSize) / 2);
+        ctx.restore();
+    }
+
+    isColorLight(colorStr) {
+        if (!colorStr) return false;
+        colorStr = colorStr.trim().toLowerCase();
+        if (colorStr.startsWith('#')) {
+            const hex = colorStr.substring(1);
+            if (hex.length === 3) {
+                const r = parseInt(hex[0] + hex[0], 16);
+                const g = parseInt(hex[1] + hex[1], 16);
+                const b = parseInt(hex[2] + hex[2], 16);
+                return (r * 0.299 + g * 0.587 + b * 0.114) > 186;
+            } else if (hex.length === 6) {
+                const r = parseInt(hex.substring(0, 2), 16);
+                const g = parseInt(hex.substring(2, 4), 16);
+                const b = parseInt(hex.substring(4, 6), 16);
+                return (r * 0.299 + g * 0.587 + b * 0.114) > 186;
+            }
+        } else if (colorStr.startsWith('rgb')) {
+            const match = colorStr.match(/\d+/g);
+            if (match && match.length >= 3) {
+                const r = parseInt(match[0]);
+                const g = parseInt(match[1]);
+                const b = parseInt(match[2]);
+                return (r * 0.299 + g * 0.587 + b * 0.114) > 186;
+            }
+        }
+        return false;
+    }
+
+    drawTableGrid(ctx, layout, x, y, config, templateId) {
+        const rows = layout.rows;
+        const cellPaddingX = layout.cellPaddingX || 8;
+        const cellPaddingY = layout.cellPaddingY || 8;
+        const isDarkText = this.isColorLight(config.textColor || '#111111');
+        const borderStyle = isDarkText ? 'rgba(255,255,255,0.18)' : 'rgba(15,23,42,0.13)';
+        const headerBorderStyle = isDarkText ? 'rgba(255,255,255,0.34)' : 'rgba(15,23,42,0.28)';
+        const headerBgColor = isDarkText ? 'rgba(255,255,255,0.07)' : 'rgba(15,23,42,0.035)';
+        const baseLineHeight = (parseFloat(config.fontSize) || 16) * (parseFloat(config.lineHeight) || 1.6);
+
+        let currentY = y;
+
+        ctx.save();
+        for (let r = 0; r < rows.length; r++) {
+            const row = rows[r];
+            const rowHeight = row.height;
+            let currentX = x;
+
+            for (let c = 0; c < row.cells.length; c++) {
+                const cell = row.cells[c];
+                const cellWidth = cell.width;
+
+                if (cell.isHeader) {
+                    ctx.fillStyle = headerBgColor;
+                    ctx.fillRect(currentX, currentY, cellWidth, rowHeight);
+                }
+
+                const textHeight = cell.lines.length * baseLineHeight;
+                const textY = currentY + cellPaddingY + (rowHeight - cellPaddingY * 2 - textHeight) / 2;
+                this.drawStyledLines(
+                    ctx,
+                    cell.lines,
+                    currentX + cellPaddingX,
+                    textY,
+                    config,
+                    templateId,
+                    cellWidth - cellPaddingX * 2,
+                    cell.align
+                );
+                currentX += cellWidth;
+            }
+
+            ctx.beginPath();
+            ctx.strokeStyle = row.isHeaderRow ? headerBorderStyle : borderStyle;
+            ctx.lineWidth = row.isHeaderRow ? 1.5 : 1;
+            ctx.moveTo(x, currentY + rowHeight);
+            ctx.lineTo(x + layout.colWidths.reduce((sum, width) => sum + width, 0), currentY + rowHeight);
+            ctx.stroke();
+            currentY += rowHeight;
+        }
+        ctx.restore();
     }
 
     drawCodeBlock(ctx, layout, x, y, config, templateId, maxWidth) {
@@ -469,7 +583,7 @@ class CanvasRenderer {
         if (img) {
             const drawH = layout.contentHeight;
             const drawW = layout.width;
-            
+
             ctx.save();
             // 绘制圆角图片
             ctx.beginPath();
@@ -497,7 +611,7 @@ class CanvasRenderer {
         for (const lineSegments of lines) {
             let segmentX = startX;
             let maxFontSize = configFontSize;
-            
+
             if (Array.isArray(lineSegments) && lineSegments.length > 0) {
                 maxFontSize = Math.max(...lineSegments.map(s => parseFloat(s.fontSize) || configFontSize));
             } else if (lineSegments && lineSegments.fontSize) {
@@ -507,8 +621,8 @@ class CanvasRenderer {
             const lineHeight = maxFontSize * (parseFloat(config.lineHeight) || 1.6);
             const letterSpacing = parseFloat(config.letterSpacing) || 0;
 
-            // 居中：按整行宽度计算起点，再逐段绘制
-            if (align === 'center' && drawWidth > 0 && Array.isArray(lineSegments)) {
+            // 居中或右对齐：按整行宽度计算起点，再逐段绘制
+            if ((align === 'center' || align === 'right') && drawWidth > 0 && Array.isArray(lineSegments)) {
                 let lineWidth = 0;
                 for (const segment of lineSegments) {
                     if (segment.isMath) {
@@ -524,7 +638,9 @@ class CanvasRenderer {
                     ctx.font = `${fontStyle} ${fontWeight} ${fontSize}px ${fontFamily}`;
                     lineWidth += CanvasUtils.measureTextWidth(ctx, segment.text || '', letterSpacing);
                 }
-                segmentX = startX + (drawWidth - lineWidth) / 2;
+                segmentX = align === 'right'
+                    ? startX + drawWidth - lineWidth
+                    : startX + (drawWidth - lineWidth) / 2;
             }
 
             if (Array.isArray(lineSegments)) {
@@ -554,7 +670,7 @@ class CanvasRenderer {
         const fontSize = parseFloat(segment.fontSize) || parseFloat(config.fontSize) || 16;
         const fontFamily = segment.fontFamily || (config.fontFamily === 'inherit' ? "-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', sans-serif" : (config.fontFamily || "sans-serif"));
         ctx.font = `${fontStyle} ${fontWeight} ${fontSize}px ${fontFamily}`;
-        
+
         let textColor = segment.color || config.textColor;
         let highlightColor = 'rgba(255, 243, 191, 0.7)';
         let codeBgColor = 'rgba(0,0,0,0.04)';
@@ -568,7 +684,7 @@ class CanvasRenderer {
                 if (styles.codeBgColor) codeBgColor = styles.codeBgColor;
             }
         }
-        
+
         const letterSpacing = parseFloat(config.letterSpacing) || 0;
         const metrics = ctx.measureText(segment.text);
         const width = metrics.width + (segment.text.length * letterSpacing);
@@ -606,7 +722,7 @@ class CanvasRenderer {
         if (config.hasSocialIcons && config.selectedSocialIcons && config.selectedSocialIcons.length > 0 && config.socialIconPosition === 'bottom-center') {
             // 针对特定模板（备忘录、大厂文档、苏黎世、星光质感）增加额外偏移，防止与自带 UI 重叠
             const extraTemplates = ['ios-memo', 'pro-doc', 'swiss-studio', 'starry-night'];
-            bottomOffset = extraTemplates.includes(templateId) ? 35 : 12; 
+            bottomOffset = extraTemplates.includes(templateId) ? 35 : 12;
         }
 
         ctx.save();
@@ -622,12 +738,12 @@ class CanvasRenderer {
             const barHeight = 40;
             ctx.fillStyle = barBg;
             ctx.fillRect(0, height - barHeight - bottomOffset, width, barHeight);
-            ctx.font = '700 13px monospace'; 
+            ctx.font = '700 13px monospace';
             ctx.textBaseline = 'middle';
-            ctx.fillStyle = cursorColor; 
+            ctx.fillStyle = cursorColor;
             ctx.textAlign = 'left';
             ctx.fillText('> _', 25, height - barHeight / 2 - bottomOffset);
-            ctx.fillStyle = sigColor; 
+            ctx.fillStyle = sigColor;
             ctx.textAlign = 'right';
             ctx.fillText(sigText, width - 25, height - barHeight / 2 - bottomOffset);
         } else if (sigStyle === 'modern-pill') {
@@ -692,9 +808,9 @@ class CanvasRenderer {
         const h = img.height * scale;
         const x = (size - w) / 2;
         const y = (size - h) / 2;
-        
+
         ctx.drawImage(img, x, y, w, h);
-        
+
         this.socialIconCanvasCache.set(cacheKey, canvas);
         return canvas;
     }
@@ -708,32 +824,32 @@ class CanvasRenderer {
         }
 
         const icons = config.selectedSocialIcons;
-        const iconSize = 20; 
+        const iconSize = 20;
         const gap = 10;
         const totalWidth = icons.length * iconSize + (icons.length - 1) * gap;
-        
+
         const position = config.socialIconPosition || 'top-right';
         let x, y;
 
         if (position === 'bottom-center') {
             const edgeMarginBottom = 20; // 进一步下移，贴近页面边缘
             x = (width - totalWidth) / 2;
-            y = height - edgeMarginBottom; 
+            y = height - edgeMarginBottom;
         } else {
-            const edgeMargin = 40; 
+            const edgeMargin = 40;
             x = width - totalWidth - edgeMargin;
             y = edgeMargin + (iconSize / 2);
         }
 
         ctx.save();
-        
-        ctx.globalAlpha = 1.0; 
-        
+
+        ctx.globalAlpha = 1.0;
+
         ctx.shadowColor = 'rgba(0, 0, 0, 0.15)';
         ctx.shadowBlur = 4;
         ctx.shadowOffsetX = 0;
         ctx.shadowOffsetY = 1;
-        
+
         icons.forEach((iconName, index) => {
             const iconX = Math.round(x + index * (iconSize + gap));
             const iconY = Math.round(y - iconSize / 2);
