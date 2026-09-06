@@ -1,6 +1,6 @@
 /**
  * TextSplitter - 智能文本分页器
- * 
+ *
  * 设计原则：
  * 1. 布局一致性：通过调用 TemplateDefinitions.getContentBox 确保分页逻辑与渲染逻辑共享相同的尺寸定义。
  * 2. 递归拆分：当一个块（如长段落）超过剩余空间时，递归地将其切分为多页，确保没有任何文本溢出。
@@ -12,7 +12,7 @@ class TextSplitter {
         this.templateId = templateId;
         this.engine = new CanvasTextEngine(config);
         this.calculateLayout();
-        
+
         this.engine.updateConfig({
             ...config,
             drawWidth: this.contentWidth,
@@ -26,7 +26,7 @@ class TextSplitter {
     updateConfig(config, templateId) {
         this.config = config;
         if (templateId) this.templateId = templateId;
-        
+
         this.calculateLayout();
         this.engine.updateConfig({
             ...config,
@@ -68,9 +68,9 @@ class TextSplitter {
             console.error('[TextSplitter] Marked lexer failed:', e);
             throw new Error('Markdown 解析失败，请检查输入内容是否有特殊字符。');
         }
-        
+
         const pages = [];
-        
+
         // 1. 注入封面页
         if (this.config.hasCover) {
             let coverTitle = this.config.coverTitle;
@@ -107,7 +107,7 @@ class TextSplitter {
             const splitResult = layout.type === 'table-grid'
                 ? this.engine.splitTableLayout(layout, availableHeight)
                 : this.engine.splitLayout(layout, availableHeight);
-            
+
             if (splitResult) {
                 const hadContentBeforeSplit = currentPage.layouts.length > 0;
                 if (splitResult.part1 && splitResult.part1.height > 0) {

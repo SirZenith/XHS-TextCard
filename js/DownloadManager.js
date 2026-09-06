@@ -1,6 +1,6 @@
 /**
  * DownloadManager - 图片导出与下载管理器
- * 
+ *
  * 设计原则：
  * 1. 纯净输出：无论预览状态如何，导出时必须强制关闭辅助网格。
  * 2. 离线生成：完全在客户端通过 Canvas 渲染高清图片，无需后端。
@@ -30,7 +30,7 @@ class DownloadManager {
     async capture(layouts, config, templateId, index = 0, totalCount = 1) {
         // 强制关闭辅助线
         const renderConfig = { ...config, showGrid: false };
-        
+
         const canvas = await this.renderer.render({
             layouts,
             index,
@@ -39,9 +39,9 @@ class DownloadManager {
             templateId,
             width: PREVIEW_WIDTH,
             height: PREVIEW_HEIGHT,
-            scale: OUTPUT_WIDTH / PREVIEW_WIDTH 
+            scale: OUTPUT_WIDTH / PREVIEW_WIDTH
         });
-        
+
         // 根据选择的格式导出
         // PNG：无损压缩，适合需要透明背景
         // JPEG：有损压缩，在小红书安卓端缩略图显示更清晰，使用0.92质量

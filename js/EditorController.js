@@ -1,6 +1,6 @@
 /**
  * EditorController - 侧边栏编辑面板控制器
- * 
+ *
  * 设计原则：
  * 1. 数据驱动 UI：UI 控件的状态始终通过 currentConfig 同步，不直接操作 DOM 存储数据。
  * 2. 交互一致性：通过 configMap 映射控件类型与事件，减少重复逻辑。
@@ -14,9 +14,9 @@ class EditorController {
         this.pickrs = {};
         this.lastSolidColor = '#ffffff';
         this.lastGradientColor = 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)';
-        
+
         this.swatches = [
-            '#ffffff', '#E8D5C4', '#B5C0D0', '#CCD3CA', '#F5E8DD', '#9290C3', '#7C9D96', 
+            '#ffffff', '#E8D5C4', '#B5C0D0', '#CCD3CA', '#F5E8DD', '#9290C3', '#7C9D96',
             '#1a1a1b', '#333333', '#000000', '#495057', '#1c7ed6', '#d6336c', '#37b24d', '#f08c00'
         ];
 
@@ -100,7 +100,7 @@ class EditorController {
 
         const keyMap = { bg: 'bgColor', text: 'textColor', accent: 'accentColor' };
         const configKey = keyMap[type];
-        
+
         if (type === 'bg') {
             const isGrad = color.startsWith('linear-gradient');
             this.currentConfig.bgMode = isGrad ? 'gradient' : 'solid';
@@ -150,7 +150,7 @@ class EditorController {
         });
 
         popup.querySelector('.close-popup')?.addEventListener('click', () => popup.style.display = 'none');
-        
+
         document.getElementById('gradient-angle')?.addEventListener('input', (e) => {
             const deg = e.target.value;
             const label = document.getElementById('gradient-angle-value');
@@ -171,7 +171,7 @@ class EditorController {
     parseCurrentGradient() {
         const bg = this.currentConfig.bgColor;
         if (!bg || typeof bg !== 'string' || !bg.startsWith('linear-gradient')) return;
-        
+
         const colors = bg.match(/#[a-fA-F0-9]{6}|#[a-fA-F0-9]{3}|rgba?\(.*?\)/g);
         if (colors?.length >= 2) {
             this.pickrs.gradStart.setColor(colors[0], true);
@@ -208,15 +208,15 @@ class EditorController {
 
     setBgMode(mode) {
         document.querySelectorAll('.bg-mode-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.mode === mode));
-        
+
         const solidPresets = document.querySelector('.solid-presets');
         const gradientPresets = document.querySelector('.gradient-presets');
         const bgPickrRoot = document.querySelector('#bg-color-picker-container .pickr');
-        
+
         if (solidPresets) solidPresets.style.display = mode === 'solid' ? 'flex' : 'none';
         if (gradientPresets) gradientPresets.style.display = mode === 'gradient' ? 'flex' : 'none';
         if (bgPickrRoot) bgPickrRoot.style.display = mode === 'solid' ? 'block' : 'none';
-        
+
         const gradientPanel = document.getElementById('gradient-editor-panel');
         if (gradientPanel) gradientPanel.style.display = 'none';
 
@@ -236,7 +236,7 @@ class EditorController {
             tab.addEventListener('click', () => {
                 this.elements.editorTabs.forEach(t => t.classList.remove('active'));
                 tab.classList.add('active');
-                
+
                 const currentTab = tab.dataset.tab;
                 this.elements.visualEditor?.classList.toggle('active', currentTab === 'visual');
                 this.elements.coverEditor?.classList.toggle('active', currentTab === 'cover');
@@ -248,7 +248,7 @@ class EditorController {
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.format-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
-                
+
                 const format = btn.dataset.format;
                 const hint = document.getElementById('format-hint');
                 if (hint) {
@@ -258,14 +258,14 @@ class EditorController {
                         hint.textContent = 'JPEG：文件小，缩略图更清晰';
                     }
                 }
-                
+
                 // 通知App更新导出格式
                 if (this.onExportFormatChange) this.onExportFormatChange(format);
             });
         });
 
         const presetGroups = [
-            { container: '#bg-color-presets', type: 'bg' }, 
+            { container: '#bg-color-presets', type: 'bg' },
             { container: '#text-color-presets', type: 'text' },
             { container: '#accent-color-presets', type: 'accent' }
         ];
@@ -322,7 +322,7 @@ class EditorController {
             item.addEventListener('click', () => {
                 const iconId = item.dataset.icon;
                 let selectedIcons = [...(this.currentConfig.selectedSocialIcons || [])];
-                
+
                 const index = selectedIcons.indexOf(iconId);
                 if (index > -1) {
                     // 如果已选中，则移除
@@ -333,7 +333,7 @@ class EditorController {
                     selectedIcons.push(iconId);
                     item.classList.add('selected');
                 }
-                
+
                 this.currentConfig.selectedSocialIcons = selectedIcons;
                 this.notifyConfigChange();
             });
@@ -344,7 +344,7 @@ class EditorController {
             btn.addEventListener('click', () => {
                 document.querySelectorAll('#social-icons-options .format-btn[data-position]').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
-                
+
                 const position = btn.dataset.position;
                 this.currentConfig.socialIconPosition = position;
                 this.notifyConfigChange();
@@ -397,7 +397,7 @@ class EditorController {
         let displayVal = val;
         if (['fontSize', 'textPadding', 'letterSpacing', 'coverFontSize'].includes(cfg.key)) displayVal = val + 'px';
         else if (cfg.key.endsWith('Scale')) displayVal = val + 'x';
-        
+
         if (label) label.textContent = displayVal;
         if (cfg.type === 'checkbox' && cfg.toggle) {
             document.querySelectorAll(cfg.toggle).forEach(node => { node.style.display = val ? 'flex' : 'none'; });
@@ -413,9 +413,9 @@ class EditorController {
             if (config.bgColor.startsWith('linear-gradient')) this.lastGradientColor = config.bgColor;
             else this.lastSolidColor = config.bgColor;
         }
-        
+
         this.updateEditorFromConfig();
-        
+
         if (config.bgColor) {
             this.updateActivePreset('bg-color', config.bgColor);
             if (!config.bgColor.startsWith('linear-gradient')) this.pickrs.bgColor?.setColor(config.bgColor, true);
@@ -430,7 +430,7 @@ class EditorController {
         }
         if (config.watermarkColor) this.pickrs.watermarkColor?.setColor(config.watermarkColor, true);
         if (config.signatureColor) this.pickrs.signatureColor?.setColor(config.signatureColor, true);
-        
+
         // 更新封面图片提示
         const fileNameHint = document.getElementById('cover-file-name');
         if (fileNameHint) {

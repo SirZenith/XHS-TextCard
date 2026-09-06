@@ -1,6 +1,6 @@
 /**
  * App - 项目核心调度器
- * 
+ *
  * 设计原则：
  * 1. 业务逻辑编排：作为 Entry Point，负责协调 TemplateManager, PreviewGenerator, 
  *    DownloadManager 和 EditorController 之间的交互。
@@ -18,7 +18,7 @@ class App {
         this.currentTemplateConfig = null;
         this.splitPages = [];
         this.splitter = null;
-        
+
         this.elements = {};
         this.debounceTimer = null;
         this.previewGenerationId = 0;
@@ -116,16 +116,16 @@ class App {
             }
 
             this.currentTemplateConfig = { ...config };
-            
+
             // 实时保存当前模板配置到本地（排除 coverImage，避免 LocalStorage 超限）
             if (this.currentTemplate) {
                 const { coverImage, ...safeConfig } = config;
                 localStorage.setItem(`xhs_tpl_config_${this.currentTemplate}`, JSON.stringify(safeConfig));
             }
-            
+
             this.generatePreview();
         });
-        
+
         // 连接导出格式选择器
         this.editorController.setOnExportFormatChange((format) => {
             this.downloadManager.setExportFormat(format);
@@ -136,7 +136,7 @@ class App {
         this.elements.textInput.addEventListener('input', () => this.schedulePreview(500));
         this.elements.downloadAllBtn.addEventListener('click', () => this.downloadAllImages());
         this.elements.resetTemplateBtn.addEventListener('click', () => this.resetTemplate());
-        this.elements.previewList.addEventListener('scroll', 
+        this.elements.previewList.addEventListener('scroll',
             () => requestAnimationFrame(() => this.updateActiveIndicator())
         );
 
@@ -157,11 +157,11 @@ class App {
         const body = document.body;
         const isEditMode = body.classList.toggle('edit-mode');
         const toggle = this.elements.editModeToggle;
-        
+
         if (toggle) {
             toggle.classList.toggle('active', isEditMode);
-            toggle.innerHTML = isEditMode 
-                ? '<i class="fas fa-compress-alt"></i>' 
+            toggle.innerHTML = isEditMode
+                ? '<i class="fas fa-compress-alt"></i>'
                 : '<i class="fas fa-expand-alt"></i>';
             toggle.title = isEditMode ? '退出专注模式' : '专注编辑模式';
         }
@@ -171,11 +171,11 @@ class App {
 
     updateActiveIndicator() {
         if (!this.elements.previewIndicators) return;
-        
+
         const scrollLeft = this.elements.previewList.scrollLeft;
         const width = this.elements.previewList.clientWidth;
         const index = Math.round(scrollLeft / width);
-        
+
         const indicators = this.elements.previewIndicators.querySelectorAll('.preview-indicator');
         indicators.forEach((indicator, i) => {
             indicator.classList.toggle('active', i === index);
@@ -212,12 +212,12 @@ class App {
         try {
             await this.templateManager.init();
             this.renderTemplateList();
-            
+
             let lastId = this.currentTemplate;
             try {
                 lastId = localStorage.getItem('xhs_last_template_id') || this.currentTemplate;
             } catch (e) {}
-            
+
             await this.selectTemplate(lastId);
         } catch (error) {
             console.error('[App] Failed to load templates:', error);
@@ -238,7 +238,7 @@ class App {
             const name = document.createElement('div');
             name.className = 'template-item-name';
             name.textContent = template.name;
-            
+
             const desc = document.createElement('div');
             desc.className = 'template-item-desc';
             desc.textContent = template.description;
@@ -259,7 +259,7 @@ class App {
             }
 
             this.currentTemplate = templateId;
-            
+
             // 尝试从本地存储加载用户自定义配置
             let savedConfig = null;
             try {
@@ -268,7 +268,7 @@ class App {
             } catch (e) {
                 console.warn('[App] LocalStorage access denied');
             }
-            
+
             // 使用深度克隆防止污染 templateManager 中的原始配置
             const baseConfig = JSON.parse(JSON.stringify(template.config));
 
@@ -313,7 +313,7 @@ class App {
 
         const scrollLeft = this.elements.previewList.scrollLeft;
         this.elements.loading.classList.add('active');
-        
+
         try {
             if (!this.splitter) {
                 this.splitter = new TextSplitter(this.currentTemplateConfig, this.currentTemplate);
@@ -352,12 +352,12 @@ class App {
 
             const items = await Promise.all(renderPromises);
             if (generationId !== this.previewGenerationId) return;
-            
+
             // 渲染完成后一次性更新 DOM
             this.elements.previewList.innerHTML = '';
             items.forEach(item => this.elements.previewList.appendChild(item));
             this.elements.loading.classList.remove('active');
-            
+
             requestAnimationFrame(() => {
                 if (this.shouldScrollToStart) {
                     this.elements.previewList.scrollLeft = 0;
@@ -379,14 +379,14 @@ class App {
         this.elements.previewList.innerHTML = '';
         const emptyState = document.createElement('div');
         emptyState.className = 'empty-state';
-        
+
         const icon = document.createElement('div');
         icon.className = 'empty-state-icon';
         icon.textContent = '📝';
-        
+
         const text = document.createElement('div');
         text.textContent = message;
-        
+
         emptyState.appendChild(icon);
         emptyState.appendChild(text);
         this.elements.previewList.appendChild(emptyState);

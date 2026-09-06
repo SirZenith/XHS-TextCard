@@ -8,7 +8,7 @@ const TemplateDefinitions = {
      */
     _drawPageNumber: (ctx, width, height, index, totalCount, config, options = {}) => {
         if (!config.showPageNumber) return;
-        
+
         const pageNum = config.hasCover ? index : index + 1;
         const totalPage = config.hasCover ? totalCount - 1 : totalCount;
         if (totalPage <= 0) return;
@@ -28,10 +28,10 @@ const TemplateDefinitions = {
         ctx.fillStyle = color;
         ctx.font = font;
         ctx.textAlign = textAlign;
-        
+
         const format = (n) => padZero ? String(n).padStart(2, '0') : n;
         const text = `${prefix}${format(pageNum)} / ${format(totalPage)}${suffix}`;
-        
+
         ctx.fillText(text, x, y);
         ctx.restore();
     },
@@ -88,7 +88,7 @@ const TemplateDefinitions = {
             tCtx.fillStyle = Math.random() > 0.5 ? '#8b4513' : '#000';
             tCtx.fillRect(Math.random() * width, Math.random() * height, size, size);
         }
-        
+
         // 2. 模拟随机纸浆团 (Paper pulp / blotches)
         tCtx.globalAlpha = 0.02;
         for (let i = 0; i < 40; i++) {
@@ -126,10 +126,28 @@ const TemplateDefinitions = {
         return canvas;
     },
 
+    getContentBox: (templateId, config, width, height) => {
+        if (TemplateDefinitions[templateId] && TemplateDefinitions[templateId].getContentBox) {
+            return TemplateDefinitions[templateId].getContentBox(config, width, height);
+        }
+        const padding = parseFloat(config.textPadding) || 35;
+        let topOffset = padding;
+        let bottomOffset = padding;
+        if (config.hasSignature) {
+            bottomOffset = Math.max(padding, 60);
+        }
+        return {
+            x: padding,
+            y: topOffset,
+            width: width - (padding * 2),
+            height: height - topOffset - bottomOffset
+        };
+    },
+
+    /**
+     * 空白模板 - 极致简约
+     */
     'blank': {
-        /**
-         * 空白模板 - 极致简约
-         */
         drawForeground: (ctx, width, height, index, totalCount, config) => {
             TemplateDefinitions._drawPageNumber(ctx, width, height, index, totalCount, config);
         },
@@ -143,16 +161,16 @@ const TemplateDefinitions = {
         }
     },
 
+    /**
+     * 复古拍立得 - 相纸留白与复古手写感
+     */
     'polaroid': {
-        /**
-         * 复古拍立得 - 相纸留白与复古手写感
-         */
         getContentBox: (config, width, height) => {
             const padding = parseFloat(config.textPadding) || 60;
             const marginX = 50, marginY = 60;
             const bottomBlankHeight = 450;
             const photoHeight = height - (marginY * 2) - bottomBlankHeight;
-            
+
             return {
                 x: marginX + padding,
                 y: marginY + photoHeight + 40,
@@ -167,7 +185,7 @@ const TemplateDefinitions = {
                 ctx.fillStyle = config.bgColor || '#D6D6D6';
                 ctx.fillRect(0, 0, width, height);
             }
-            
+
             // 绘制缓存的复古噪点纹理
             const noise = TemplateDefinitions._getNoiseTexture(width, height);
             ctx.drawImage(noise, 0, 0);
@@ -177,20 +195,20 @@ const TemplateDefinitions = {
             const marginX = 50, marginY = 60;
             const paperWidth = PREVIEW_WIDTH - (marginX * 2);
             const paperHeight = PREVIEW_HEIGHT - (marginY * 2);
-            
+
             ctx.save();
             ctx.shadowColor = 'rgba(0,0,0,0.15)';
             ctx.shadowBlur = 30; ctx.shadowOffsetY = 15;
             CanvasUtils.drawRoundedRect(ctx, marginX, marginY, paperWidth, paperHeight, 4, '#FAFAFA');
             ctx.shadowColor = 'transparent';
-            
+
             const photoMargin = 30;
             const photoWidth = paperWidth - (photoMargin * 2);
             const photoHeight = paperHeight - 450;
-            
+
             ctx.fillStyle = '#2C2C2C';
             ctx.fillRect(marginX + photoMargin, marginY + photoMargin, photoWidth, photoHeight);
-            
+
             const grad = ctx.createLinearGradient(marginX + photoMargin, marginY + photoMargin, marginX + photoMargin + photoWidth, marginY + photoMargin + photoHeight);
             grad.addColorStop(0, 'rgba(255,255,255,0.1)'); grad.addColorStop(0.3, 'rgba(255,255,255,0)');
             ctx.fillStyle = grad;
@@ -220,10 +238,10 @@ const TemplateDefinitions = {
         }
     },
 
+    /**
+     * 效率笔记 (Notion风)
+     */
     'notion-style': {
-        /**
-         * 效率笔记 (Notion风)
-         */
         getContentBox: (config, width, height) => {
             const padding = parseFloat(config.textPadding) || 40;
             const topMargin = 120, bottomMargin = config.hasSignature ? 80 : 50;
@@ -234,21 +252,21 @@ const TemplateDefinitions = {
             ctx.save();
             ctx.font = '14px ui-sans-serif, system-ui, sans-serif';
             ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
-            
+
             // 使用固定的 Notion 灰 (#9B9A97)，不受用户修改的正文颜色影响
             const fixedMutedColor = '#9B9A97';
             const fixedLineColor = 'rgba(55, 53, 47, 0.08)';
 
             ctx.fillStyle = '#37352F'; // 图标保持深灰
             ctx.fillText('📖', padding, 60);
-            
+
             ctx.fillStyle = fixedMutedColor;
             ctx.fillText(' /  Workspace  /  Notes', padding + 25, 60);
-            
+
             ctx.strokeStyle = fixedLineColor;
             ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(padding, 90); ctx.lineTo(width - padding, 90); ctx.stroke();
             ctx.restore();
-            
+
             // 页码也使用固定颜色
             TemplateDefinitions._drawPageNumber(ctx, width, height, index, totalCount, config, {
                 color: 'rgba(155, 154, 151, 0.7)'
@@ -263,21 +281,21 @@ const TemplateDefinitions = {
         }
     },
 
+    /**
+     * 书籍内页 - 模拟真实的单页书籍装帧感
+     * 设计要点：左侧装订阴影（Gutter），单侧受光，极简边角排版
+     */
     'elegant-book': {
-        /**
-         * 书籍内页 - 模拟真实的单页书籍装帧感
-         * 设计要点：左侧装订阴影（Gutter），单侧受光，极简边角排版
-         */
         getContentBox: (config, width, height) => {
             const padding = parseFloat(config.textPadding) || 55;
-            const topMargin = 130; 
+            const topMargin = 130;
             const bottomMargin = config.hasSignature ? 110 : 90;
             // 增加左侧边距以避开装订阴影区
             return { x: padding + 10, y: topMargin, width: width - (padding * 2) - 10, height: height - topMargin - bottomMargin };
         },
         drawBackground: (ctx, width, height, config) => {
             ctx.save();
-            
+
             // 1. 基础纸张色 - 严格水平单侧受光模拟
             // 模拟主光源从右侧射入，纸张从右向左由于远离光源而产生的极其微弱的亮度衰减
             const baseGrad = ctx.createLinearGradient(width, 0, 0, 0);
@@ -286,7 +304,7 @@ const TemplateDefinitions = {
             baseGrad.addColorStop(1, CanvasUtils.hexToRgba(bgColor, 0.96)); // 左侧微暗
             ctx.fillStyle = baseGrad;
             ctx.fillRect(0, 0, width, height);
-            
+
             // 2. 绘制离屏缓存的高级纸张纹理
             const texture = TemplateDefinitions._getPaperTexture(width, height);
             ctx.globalCompositeOperation = 'multiply';
@@ -310,30 +328,30 @@ const TemplateDefinitions = {
             edgeReflect.addColorStop(1, 'rgba(255,255,255,0.4)');
             ctx.fillStyle = edgeReflect;
             ctx.fillRect(width - 3, 0, 3, height);
-            
+
             ctx.restore();
         },
         drawForeground: (ctx, width, height, index, totalCount, config) => {
             const padding = parseFloat(config.textPadding) || 55;
             ctx.save();
-            
+
             // 使用固定的古典墨色
             const fixedMutedInk = 'rgba(93, 64, 55, 0.4)';
             const fixedLineColor = 'rgba(93, 64, 55, 0.12)';
-            
+
             // 顶部装饰
             ctx.strokeStyle = fixedLineColor;
-            ctx.lineWidth = 0.8; 
-            ctx.beginPath(); 
-            ctx.moveTo(padding + 10, 80); 
-            ctx.lineTo(width - padding, 80); 
+            ctx.lineWidth = 0.8;
+            ctx.beginPath();
+            ctx.moveTo(padding + 10, 80);
+            ctx.lineTo(width - padding, 80);
             ctx.stroke();
-            
+
             ctx.fillStyle = fixedMutedInk;
             ctx.font = 'italic 500 11px "Noto Serif SC", serif';
-            ctx.textAlign = 'center'; 
+            ctx.textAlign = 'center';
             ctx.fillText('C L A S S I C   L I T E R A T U R E', width / 2 + 5, 65);
-            
+
             ctx.fillStyle = '#5D4037';
             ctx.font = '16px serif';
             ctx.fillText('§', padding + 10, 68);
@@ -359,7 +377,7 @@ const TemplateDefinitions = {
     'ios-memo': {
         getContentBox: (config, width, height) => {
             const paperX = 15, paperY = 55, paperW = width - 30, paperH = height - 110;
-            const internalPadding = Math.max(10, parseFloat(config.textPadding) || 20); 
+            const internalPadding = Math.max(10, parseFloat(config.textPadding) || 20);
             return { x: paperX + internalPadding, y: paperY + internalPadding, width: paperW - (internalPadding * 2), height: paperH - (internalPadding * 2) };
         },
         drawTextAreaBackground: (ctx, rect, config) => {
@@ -377,7 +395,7 @@ const TemplateDefinitions = {
             ctx.restore();
         },
         drawForeground: (ctx, width, height, index, totalCount, config) => {
-            const iosOrange = '#FF9500'; 
+            const iosOrange = '#FF9500';
             ctx.save();
             ctx.fillStyle = iosOrange; ctx.font = '500 17px sans-serif'; ctx.textAlign = 'right';
             ctx.fillText('完成', width - 25, 35); ctx.textAlign = 'left';
@@ -390,9 +408,9 @@ const TemplateDefinitions = {
 
             // 如果社交图标底部居中，页码稍微右移避开
             const isBottomCenter = config.hasSocialIcons && config.selectedSocialIcons && config.selectedSocialIcons.length > 0 && config.socialIconPosition === 'bottom-center' && index === 0;
-            TemplateDefinitions._drawPageNumber(ctx, width, height, index, totalCount, config, { 
-                x: width - 25, 
-                y: isBottomCenter ? height - 15 : height - 25 
+            TemplateDefinitions._drawPageNumber(ctx, width, height, index, totalCount, config, {
+                x: width - 25,
+                y: isBottomCenter ? height - 15 : height - 25
             });
         },
         getTextStyles: (segment, config) => {
@@ -406,16 +424,16 @@ const TemplateDefinitions = {
 
     'swiss-studio': {
         getContentBox: (config, width, height) => {
-             const padding = parseFloat(config.textPadding) || 35;
-             const bottomOffset = config.hasSignature ? Math.max(padding, 60) : padding;
-             return { x: padding, y: padding, width: width - (padding * 2), height: height - padding - bottomOffset };
+            const padding = parseFloat(config.textPadding) || 35;
+            const bottomOffset = config.hasSignature ? Math.max(padding, 60) : padding;
+            return { x: padding, y: padding, width: width - (padding * 2), height: height - padding - bottomOffset };
         },
         drawBackground: (ctx, width, height, config) => {
             ctx.save(); ctx.fillStyle = config.accentColor || '#FF4500'; ctx.fillRect(0, 0, 6, height); ctx.restore();
         },
         drawTextAreaBackground: (ctx, rect, config) => {
             ctx.save(); ctx.strokeStyle = 'rgba(0,0,0,0.03)'; ctx.lineWidth = 0.5;
-            for(let x = 0; x < PREVIEW_WIDTH; x += 40) {
+            for (let x = 0; x < PREVIEW_WIDTH; x += 40) {
                 if (x < 10) continue;
                 ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, PREVIEW_HEIGHT); ctx.stroke();
             }
@@ -428,7 +446,7 @@ const TemplateDefinitions = {
             ctx.save();
             ctx.fillStyle = decorativeColor; ctx.font = '700 10px Helvetica'; ctx.textAlign = 'right';
             ctx.fillText('REF. CH-8004', width - 25, 25);
-            
+
             // 如果底部居中有社交图标，则隐藏这个装饰框，防止重叠
             if (!isBottomCenter) {
                 ctx.beginPath(); ctx.rect(width - 40, height - 40, 15, 15); ctx.strokeStyle = accentColor; ctx.lineWidth = 2; ctx.stroke();
@@ -499,7 +517,7 @@ const TemplateDefinitions = {
                 grad.addColorStop(0, aura.c1); grad.addColorStop(1, aura.c2);
                 ctx.fillStyle = grad; ctx.fillRect(0, 0, width, height);
             });
-            
+
             // 绘制缓存的噪点纹理
             const noise = TemplateDefinitions._getNoiseTexture(width, height);
             ctx.drawImage(noise, 0, 0);
@@ -552,7 +570,7 @@ const TemplateDefinitions = {
             ctx.restore();
         },
         drawForeground: (ctx, width, height, index, totalCount, config) => {
-            ctx.save(); ctx.fillStyle = 'rgba(229, 229, 229, 0.3)'; ctx.font = '800 10px Inter, sans-serif'; 
+            ctx.save(); ctx.fillStyle = 'rgba(229, 229, 229, 0.3)'; ctx.font = '800 10px Inter, sans-serif';
             ctx.textAlign = 'right'; ctx.fillText('// THOUGHT MODE ON', width - 25, 25);
             ctx.strokeStyle = 'rgba(229, 229, 229, 0.2)'; ctx.lineWidth = 1;
             ctx.beginPath(); ctx.moveTo(25, height - 60); ctx.lineTo(width - 25, height - 60); ctx.stroke();
@@ -562,10 +580,10 @@ const TemplateDefinitions = {
         getTextStyles: (segment, config) => {
             const accentColor = config.accentColor || '#00F5FF', textColor = config.textColor || '#E5E5E5';
             if (segment.fontWeight === '700' || segment.fontWeight === '800' || segment.isHighlight || segment.isCode || segment.headingLevel) {
-                return { 
-                    textColor: accentColor, 
+                return {
+                    textColor: accentColor,
                     highlightColor: CanvasUtils.hexToRgba(accentColor, 0.1),
-                    codeBgColor: CanvasUtils.hexToRgba(accentColor, 0.15) 
+                    codeBgColor: CanvasUtils.hexToRgba(accentColor, 0.15)
                 };
             }
             return { textColor };
@@ -574,7 +592,7 @@ const TemplateDefinitions = {
 
     'pro-doc': {
         getContentBox: (config, width, height) => {
-            const winX = 15, winW = width - 30, winY = 40; 
+            const winX = 15, winW = width - 30, winY = 40;
             const winBottomMargin = config.hasSignature ? 60 : 35;
             const winH = height - winY - winBottomMargin;
             const headerHeight = 30, gapBelowHeader = 20;
@@ -583,8 +601,8 @@ const TemplateDefinitions = {
         },
         drawBackground: (ctx, width, height) => {
             ctx.save(); ctx.strokeStyle = 'rgba(0,102,255,0.02)'; ctx.lineWidth = 0.5;
-            for(let i=0; i<width; i+=20){ ctx.beginPath(); ctx.moveTo(i,0); ctx.lineTo(i,height); ctx.stroke(); }
-            for(let j=0; j<height; j+=20){ ctx.beginPath(); ctx.moveTo(0,j); ctx.lineTo(width,j); ctx.stroke(); }
+            for (let i = 0; i < width; i += 20) { ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, height); ctx.stroke(); }
+            for (let j = 0; j < height; j += 20) { ctx.beginPath(); ctx.moveTo(0, j); ctx.lineTo(width, j); ctx.stroke(); }
             ctx.restore();
         },
         drawTextAreaBackground: (ctx, rect, config) => {
@@ -597,13 +615,13 @@ const TemplateDefinitions = {
             CanvasUtils.drawRoundedRect(ctx, winX, winY, winW, winH, 12, '#ffffff', true, 'rgba(0,0,0,0.05)');
             ctx.restore();
             ctx.save();
-            CanvasUtils.drawRoundedRect(ctx, winX, winY, winW, headerHeight, {tl: 12, tr: 12, bl: 0, br: 0}, CanvasUtils.hexToRgba(textColor, 0.05));
+            CanvasUtils.drawRoundedRect(ctx, winX, winY, winW, headerHeight, { tl: 12, tr: 12, bl: 0, br: 0 }, CanvasUtils.hexToRgba(textColor, 0.05));
             const btnY = winY + headerHeight / 2;
             ctx.fillStyle = '#FF5F56'; ctx.beginPath(); ctx.arc(winX + 20, btnY, 5, 0, Math.PI * 2); ctx.fill();
             ctx.fillStyle = '#FFBD2E'; ctx.beginPath(); ctx.arc(winX + 38, btnY, 5, 0, Math.PI * 2); ctx.fill();
             ctx.fillStyle = '#27C93F'; ctx.beginPath(); ctx.arc(winX + 56, btnY, 5, 0, Math.PI * 2); ctx.fill();
             ctx.fillStyle = CanvasUtils.hexToRgba(textColor, 0.4); ctx.font = '700 10px sans-serif'; ctx.textAlign = 'center';
-            ctx.fillText('DOCUMENT VIEWER', winX + winW/2, btnY + 4);
+            ctx.fillText('DOCUMENT VIEWER', winX + winW / 2, btnY + 4);
             ctx.restore();
         },
         drawForeground: (ctx, width, height, index, totalCount, config) => {
@@ -619,12 +637,12 @@ const TemplateDefinitions = {
         }
     },
 
+    /**
+     * 电影胶片 - 致敬 Adele《Someone Like You》MV
+     * 设计要点：黑白巴黎胶片质感、宽银幕信箱遮幅、35mm胶片颗粒、
+     * 胶片齿孔装饰、电影片头式排版
+     */
     'cinematic-film': {
-        /**
-         * 电影胶片 - 致敬 Adele《Someone Like You》MV
-         * 设计要点：黑白巴黎胶片质感、宽银幕信箱遮幅、35mm胶片颗粒、
-         * 胶片齿孔装饰、电影片头式排版
-         */
         _filmGrainCache: null,
         _getFilmGrain: function(width, height) {
             if (this._filmGrainCache) return this._filmGrainCache;
@@ -876,24 +894,6 @@ const TemplateDefinitions = {
         }
     },
 
-    getContentBox: (templateId, config, width, height) => {
-        if (TemplateDefinitions[templateId] && TemplateDefinitions[templateId].getContentBox) {
-            return TemplateDefinitions[templateId].getContentBox(config, width, height);
-        }
-        const padding = parseFloat(config.textPadding) || 35;
-        let topOffset = padding;
-        let bottomOffset = padding;
-        if (config.hasSignature) {
-            bottomOffset = Math.max(padding, 60);
-        }
-        return {
-            x: padding,
-            y: topOffset,
-            width: width - (padding * 2),
-            height: height - topOffset - bottomOffset
-        };
-    },
-
     /**
      * 星光质感 - 暗黑背景 + 星光粒子效果
      */
@@ -905,19 +905,19 @@ const TemplateDefinitions = {
             canvas.width = width;
             canvas.height = height;
             const ctx = canvas.getContext('2d');
-            
+
             // 绘制星星
             for (let i = 0; i < 150; i++) {
                 const x = Math.random() * width;
                 const y = Math.random() * height;
                 const size = Math.random() * 2 + 0.5;
                 const opacity = Math.random() * 0.8 + 0.2;
-                
+
                 ctx.beginPath();
                 ctx.arc(x, y, size, 0, Math.PI * 2);
                 ctx.fillStyle = `rgba(255, 255, 255, ${opacity})`;
                 ctx.fill();
-                
+
                 // 某些星星有光晕
                 if (Math.random() > 0.7) {
                     const glow = ctx.createRadialGradient(x, y, 0, x, y, size * 4);
@@ -927,7 +927,7 @@ const TemplateDefinitions = {
                     ctx.fillRect(x - size * 4, y - size * 4, size * 8, size * 8);
                 }
             }
-            
+
             this._starCache = canvas;
             return canvas;
         },
@@ -939,7 +939,7 @@ const TemplateDefinitions = {
         drawBackground: (ctx, width, height, config) => {
             const accentColor = config.accentColor || '#fbbf24';
             ctx.save();
-            
+
             // 深邃夜空渐变
             const bgGrad = ctx.createLinearGradient(0, 0, 0, height);
             bgGrad.addColorStop(0, '#0c1445');
@@ -947,25 +947,25 @@ const TemplateDefinitions = {
             bgGrad.addColorStop(1, '#0f0f2d');
             ctx.fillStyle = bgGrad;
             ctx.fillRect(0, 0, width, height);
-            
+
             // 绘制星星 - 使用模板内部方法
             const starryTemplate = TemplateDefinitions['starry-night'];
             const stars = starryTemplate.getStars(width, height);
             ctx.drawImage(stars, 0, 0);
-            
+
             // 月亮光晕
             const moonGrad = ctx.createRadialGradient(width - 150, 100, 0, width - 150, 100, 200);
             moonGrad.addColorStop(0, 'rgba(251, 191, 36, 0.15)');
             moonGrad.addColorStop(1, 'transparent');
             ctx.fillStyle = moonGrad;
             ctx.fillRect(0, 0, width, height);
-            
+
             ctx.restore();
         },
         drawForeground: (ctx, width, height, index, totalCount, config) => {
             const accentColor = config.accentColor || '#fbbf24';
             ctx.save();
-            
+
             // 顶部装饰线
             ctx.strokeStyle = accentColor;
             ctx.globalAlpha = 0.4;
@@ -974,16 +974,16 @@ const TemplateDefinitions = {
             ctx.moveTo(45, 85);
             ctx.lineTo(width - 45, 85);
             ctx.stroke();
-            
+
             // 星星图标
             ctx.globalAlpha = 1;
             ctx.fillStyle = accentColor;
             ctx.font = '600 12px sans-serif';
             ctx.textAlign = 'left';
             ctx.fillText('✦ STARRY NIGHT', 45, 70);
-            
+
             ctx.restore();
-            
+
             TemplateDefinitions._drawPageNumber(ctx, width, height, index, totalCount, config, {
                 color: 'rgba(251, 191, 36, 0.6)',
                 font: '600 11px sans-serif'
@@ -993,7 +993,7 @@ const TemplateDefinitions = {
             const accentColor = config.accentColor || '#fbbf24';
             const textColor = config.textColor || '#e2e8f0';
             if (segment.fontWeight === '700' || segment.fontWeight === '800' || segment.isHighlight || segment.headingLevel) {
-                return { 
+                return {
                     textColor: accentColor,
                     highlightColor: 'rgba(251, 191, 36, 0.2)'
                 };

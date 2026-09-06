@@ -1,6 +1,6 @@
 /**
  * TemplateManager - 模板加载与状态管理器
- * 
+ *
  * 设计原则：
  * 1. 动态加载：按需通过 Fetch 加载模板 JSON 配置，减少首屏体积。
  * 2. 健壮性：通过默认值合并 (Object Spread) 确保新旧模板在配置项变更时的兼容性。
@@ -32,28 +32,28 @@ class TemplateManager {
 
             // 数据合并与默认值兜底
             const config = {
-                bgColor: "#FFFFFF", 
-                textColor: "#333333", 
+                bgColor: "#FFFFFF",
+                textColor: "#333333",
                 bgMode: "solid",
                 fontSize: 16,
-                lineHeight: 1.8, 
-                letterSpacing: 0.5, 
+                lineHeight: 1.8,
+                letterSpacing: 0.5,
                 textPadding: 40,
-                fontFamily: "inherit", 
+                fontFamily: "inherit",
                 hasCover: true,
                 coverImage: DEFAULT_COVER_IMAGE,
                 coverTitle: "",
-                hasWatermark: false, 
+                hasWatermark: false,
                 watermarkText: DEFAULT_BRAND_TEXT,
-                watermarkColor: "rgba(0,0,0,0.1)", 
-                hasSignature: true, 
+                watermarkColor: "rgba(0,0,0,0.1)",
+                hasSignature: true,
                 signatureText: DEFAULT_BRAND_TEXT,
-                signatureColor: "#555555", 
-                signaturePosition: "bottom", 
+                signatureColor: "#555555",
+                signaturePosition: "bottom",
                 signatureStyle: "modern-pill",
-                h1Scale: 1.6, 
-                h2Scale: 1.4, 
-                h3Scale: 1.2, 
+                h1Scale: 1.6,
+                h2Scale: 1.4,
+                h3Scale: 1.2,
                 accentColor: "#333333",
                 hasSocialIcons: false,
                 selectedSocialIcons: [],
@@ -78,7 +78,7 @@ class TemplateManager {
         }
     }
 
-    getTemplate(templateId) { 
+    getTemplate(templateId) {
         const template = this.templates[templateId];
         if (!template) return null;
         // 返回深拷贝，防止外部直接修改缓存中的原始配置

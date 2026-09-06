@@ -244,52 +244,52 @@ class CanvasRenderer {
             ctx.stroke();
 
         } else if (templateId === 'swiss-studio') {
-             // 左侧色条保持通栏
-             ctx.fillStyle = config.accentColor || '#FF4500';
-             ctx.fillRect(0, 0, 10, height);
+            // 左侧色条保持通栏
+            ctx.fillStyle = config.accentColor || '#FF4500';
+            ctx.fillRect(0, 0, 10, height);
 
         } else if (templateId === 'deep-night') {
-             // 边框装饰保持全屏
-             ctx.strokeStyle = config.accentColor || '#00F5FF';
-             ctx.lineWidth = 2;
-             ctx.strokeRect(20, 20, width - 40, height - 40);
+            // 边框装饰保持全屏
+            ctx.strokeStyle = config.accentColor || '#00F5FF';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(20, 20, width - 40, height - 40);
 
         } else if (templateId === 'cinematic-film') {
-             // 电影胶片：封面也保留信箱遮幅 + 齿孔 + 胶片颗粒
-             const letterboxH = Math.round(height * 0.065);
-             const accentColor = config.accentColor || '#C8B89A';
+            // 电影胶片：封面也保留信箱遮幅 + 齿孔 + 胶片颗粒
+            const letterboxH = Math.round(height * 0.065);
+            const accentColor = config.accentColor || '#C8B89A';
 
-             // 暗角
-             const vignetteGrad = ctx.createRadialGradient(
-                 width * 0.5, height * 0.5, width * 0.25,
-                 width * 0.5, height * 0.5, width * 0.85
-             );
-             vignetteGrad.addColorStop(0, 'rgba(0,0,0,0)');
-             vignetteGrad.addColorStop(0.7, 'rgba(0,0,0,0.2)');
-             vignetteGrad.addColorStop(1, 'rgba(0,0,0,0.5)');
-             ctx.fillStyle = vignetteGrad;
-             ctx.fillRect(0, 0, width, height);
+            // 暗角
+            const vignetteGrad = ctx.createRadialGradient(
+                width * 0.5, height * 0.5, width * 0.25,
+                width * 0.5, height * 0.5, width * 0.85
+            );
+            vignetteGrad.addColorStop(0, 'rgba(0,0,0,0)');
+            vignetteGrad.addColorStop(0.7, 'rgba(0,0,0,0.2)');
+            vignetteGrad.addColorStop(1, 'rgba(0,0,0,0.5)');
+            ctx.fillStyle = vignetteGrad;
+            ctx.fillRect(0, 0, width, height);
 
-             // 信箱遮幅
-             ctx.fillStyle = '#000000';
-             ctx.fillRect(0, 0, width, letterboxH);
-             ctx.fillRect(0, height - letterboxH, width, letterboxH);
+            // 信箱遮幅
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(0, 0, width, letterboxH);
+            ctx.fillRect(0, height - letterboxH, width, letterboxH);
 
-             // 齿孔
-             const sprocketW = 8;
-             const sprocketH = Math.round(letterboxH * 0.45);
-             const sprocketY_top = Math.round((letterboxH - sprocketH) / 2);
-             const sprocketY_bottom = height - letterboxH + sprocketY_top;
-             for (let x = 20; x < width - 10; x += 32) {
-                 CanvasUtils.drawRoundedRect(ctx, x, sprocketY_top, sprocketW, sprocketH, 2, 'rgba(200, 184, 154, 0.12)');
-                 CanvasUtils.drawRoundedRect(ctx, x, sprocketY_bottom, sprocketW, sprocketH, 2, 'rgba(200, 184, 154, 0.12)');
-             }
+            // 齿孔
+            const sprocketW = 8;
+            const sprocketH = Math.round(letterboxH * 0.45);
+            const sprocketY_top = Math.round((letterboxH - sprocketH) / 2);
+            const sprocketY_bottom = height - letterboxH + sprocketY_top;
+            for (let x = 20; x < width - 10; x += 32) {
+                CanvasUtils.drawRoundedRect(ctx, x, sprocketY_top, sprocketW, sprocketH, 2, 'rgba(200, 184, 154, 0.12)');
+                CanvasUtils.drawRoundedRect(ctx, x, sprocketY_bottom, sprocketW, sprocketH, 2, 'rgba(200, 184, 154, 0.12)');
+            }
 
-             // 胶片编码
-             ctx.font = '500 8px "Courier New", monospace';
-             ctx.textAlign = 'right';
-             ctx.fillStyle = 'rgba(200, 184, 154, 0.25)';
-             ctx.fillText('KODAK  5222  DOUBLE-X', width - 14, letterboxH - 6);
+            // 胶片编码
+            ctx.font = '500 8px "Courier New", monospace';
+            ctx.textAlign = 'right';
+            ctx.fillStyle = 'rgba(200, 184, 154, 0.25)';
+            ctx.fillText('KODAK  5222  DOUBLE-X', width - 14, letterboxH - 6);
         }
 
         ctx.restore();
@@ -323,7 +323,7 @@ class CanvasRenderer {
      */
     getTextAreaRect(config, width, height, templateId) {
         if (typeof TemplateDefinitions.getContentBox === 'function') {
-             return TemplateDefinitions.getContentBox(templateId, config, width, height);
+            return TemplateDefinitions.getContentBox(templateId, config, width, height);
         }
         const padding = parseFloat(config.textPadding) || 35;
         return { x: padding, y: padding, width: width - (padding * 2), height: height - (padding * 2) };
