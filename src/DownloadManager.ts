@@ -1,0 +1,111 @@
+/**
+ * DownloadManager - 图片导出与下载管理器
+ *
+ * 设计原则：
+ * 1. 纯净输出：无论预览状态如何，导出时必须强制关闭辅助网格。
+ * 2. 离线生成：完全在客户端通过 Canvas 渲染高清图片，无需后端。
+ * 3. 批量支持：集成 JSZip 实现多页卡片的一键打包下载。
+ */
+class DownloadManager {
+    private loadingElement: HTMLElement | null = null;
+    private renderer: CanvasRenderer;
+    private exportFormat: 'png' | 'jpeg' = 'png';
+
+    constructor() {
+        this.renderer = new CanvasRenderer();
+    }
+
+    setLoadingElement(element: HTMLElement | null) {
+        this.loadingElement = element;
+    }
+
+    setExportFormat(format: string) {
+        this.exportFormat = format as 'png' | 'jpeg';
+    }
+
+    showLoading() { this.loadingElement?.classList.add('active'); }
+    hideLoading() { this.loadingElement?.classList.remove('active'); }
+
+    /**
+     * 将布局渲染为高清 DataURL
+     */
+    async capture(layouts: LayoutBlock[], config: TemplateConfig, templateId: string, index: number = 0, totalCount: number = 1): Promise<string> {
+        // 强制关闭辅助线
+        const renderConfig = { ...config, showGrid: false };
+
+        const canvas = await this.renderer.render({
+            layouts,
+            index,
+            totalCount,
+            config: renderConfig,
+            templateId,
+            width: PREVIEW_WIDTH,
+            height: PREVIEW_HEIGHT,
+            scale: OUTPUT_WIDTH / PREVIEW_WIDTH
+        });
+
+        // 根据选择的格式导出
+        // PNG：无损压缩，适合需要透明背景
+        // JPEG：有损压缩，在小红书安卓端缩略图显示更清晰，使用0.92质量
+        if (this.exportFormat === 'jpeg') {
+            return canvas.toDataURL('image/jpeg', 0.92);
+        }
+        return canvas.toDataURL('image/png');
+    }
+
+    triggerDownload(dataUrl: string, filename: string) {
+        const link = document.createElement('a');
+        link.download = filename;
+        link.href = dataUrl;
+        link.click();
+    }
+
+    async withLoading(fn: () => Promise<void>): Promise<void> {
+        this.showLoading();
+        try {
+            await fn();
+        } catch (err) {
+            console.error('Download failed:', err);
+            alert('下载失败，请重试');
+        } finally {
+            this.hideLoading();
+        }
+    }
+
+    /**
+     * 下载单张图片
+     */
+    async download(layouts: LayoutBlock[], config: TemplateConfig, templateId: string, index: number, totalCount: number = 1): Promise<void> {
+        if (!layouts) return;
+        await this.withLoading(async () => {
+            const dataUrl = await this.capture(layouts, config, templateId, index, totalCount);
+            const ext = this.exportFormat === 'jpeg' ? 'jpg' : 'png';
+            this.triggerDownload(dataUrl, `xhs-card-${index + 1}-${Date.now()}.${ext}`);
+        });
+    }
+
+    /**
+     * 批量打包下载所有图片
+     */
+    async downloadAll(pages: LayoutBlock[][], config: TemplateConfig, templateId: string, downloadBtn: HTMLButtonElement | null): Promise<void> {
+        if (!pages?.length) return;
+        if (downloadBtn) downloadBtn.disabled = true;
+
+        await this.withLoading(async () => {
+            const zip = new JSZip();
+            const totalCount = pages.length;
+            const ext = this.exportFormat === 'jpeg' ? 'jpg' : 'png';
+            for (let i = 0; i < totalCount; i++) {
+                const dataUrl = await this.capture(pages[i], config, templateId, i, totalCount);
+                zip.file(`card-${i + 1}.${ext}`, dataUrl.split(',')[1], { base64: true });
+            }
+
+            const blob = await zip.generateAsync({ type: 'blob' });
+            const url = URL.createObjectURL(blob);
+            this.triggerDownload(url, `xhs-cards-${Date.now()}.zip`);
+            URL.revokeObjectURL(url);
+        });
+
+        if (downloadBtn) downloadBtn.disabled = false;
+    }
+}

@@ -1,0 +1,267 @@
+/**
+ * 全局共享类型（无模块导入导出，保持与 js/ 相同的全局脚本架构）
+ */
+
+/** 模板配置：与 templates/*.json 的 config 字段对应 */
+interface TemplateConfig {
+    bgColor: string;
+    textColor: string;
+    bgMode?: string;
+    fontSize: number;
+    lineHeight: number;
+    letterSpacing: number;
+    textPadding: number;
+    fontFamily: string;
+    hasCover?: boolean;
+    coverImage?: string;
+    coverTitle?: string;
+    coverFontSize?: number;
+    coverLineHeight?: number;
+    hasWatermark?: boolean;
+    watermarkText?: string;
+    watermarkColor?: string;
+    hasSignature?: boolean;
+    signatureText?: string;
+    signatureColor?: string;
+    signaturePosition?: string;
+    signatureStyle?: string;
+    h1Scale?: number;
+    h2Scale?: number;
+    h3Scale?: number;
+    accentColor?: string;
+    showPageNumber?: boolean;
+    showGrid?: boolean;
+    hasSocialIcons?: boolean;
+    selectedSocialIcons?: string[];
+    socialIconPosition?: string;
+    [key: string]: any;
+}
+
+/** CanvasTextEngine 内部排版配置 */
+interface EngineConfig {
+    fontSize: number;
+    lineHeight: number;
+    letterSpacing: number;
+    fontFamily: string;
+    textPadding: number;
+    cardWidth?: number;
+    drawWidth?: number;
+    maxBlockHeight?: number;
+    textColor?: string;
+    h1Scale?: number;
+    h2Scale?: number;
+    h3Scale?: number;
+    [key: string]: any;
+}
+
+/** 行内文本片段（layoutInlineText 的输出单元） */
+interface TextSegment {
+    text?: string;
+    fontSize?: number;
+    fontWeight?: string;
+    fontStyle?: string;
+    fontFamily?: string;
+    color?: string;
+    isCode?: boolean;
+    isCodeBlock?: boolean;
+    isHighlight?: boolean;
+    isMath?: boolean;
+    mathFallback?: boolean;
+    textDecoration?: string;
+    headingLevel?: number;
+    image?: HTMLImageElement;
+    width?: number;
+    height?: number;
+    display?: boolean;
+}
+
+/** 代码高亮片段 */
+interface CodeSegment {
+    text: string;
+    color: string;
+}
+
+/** 数学公式渲染结果 */
+interface MathRenderResult {
+    text: string;
+    fontSize: number;
+    isCode?: boolean;
+    mathFallback?: boolean;
+    image?: HTMLImageElement;
+    width?: number;
+    height?: number;
+    isMath?: boolean;
+    display?: boolean;
+}
+
+/** 表格单元格布局 */
+interface TableCellLayout {
+    lines: TextSegment[][];
+    width: number;
+    align: string;
+    isHeader: boolean;
+}
+
+/** 表格行布局 */
+interface TableRowLayout {
+    cells: TableCellLayout[];
+    height: number;
+    isHeaderRow: boolean;
+}
+
+/** 布局块：TextSplitter 的输出单元，CanvasRenderer 的绘制单元 */
+interface LayoutBlock {
+    type: string;
+    height: number;
+    marginTop?: number;
+    marginBottom?: number;
+    align?: string;
+    depth?: number;
+    lines?: Array<TextSegment[] | TextSegment>;
+    indent?: number;
+    prefix?: string;
+    prefixWidth?: number;
+    src?: string;
+    alt?: string;
+    width?: number;
+    contentHeight?: number;
+    image?: string | HTMLImageElement;
+    message?: string;
+    paddingX?: number;
+    paddingY?: number;
+    rows?: TableRowLayout[];
+    colWidths?: number[];
+    cellPaddingX?: number;
+    cellPaddingY?: number;
+    title?: string;
+}
+
+/** 内容框（模板几何定义，splitter 与 renderer 共享的唯一真理） */
+interface ContentBox {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+}
+
+/** 页码绘制选项 */
+interface PageNumberOptions {
+    color?: string;
+    font?: string;
+    textAlign?: CanvasTextAlign;
+    x?: number;
+    y?: number;
+    prefix?: string;
+    suffix?: string;
+    padZero?: boolean;
+}
+
+/** 模板文字样式（getTextStyles 返回值） */
+interface TextStyles {
+    textColor?: string;
+    highlightColor?: string;
+    codeBgColor?: string;
+}
+
+/** 单个模板的定义 */
+interface TemplateDefinition {
+    getContentBox?: (config: TemplateConfig, width: number, height: number) => ContentBox;
+    drawBackground?: (ctx: CanvasRenderingContext2D, width: number, height: number, config: TemplateConfig) => void;
+    drawTextAreaBackground?: (ctx: CanvasRenderingContext2D, rect: ContentBox, config: TemplateConfig) => void;
+    drawForeground?: (ctx: CanvasRenderingContext2D, width: number, height: number, index: number, totalCount: number, config: TemplateConfig) => void;
+    getTextStyles?: (segment: TextSegment, config: TemplateConfig) => TextStyles;
+    terminalStyles?: ((config: TemplateConfig) => TextStyles) | TextStyles;
+}
+
+/** TemplateDefinitions 注册表（索引签名允许按 templateId 动态访问模板） */
+interface TemplateDefinitionsMap {
+    [templateId: string]: any;
+    getContentBox: (templateId: string, config: TemplateConfig, width: number, height: number) => ContentBox;
+    _drawPageNumber: (ctx: CanvasRenderingContext2D, width: number, height: number, index: number, totalCount: number, config: TemplateConfig, options?: PageNumberOptions) => void;
+    _noiseTextureCache: Map<string, HTMLCanvasElement>;
+    _paperTextureCache: Map<string, HTMLCanvasElement>;
+    _getNoiseTexture: (width: number, height: number) => HTMLCanvasElement;
+    _getPaperTexture: (width: number, height: number) => HTMLCanvasElement;
+}
+
+/** 模板对象（TemplateManager 加载结果） */
+interface TemplateInfo {
+    id: string;
+    name: string;
+    description: string;
+    author?: string;
+    version?: string;
+    config: TemplateConfig;
+    className: string;
+}
+
+/** templates/index.json 结构 */
+interface TemplateIndexEntry {
+    id: string;
+    name?: string;
+}
+
+interface TemplateIndex {
+    templates: TemplateIndexEntry[];
+}
+
+/** CanvasRenderer.render 参数 */
+interface RenderOptions {
+    layouts: LayoutBlock[];
+    index: number;
+    totalCount: number;
+    config: TemplateConfig;
+    templateId: string;
+    width?: number;
+    height?: number;
+    scale?: number;
+}
+
+/** 图片测量结果 */
+interface ImageMeasureResult {
+    width: number;
+    height: number;
+    ratio?: number;
+    originalWidth?: number;
+    originalHeight?: number;
+    error?: boolean;
+    timeout?: boolean;
+}
+
+/** App 绑定的编辑器 DOM 元素集合 */
+interface AppElements {
+    [key: string]: any;
+    textInput: HTMLTextAreaElement;
+    templateList: HTMLElement;
+    downloadAllBtn: HTMLButtonElement;
+    previewList: HTMLElement;
+    previewCount: HTMLElement;
+    previewIndicators: HTMLElement;
+    previewPrev: HTMLButtonElement;
+    previewNext: HTMLButtonElement;
+    loading: HTMLElement;
+    visualEditor: HTMLElement;
+    coverEditor: HTMLElement;
+    editorTabs: NodeListOf<HTMLElement>;
+    fontSizeInput: HTMLInputElement;
+    fontSizeValue: HTMLElement;
+    lineHeightInput: HTMLInputElement;
+    lineHeightValue: HTMLElement;
+    letterSpacingInput: HTMLInputElement;
+    letterSpacingValue: HTMLElement;
+    textPaddingInput: HTMLInputElement;
+    textPaddingValue: HTMLElement;
+    fontFamilySelect: HTMLSelectElement;
+    h1ScaleValue: HTMLElement;
+    h2ScaleValue: HTMLElement;
+    h3ScaleValue: HTMLElement;
+    resetTemplateBtn: HTMLButtonElement;
+    hasWatermarkCheck: HTMLInputElement;
+    watermarkTextInput: HTMLInputElement;
+    hasSignatureCheck: HTMLInputElement;
+    signatureTextInput: HTMLInputElement;
+    hasCoverCheck: HTMLInputElement;
+    coverTitleInput: HTMLTextAreaElement;
+    coverFontSizeInput: HTMLInputElement;
+    editModeToggle: HTMLButtonElement;
+}
