@@ -6,8 +6,8 @@
  * 2. 健壮性：通过默认值合并 (Object Spread) 确保新旧模板在配置项变更时的兼容性。
  * 3. 顺序可控：通过 index.json 维护模板的显示顺序和推荐位状态。
  */
-import { DEFAULT_BRAND_TEXT, DEFAULT_COVER_IMAGE } from './constants';
-import type { TemplateConfig, TemplateIndex, TemplateInfo } from './types';
+import { DEFAULT_BRAND_TEXT, DEFAULT_COVER_IMAGE } from '../constants';
+import type { TemplateConfig, TemplateIndex, TemplateInfo } from '../types';
 
 export class TemplateManager {
     private templates: Record<string, TemplateInfo> = {};

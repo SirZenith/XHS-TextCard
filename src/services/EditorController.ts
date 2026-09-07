@@ -6,7 +6,7 @@
  * 2. 交互一致性：通过 configMap 映射控件类型与事件，减少重复逻辑。
  * 3. 颜色管理：集成 Pickr 取色器，并支持 Solid 与 Gradient 模式的无缝切换。
  */
-import type { AppElements, TemplateConfig } from './types';
+import type { AppElements, TemplateConfig } from '../types';
 
 /** 配置映射表条目：键名, 控件类型, 类型转换 */
 interface ConfigMapEntry {

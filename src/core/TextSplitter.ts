@@ -6,11 +6,11 @@
  * 2. 递归拆分：当一个块（如长段落）超过剩余空间时，递归地将其切分为多页，确保没有任何文本溢出。
  * 3. 语义化分页：支持 Markdown 分割线 (---) 作为强制分页符。
  */
-import { PREVIEW_HEIGHT, PREVIEW_WIDTH } from './constants';
+import { PREVIEW_HEIGHT, PREVIEW_WIDTH } from '../constants';
 import { TemplateDefinitions } from './TemplateDefinitions';
-import { CanvasTextEngine } from './utils/canvas-text-engine';
-import { MarkdownParser } from './utils/markdown';
-import type { ContentBox, LayoutBlock, TemplateConfig } from './types';
+import { CanvasTextEngine } from './canvas-text-engine';
+import { MarkdownParser } from '../utils/markdown';
+import type { ContentBox, LayoutBlock, TemplateConfig } from '../types';
 
 export class TextSplitter {
     private config: TemplateConfig;

@@ -8,7 +8,7 @@
  * 4. 富文本渲染：支持内联样式的组合（加粗、斜体、高亮、代码、标题级别）。
  */
 import { PREVIEW_WIDTH } from '../constants';
-import { CanvasUtils } from './canvas-utils';
+import { CanvasUtils } from '../utils/canvas-utils';
 import type { CodeSegment, EngineConfig, ImageMeasureResult, LayoutBlock, MathRenderResult, TableCellLayout, TableRowLayout, TextSegment } from '../types';
 
 export class CanvasTextEngine {

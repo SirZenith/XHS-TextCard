@@ -2,9 +2,9 @@
  * TemplateDefinitions
  * 定义每个模板特有的 Canvas 绘制逻辑和布局参数
  */
-import { PREVIEW_HEIGHT, PREVIEW_WIDTH } from './constants';
-import { CanvasUtils } from './utils/canvas-utils';
-import type { ContentBox, PageNumberOptions, TemplateConfig, TemplateDefinitionsMap, TextSegment, TextStyles } from './types';
+import { PREVIEW_HEIGHT, PREVIEW_WIDTH } from '../constants';
+import { CanvasUtils } from '../utils/canvas-utils';
+import type { ContentBox, PageNumberOptions, TemplateConfig, TemplateDefinitionsMap, TextSegment, TextStyles } from '../types';
 
 export const TemplateDefinitions: TemplateDefinitionsMap = {
     /**

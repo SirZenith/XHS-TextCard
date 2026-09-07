@@ -7,11 +7,11 @@
  * 2. 状态管理：维护当前模板、配置及分发后的页面数据。
  * 3. 响应式更新：处理输入抖动 (Debounce)，确保 UI 响应流畅。
  */
-import { DownloadManager } from './DownloadManager';
-import { EditorController } from './EditorController';
-import { PreviewGenerator } from './PreviewGenerator';
-import { TemplateManager } from './TemplateManager';
-import { TextSplitter } from './TextSplitter';
+import { DownloadManager } from './services/DownloadManager';
+import { EditorController } from './services/EditorController';
+import { PreviewGenerator } from './services/PreviewGenerator';
+import { TemplateManager } from './services/TemplateManager';
+import { TextSplitter } from './core/TextSplitter';
 import { MarkdownParser } from './utils/markdown';
 import type { AppElements, LayoutBlock, TemplateConfig } from './types';
 

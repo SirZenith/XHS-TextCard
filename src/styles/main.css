@@ -3,9 +3,9 @@
 /* Content scanning: class names live in the HTML pages and are also generated
  * as string literals inside the TypeScript sources (e.g. template-item,
  * preview-item, empty-state), so both trees must be scanned. */
-@source "../public/**/*.html";
-@source "../public/**/*.js";
-@source "../src/**/*.ts";
+@source "../../public/**/*.html";
+@source "../../public/**/*.js";
+@source "../**/*.ts";
 
 /* Design tokens migrated from public/css/base/variables.css (static part). */
 @theme {
