@@ -143,7 +143,7 @@ git clone https://github.com/geekfoxcharlie/XHS-TextCard.git
 cd XHS-TextCard
 
 # 2. 启动本地服务器（推荐 Python，无需 npm）
-python -m http.server 8000
+python -m http.server 8000 -d public
 
 # 3. 浏览器访问
 open http://localhost:8000/editor.html
@@ -174,7 +174,7 @@ templates/
 **添加步骤：**
 
 1. 创建 `templates/my-style.json`
-2. 在 `js/TemplateDefinitions.js` 定义 Canvas 绘制逻辑
+2. 在 `src/TemplateDefinitions.ts` 定义 Canvas 绘制逻辑
 3. 在 `templates/index.json` 注册
 4. 刷新页面即可使用
 

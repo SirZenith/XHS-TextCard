@@ -1,9 +1,9 @@
 /**
  * 第三方全局库（vendored / CDN）的环境类型声明
- * 对应 editor.html 中加载的 third-party/* 与 CDN 脚本，均通过全局变量暴露。
+ * 对应 public/editor.html 中加载的 public/third-party/* 与 CDN 脚本，均通过全局变量暴露。
  */
 
-/** marked：Markdown 解析器（vendored, third-party/marked.umd.min.js） */
+/** marked：Markdown 解析器（vendored, public/third-party/marked.umd.min.js） */
 interface MarkedTableCell {
     text: string;
     tokens?: MarkedToken[];
