@@ -142,14 +142,17 @@
 git clone https://github.com/geekfoxcharlie/XHS-TextCard.git
 cd XHS-TextCard
 
-# 2. 启动本地服务器（推荐 Python，无需 npm）
-python -m http.server 8000 -d public
+# 2. 安装依赖（Vite + Tailwind v4 + TypeScript）
+npm install
 
-# 3. 浏览器访问
-open http://localhost:8000/editor.html
+# 3. 启动开发服务器
+npm run dev
+
+# 4. 浏览器访问
+open http://localhost:5173/editor.html
 ```
 
-> 💡 **提示**：由于浏览器安全策略，请勿直接双击 HTML 文件打开
+> 💡 生产构建：`npm run build` 输出到 `dist/`，可用 `npm run preview` 本地预览。
 
 ### 方式三：一键部署
 
@@ -186,7 +189,7 @@ templates/
 
 | 特性 | 说明 |
 |:-----|:-----|
-| **零依赖** | 无 npm 包，纯前端 HTML/CSS/JS |
+| **零后端** | 纯前端 TypeScript + Vite 构建，无服务端 |
 | **隐私优先** | 所有处理在本地浏览器完成，绝不上传 |
 | **毫秒级预览** | 优化的 Canvas 绘制，大文本也能实时响应 |
 | **跨平台** | Chrome 80+、Firefox 75+、Safari 13+、Edge 80+ |

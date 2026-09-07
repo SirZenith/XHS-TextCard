@@ -13,3 +13,9 @@ AGENTS.md
 SEO_PLAN.md
 
 .history
+
+# Node / Vite build output
+node_modules/
+/dist
+.vite/
+*.local

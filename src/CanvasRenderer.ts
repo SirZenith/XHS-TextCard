@@ -7,6 +7,10 @@
  * 3. 模板隔离：具体的视觉逻辑由 TemplateDefinitions 定义，渲染器仅负责调用和基础绘图。
  * 4. 高清适配：支持 Scale 参数进行预览与高清输出的无损切换。
  */
+import { DEFAULT_BRAND_TEXT, PREVIEW_HEIGHT, PREVIEW_WIDTH } from './constants';
+import { TemplateDefinitions } from './TemplateDefinitions';
+import { CanvasUtils } from './utils/canvas-utils';
+import type { ContentBox, LayoutBlock, RenderOptions, TemplateConfig, TextSegment } from './types';
 
 const SOCIAL_ICONS: Record<string, { src: string }> = {
     gongzhonghao: { src: 'assets/icons/gongzhonghao.png' },
@@ -17,7 +21,7 @@ const SOCIAL_ICONS: Record<string, { src: string }> = {
     bilibili: { src: 'assets/icons/bilibili.png' }
 };
 
-class CanvasRenderer {
+export class CanvasRenderer {
     private imageCache: Map<string, HTMLImageElement>;
     private socialIconCanvasCache: Map<string, HTMLCanvasElement>;
     private socialIconImageCache: Map<string, HTMLImageElement>;

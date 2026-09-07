@@ -7,7 +7,11 @@
  * 3. 跨页能力：支持对 Layout Blocks 进行高度检测与逻辑切分，为 TextSplitter 提供拆分依据。
  * 4. 富文本渲染：支持内联样式的组合（加粗、斜体、高亮、代码、标题级别）。
  */
-class CanvasTextEngine {
+import { PREVIEW_WIDTH } from '../constants';
+import { CanvasUtils } from './canvas-utils';
+import type { CodeSegment, EngineConfig, ImageMeasureResult, LayoutBlock, MathRenderResult, TableCellLayout, TableRowLayout, TextSegment } from '../types';
+
+export class CanvasTextEngine {
     private canvas: HTMLCanvasElement;
     private ctx: CanvasRenderingContext2D;
     private widthCache: Map<string, number>; // 字符宽度缓存

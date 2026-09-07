@@ -1,7 +1,7 @@
 /**
  * MarkdownParser - Markdown 解析工具
  */
-class MarkdownParser {
+export class MarkdownParser {
     static isInitialized: boolean = false;
 
     static init(): void {

@@ -1,9 +1,9 @@
 /**
- * 全局共享类型（无模块导入导出，保持与 js/ 相同的全局脚本架构）
+ * 全局共享类型（ES 模块导出，供各模块 import type 使用）
  */
 
 /** 模板配置：与 templates/*.json 的 config 字段对应 */
-interface TemplateConfig {
+export interface TemplateConfig {
     bgColor: string;
     textColor: string;
     bgMode?: string;
@@ -38,7 +38,7 @@ interface TemplateConfig {
 }
 
 /** CanvasTextEngine 内部排版配置 */
-interface EngineConfig {
+export interface EngineConfig {
     fontSize: number;
     lineHeight: number;
     letterSpacing: number;
@@ -55,7 +55,7 @@ interface EngineConfig {
 }
 
 /** 行内文本片段（layoutInlineText 的输出单元） */
-interface TextSegment {
+export interface TextSegment {
     text?: string;
     fontSize?: number;
     fontWeight?: string;
@@ -76,13 +76,13 @@ interface TextSegment {
 }
 
 /** 代码高亮片段 */
-interface CodeSegment {
+export interface CodeSegment {
     text: string;
     color: string;
 }
 
 /** 数学公式渲染结果 */
-interface MathRenderResult {
+export interface MathRenderResult {
     text: string;
     fontSize: number;
     isCode?: boolean;
@@ -95,7 +95,7 @@ interface MathRenderResult {
 }
 
 /** 表格单元格布局 */
-interface TableCellLayout {
+export interface TableCellLayout {
     lines: TextSegment[][];
     width: number;
     align: string;
@@ -103,14 +103,14 @@ interface TableCellLayout {
 }
 
 /** 表格行布局 */
-interface TableRowLayout {
+export interface TableRowLayout {
     cells: TableCellLayout[];
     height: number;
     isHeaderRow: boolean;
 }
 
 /** 布局块：TextSplitter 的输出单元，CanvasRenderer 的绘制单元 */
-interface LayoutBlock {
+export interface LayoutBlock {
     type: string;
     height: number;
     marginTop?: number;
@@ -137,7 +137,7 @@ interface LayoutBlock {
 }
 
 /** 内容框（模板几何定义，splitter 与 renderer 共享的唯一真理） */
-interface ContentBox {
+export interface ContentBox {
     x: number;
     y: number;
     width: number;
@@ -145,7 +145,7 @@ interface ContentBox {
 }
 
 /** 页码绘制选项 */
-interface PageNumberOptions {
+export interface PageNumberOptions {
     color?: string;
     font?: string;
     textAlign?: CanvasTextAlign;
@@ -157,14 +157,14 @@ interface PageNumberOptions {
 }
 
 /** 模板文字样式（getTextStyles 返回值） */
-interface TextStyles {
+export interface TextStyles {
     textColor?: string;
     highlightColor?: string;
     codeBgColor?: string;
 }
 
 /** 单个模板的定义 */
-interface TemplateDefinition {
+export interface TemplateDefinition {
     getContentBox?: (config: TemplateConfig, width: number, height: number) => ContentBox;
     drawBackground?: (ctx: CanvasRenderingContext2D, width: number, height: number, config: TemplateConfig) => void;
     drawTextAreaBackground?: (ctx: CanvasRenderingContext2D, rect: ContentBox, config: TemplateConfig) => void;
@@ -174,7 +174,7 @@ interface TemplateDefinition {
 }
 
 /** TemplateDefinitions 注册表（索引签名允许按 templateId 动态访问模板） */
-interface TemplateDefinitionsMap {
+export interface TemplateDefinitionsMap {
     [templateId: string]: any;
     getContentBox: (templateId: string, config: TemplateConfig, width: number, height: number) => ContentBox;
     _drawPageNumber: (ctx: CanvasRenderingContext2D, width: number, height: number, index: number, totalCount: number, config: TemplateConfig, options?: PageNumberOptions) => void;
@@ -185,7 +185,7 @@ interface TemplateDefinitionsMap {
 }
 
 /** 模板对象（TemplateManager 加载结果） */
-interface TemplateInfo {
+export interface TemplateInfo {
     id: string;
     name: string;
     description: string;
@@ -196,17 +196,17 @@ interface TemplateInfo {
 }
 
 /** templates/index.json 结构 */
-interface TemplateIndexEntry {
+export interface TemplateIndexEntry {
     id: string;
     name?: string;
 }
 
-interface TemplateIndex {
+export interface TemplateIndex {
     templates: TemplateIndexEntry[];
 }
 
 /** CanvasRenderer.render 参数 */
-interface RenderOptions {
+export interface RenderOptions {
     layouts: LayoutBlock[];
     index: number;
     totalCount: number;
@@ -218,7 +218,7 @@ interface RenderOptions {
 }
 
 /** 图片测量结果 */
-interface ImageMeasureResult {
+export interface ImageMeasureResult {
     width: number;
     height: number;
     ratio?: number;
@@ -229,7 +229,7 @@ interface ImageMeasureResult {
 }
 
 /** App 绑定的编辑器 DOM 元素集合 */
-interface AppElements {
+export interface AppElements {
     [key: string]: any;
     textInput: HTMLTextAreaElement;
     templateList: HTMLElement;

@@ -7,7 +7,15 @@
  * 2. 状态管理：维护当前模板、配置及分发后的页面数据。
  * 3. 响应式更新：处理输入抖动 (Debounce)，确保 UI 响应流畅。
  */
-class App {
+import { DownloadManager } from './DownloadManager';
+import { EditorController } from './EditorController';
+import { PreviewGenerator } from './PreviewGenerator';
+import { TemplateManager } from './TemplateManager';
+import { TextSplitter } from './TextSplitter';
+import { MarkdownParser } from './utils/markdown';
+import type { AppElements, LayoutBlock, TemplateConfig } from './types';
+
+export class App {
     private templateManager: TemplateManager;
     private previewGenerator: PreviewGenerator;
     private downloadManager: DownloadManager;
@@ -427,22 +435,3 @@ class App {
     }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    // 全局错误捕获
-    window.onerror = function (message: string | Event, source?: string, lineno?: number, colno?: number, error?: Error) {
-        console.error('[Global Error]', message, error);
-        // 如果渲染卡住了，尝试恢复 UI
-        const loading = document.getElementById('loading');
-        if (loading) loading.classList.remove('active');
-        return false;
-    };
-
-    window.onunhandledrejection = function (event: PromiseRejectionEvent) {
-        console.error('[Unhandled Rejection]', event.reason);
-        const loading = document.getElementById('loading');
-        if (loading) loading.classList.remove('active');
-    };
-
-    const app = new App();
-    app.init();
-});

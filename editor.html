@@ -46,9 +46,9 @@
     }
     </script>
 
-    <script src="third-party/jszip.min.js"></script>
-    <script src="third-party/marked.umd.min.js"></script>
-    <script src="third-party/mermaid.min.js?v=10.9.1"></script>
+    <script src="/third-party/jszip.min.js"></script>
+    <script src="/third-party/marked.umd.min.js"></script>
+    <script src="/third-party/mermaid.min.js?v=10.9.1"></script>
     <script>
         window.mermaidReady = Promise.resolve(window.mermaid).then((mermaid) => {
             if (!mermaid) throw new Error('Mermaid 本地库加载失败');
@@ -74,8 +74,8 @@
     </script>
     <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
     <!-- Pickr -->
-    <link rel="stylesheet" href="css/lib/monolith.min.css" />
-    <script src="third-party/pickr.min.js"></script>
+    <link rel="stylesheet" href="/css/lib/monolith.min.css" />
+    <script src="/third-party/pickr.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <!-- 字体库 -->
@@ -87,9 +87,9 @@
         href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Sans+SC:wght@400;700&family=Noto+Serif+SC:wght@400;700&family=ZCOOL+KuaiLe&family=ZCOOL+QingKe+HuangYou&display=swap"
         rel="stylesheet">
 
-    <link rel="stylesheet" href="css/pages/editor.css">
-    <link rel="icon" href="logo.png" type="image/png">
-    <link rel="apple-touch-icon" href="logo.png">
+    <link rel="stylesheet" href="/css/pages/editor.css">
+    <link rel="icon" href="/logo.png" type="image/png">
+    <link rel="apple-touch-icon" href="/logo.png">
 </head>
 
 <body class="editor-page">
@@ -100,7 +100,7 @@
             <div class="panel-header">
                 <div
                     style="display: flex; align-items: center; gap: 8px; font-weight: bold; font-size: 16px; margin-left: 12px;">
-                    <img src="logo.png" alt="XHS-TextCard" width="20" height="20">
+                    <img src="/logo.png" alt="XHS-TextCard" width="20" height="20">
                     工作台
                 </div>
                 <button class="edit-mode-toggle" id="edit-mode-toggle" title="专注编辑模式">
@@ -611,22 +611,22 @@
                                 <div class="social-icons-grid"
                                     style="grid-template-columns: repeat(3, 1fr); margin-top: 5px;">
                                     <div class="social-icon-item" data-icon="gongzhonghao" title="公众号">
-                                        <img src="assets/icons/gongzhonghao.png" alt="公众号">
+                                        <img src="/assets/icons/gongzhonghao.png" alt="公众号">
                                     </div>
                                     <div class="social-icon-item" data-icon="shipinhao" title="视频号">
-                                        <img src="assets/icons/shipinhao.png" alt="视频号">
+                                        <img src="/assets/icons/shipinhao.png" alt="视频号">
                                     </div>
                                     <div class="social-icon-item" data-icon="xiaohongshu" title="小红书">
-                                        <img src="assets/icons/xiaohongshu.png" alt="小红书">
+                                        <img src="/assets/icons/xiaohongshu.png" alt="小红书">
                                     </div>
                                     <div class="social-icon-item" data-icon="zhihu" title="知乎">
-                                        <img src="assets/icons/zhihu.png" alt="知乎">
+                                        <img src="/assets/icons/zhihu.png" alt="知乎">
                                     </div>
                                     <div class="social-icon-item" data-icon="douyin" title="抖音">
-                                        <img src="assets/icons/douyin.png" alt="抖音">
+                                        <img src="/assets/icons/douyin.png" alt="抖音">
                                     </div>
                                     <div class="social-icon-item" data-icon="bilibili" title="Bilibili">
-                                        <img src="assets/icons/bilibili.png" alt="Bilibili">
+                                        <img src="/assets/icons/bilibili.png" alt="Bilibili">
                                     </div>
                                 </div>
                             </div>
@@ -666,19 +666,8 @@
         </div>
     </div>
 
-    <!-- JavaScript 模块 -->
-    <script src="dist/constants.js"></script>
-    <script src="dist/utils/markdown.js"></script>
-    <script src="dist/utils/canvas-text-engine.js?v=20260717-rich-blocks"></script>
-    <script src="dist/utils/canvas-utils.js"></script>
-    <script src="dist/TemplateDefinitions.js"></script>
-    <script src="dist/CanvasRenderer.js?v=20260717-rich-blocks"></script>
-    <script src="dist/TemplateManager.js"></script>
-    <script src="dist/TextSplitter.js?v=20260717-rich-blocks"></script>
-    <script src="dist/PreviewGenerator.js"></script>
-    <script src="dist/DownloadManager.js"></script>
-    <script src="dist/EditorController.js"></script>
-    <script src="dist/App.js?v=20260717-rich-blocks"></script>
+    <!-- JavaScript 模块（Vite 打包入口） -->
+    <script type="module" src="/src/main.ts"></script>
 </body>
 
 </html>

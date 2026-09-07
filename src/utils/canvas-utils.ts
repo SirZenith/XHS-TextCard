@@ -1,7 +1,7 @@
 /**
  * CanvasUtils - Canvas 绘图工具集
  */
-const CanvasUtils = {
+export const CanvasUtils = {
     /**
      * 绘制圆角矩形
      */

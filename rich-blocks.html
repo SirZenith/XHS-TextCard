@@ -6,11 +6,10 @@
 </head>
 <body>
     <pre id="results">Running…</pre>
-    <script src="../public/third-party/marked.umd.min.js"></script>
-    <script src="../public/dist/constants.js"></script>
-    <script src="../public/dist/utils/canvas-utils.js"></script>
-    <script src="../public/dist/utils/canvas-text-engine.js"></script>
-    <script>
+    <script src="/third-party/marked.umd.min.js"></script>
+    <script type="module">
+        import { CanvasTextEngine } from '/src/utils/canvas-text-engine';
+
         const results = [];
         const assert = (condition, message) => {
             if (!condition) throw new Error(message);
