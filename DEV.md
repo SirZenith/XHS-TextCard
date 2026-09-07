@@ -21,7 +21,7 @@ src/                      # 源码（TypeScript，ES 模块，唯一事实来源
     CanvasRenderer.ts     # 画布绘制引擎
     TextSplitter.ts       # Markdown → 分页 LayoutBlock[][]
     TemplateDefinitions.ts# 模板注册表（styleMap + getTemplate/getContentBox）
-    canvas-text-engine.ts # Canvas 排版引擎
+    CanvasTextEngine.ts   # Canvas 排版引擎
   services/               # 业务服务与控制器
     TemplateManager.ts    # 加载 templates/*.json 配置
     PreviewGenerator.ts   # 预览卡片 DOM 生成

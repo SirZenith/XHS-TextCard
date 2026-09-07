@@ -1,11 +1,11 @@
 /**
- * MarkdownParser - Markdown 解析工具
+ * MARKDOWN_UTIL - Markdown 解析工具
  */
-export class MarkdownParser {
-    static isInitialized: boolean = false;
+export namespace MARKDOWN_UTIL {
+    let isInitialized: boolean = false;
 
-    static init(): void {
-        if (typeof marked === 'undefined' || this.isInitialized) return;
+    export const init = (): void => {
+        if (typeof marked === 'undefined' || isInitialized) return;
 
         // 添加 ==高亮== 自定义语法
         const highlightExtension: MarkedExtension = {
@@ -121,12 +121,12 @@ export class MarkdownParser {
 
         marked.use({ extensions: [mathBlockExtension, inlineMathExtension, highlightExtension, centerBlockExtension] });
         marked.setOptions({ breaks: true, gfm: true });
-        this.isInitialized = true;
+        isInitialized = true;
     }
 
-    static parse(text: string): string {
+    export const parse = (text: string): string => {
         if (typeof marked === 'undefined') return text.replace(/\n/g, '<br>');
-        if (!this.isInitialized) this.init();
+        if (!isInitialized) init();
         return marked.parse(text);
     }
 }

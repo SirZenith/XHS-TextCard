@@ -1,6 +1,6 @@
 import type { TemplateConfig, TextSegment } from "../types";
-import { CANVAS_UTIL } from "../utils/canvas-utils";
-import { TEMPLATE_UTIL } from "../utils/template-utils";
+import { CANVAS_UTIL } from "../utils/canvas_utils";
+import { TEMPLATE_UTIL } from "../utils/template_utils";
 import type { Template, TextStyle } from "./type";
 
 /**

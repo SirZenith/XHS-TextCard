@@ -12,7 +12,7 @@ import { EditorController } from './services/EditorController';
 import { PreviewGenerator } from './services/PreviewGenerator';
 import { TemplateManager } from './services/TemplateManager';
 import { TextSplitter } from './core/TextSplitter';
-import { MarkdownParser } from './utils/markdown';
+import { MARKDOWN_UTIL } from './utils/markdown_util';
 import type { AppElements, LayoutBlock, TemplateConfig } from './types';
 
 export class App {
@@ -45,9 +45,7 @@ export class App {
 
     init() {
         try {
-            if (typeof MarkdownParser !== 'undefined') {
-                MarkdownParser.init();
-            }
+            MARKDOWN_UTIL.init();
             this.initElements();
             this.bindEvents();
             this.loadTemplates();
@@ -234,7 +232,7 @@ export class App {
             let lastId = this.currentTemplate;
             try {
                 lastId = localStorage.getItem('xhs_last_template_id') || this.currentTemplate;
-            } catch (e) {}
+            } catch (e) { }
 
             await this.selectTemplate(lastId);
         } catch (error) {

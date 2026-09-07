@@ -8,9 +8,9 @@
  */
 import { PREVIEW_HEIGHT, PREVIEW_WIDTH } from '../constants';
 import { TEMPLATE_DEFINITIONS } from './TemplateDefinitions';
-import { CanvasTextEngine } from './canvas-text-engine';
-import { MarkdownParser } from '../utils/markdown';
-import type { ContentBox, LayoutBlock, TemplateConfig } from '../types';
+import { CanvasTextEngine } from './CanvasTextEngine';
+import { MARKDOWN_UTIL } from '../utils/markdown_util';
+import type { LayoutBlock, TemplateConfig } from '../types';
 
 export class TextSplitter {
     private config: TemplateConfig;
@@ -69,9 +69,7 @@ export class TextSplitter {
         }
 
         // 确保自定义 Markdown 扩展（如高亮、居中）在 lexer 前被注册
-        if (typeof MarkdownParser !== 'undefined' && typeof MarkdownParser.init === 'function') {
-            MarkdownParser.init();
-        }
+        MARKDOWN_UTIL.init();
 
         let tokens: MarkedToken[] = [];
         try {

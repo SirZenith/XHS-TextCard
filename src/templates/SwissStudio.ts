@@ -1,6 +1,6 @@
 import { PREVIEW_HEIGHT, PREVIEW_WIDTH } from "../constants";
 import type { ContentBox, TemplateConfig, TextSegment } from "../types";
-import { TEMPLATE_UTIL } from "../utils/template-utils";
+import { TEMPLATE_UTIL } from "../utils/template_utils";
 import type { Template, TextStyle } from "./type";
 
 /**

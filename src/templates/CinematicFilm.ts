@@ -1,5 +1,5 @@
 import type { ContentBox, TemplateConfig, TextSegment } from "../types";
-import { CANVAS_UTIL } from "../utils/canvas-utils";
+import { CANVAS_UTIL } from "../utils/canvas_utils";
 import type { Template, TextStyle } from "./type";
 
 /**

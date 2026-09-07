@@ -9,7 +9,7 @@
  */
 import { DEFAULT_BRAND_TEXT, PREVIEW_HEIGHT, PREVIEW_WIDTH } from '../constants';
 import { TEMPLATE_DEFINITIONS } from './TemplateDefinitions';
-import { CANVAS_UTIL } from '../utils/canvas-utils';
+import { CANVAS_UTIL } from '../utils/canvas_utils';
 import type { ContentBox, LayoutBlock, RenderOptions, TemplateConfig, TextSegment } from '../types';
 
 const SOCIAL_ICONS: Record<string, { src: string }> = {
