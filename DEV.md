@@ -23,27 +23,31 @@ src/                      # 源码（TypeScript，ES 模块，唯一事实来源
     TemplateDefinitions.ts# 模板注册表（styleMap + getTemplate/getContentBox）
     CanvasTextEngine.ts   # Canvas 排版引擎
   services/               # 业务服务与控制器
-    TemplateManager.ts    # 加载 templates/*.json 配置
+    TemplateManager.ts    # 加载 data/templates/*.json 配置
     PreviewGenerator.ts   # 预览卡片 DOM 生成
     DownloadManager.ts    # 单张 / ZIP 批量下载
     EditorController.ts   # 侧边栏编辑面板
   templates/              # 每个模板一个类（实现 Template 接口）
-  utils/                  # canvas_utils.ts / markdown_util.ts / template_utils.ts
-  types.ts                # 共享接口（import type 引入）
-  global.d.ts             # 第三方全局库的 ambient 类型（无 import/export）
-  constants.ts            # 尺寸与默认参数
+  utils/                  # canvas_utils.ts / markdown_util.ts / template_utils.ts / constants.ts
+  types/                  # 共享类型声明
+    types.d.ts            # 全局共享类型（import type 引入）
+    template.d.ts         # Template / TextStyle / TerminalStyle 接口
+    global.d.ts           # 第三方全局库的 ambient 类型
+  vite-env.d.ts           # Vite 环境类型
   styles/main.css         # Tailwind 源文件（@theme 令牌 + @source）
 public/                   # 静态资源（构建时原样复制到 dist/）
-  assets/                 # 封面图、图标（readme/ 留在仓库根，仅 README 用）
+  assets/                 # covers/ 封面图、icons/ 社交图标、template-*.png 模板预览
   css/                    # 旧手写 CSS（页面尚未迁移到 Tailwind，勿删）
   third-party/            # vendored 库：marked / jszip / mermaid / pickr
-  templates/              # 模板 JSON（index.json + {id}.json）
-  data/                   # default-text.md 等运行时 fetch 的数据
+  data/                   # 运行时 fetch 的数据
+    default-text.md       # 默认示例文本
+    templates/            # 模板 JSON（index.json + {id}.json）
   about.html / guide.html / format-demo.html   # 纯静态页面（无 TS）
-  robots.txt / sitemap.xml / d1e9ce…txt / og-image.png  # SEO/验证文件
+  robots.txt / sitemap.xml / logo.png / rednote.png / og-image.png  # SEO/验证与品牌图
 editor.html               # 编辑器页面（Vite 入口，加载 src/main.ts）
 index.html                # 重定向到 /editor.html
 rich-blocks.html          # 手动测试页（引入 CanvasTextEngine）
+assets/readme/            # README 用截图（不参与构建）
 vite.config.ts            # Vite 多页构建配置
 tsconfig.json             # 类型检查配置（noEmit，moduleResolution: bundler）
 dist/                     # 构建产物（gitignore）
@@ -56,12 +60,12 @@ dist/                     # 构建产物（gitignore）
 - **模块图**：`main.ts` → `App` →（`TemplateManager` / `PreviewGenerator` / `DownloadManager` / `EditorController` / `TextSplitter`）→ `CanvasRenderer` →（`TEMPLATE_DEFINITIONS` / `CANVAS_UTIL` / `CanvasTextEngine`）。
 - **渲染管线**：`TextSplitter`（Markdown 经 `marked` 解析为 token → `LayoutBlock[][]` 分页）→ `CanvasRenderer`（依据 `TemplateDefinitions` 绘制每页画布）。
 - **第三方库为全局对象**：在 `editor.html` 用 `<script>` 加载（vendored `public/third-party/` + CDN 的 highlight.js / MathJax / 字体），类型声明集中在 `src/global.d.ts`。代码中通过 `typeof marked !== 'undefined'` 等守卫兜底。
-- **模板配置驱动**：`public/templates/index.json` 决定顺序，`{id}.json` 提供基础配置；绘制逻辑在 `src/templates/{Name}.ts` 的类中（实现 `Template` 接口），由 `src/core/TemplateDefinitions.ts` 的 `templateClasses` 数组统一注册（详见下方「模板开发」）。
+- **模板配置驱动**：`public/data/templates/index.json` 决定顺序，`{id}.json` 提供基础配置；绘制逻辑在 `src/templates/{Name}.ts` 的类中（实现 `Template` 接口），由 `src/core/TemplateDefinitions.ts` 的 `templateClasses` 数组统一注册（详见下方「模板开发」）。
 - **持久化**：每模板配置存 `localStorage`（`xhs_tpl_config_<id>`、`xhs_last_template_id`、`xhs_edit_mode`）。
 
 ## 模板开发（定义新模板）
 
-一个模板 = 一份 JSON 配置（`public/templates/{id}.json`）+ 一个绘制类（`src/templates/{Name}.ts`）。绘制类实现 `Template` 接口（定义见 `src/templates/type.d.ts`）：
+一个模板 = 一份 JSON 配置（`public/data/templates/{id}.json`）+ 一个绘制类（`src/templates/{Name}.ts`）。绘制类实现 `Template` 接口（定义见 `src/types/template.d.ts`）：
 
 ```ts
 interface Template {
@@ -81,8 +85,8 @@ interface Template {
 
 ### 关键参数
 
-- `config` 为 `TemplateConfig`（`src/types.ts`）：`bgColor`/`textColor`/`accentColor`/`fontSize`/`lineHeight`/`letterSpacing`/`textPadding`/`fontFamily`/`hasCover`/`hasSignature` 等。
-- 画布坐标统一按预览尺寸 `width`×`height`（500×667，常量 `PREVIEW_WIDTH`/`PREVIEW_HEIGHT` 见 `src/constants.ts`）；导出时由渲染器按 `scale` 放大，逻辑坐标不变。
+- `config` 为 `TemplateConfig`（`src/types/types.d.ts`）：`bgColor`/`textColor`/`accentColor`/`fontSize`/`lineHeight`/`letterSpacing`/`textPadding`/`fontFamily`/`hasCover`/`hasSignature` 等。
+- 画布坐标统一按预览尺寸 `width`×`height`（500×667，常量 `PREVIEW_WIDTH`/`PREVIEW_HEIGHT` 见 `src/utils/constants.ts`）；导出时由渲染器按 `scale` 放大，逻辑坐标不变。
 
 ### 可用工具
 
@@ -112,7 +116,7 @@ interface TextStyle {
    ```ts
    import type { TemplateConfig, TextSegment } from "../types";
    import { TEMPLATE_UTIL } from "../utils/template_utils";
-   import type { Template, TextStyle } from "./type";
+   import type { Template, TextStyle } from "../types/template";
 
    export class Blank implements Template {
        name = 'blank';
@@ -125,8 +129,8 @@ interface TextStyle {
    }
    ```
 2. 在 `src/core/TemplateDefinitions.ts` 的 `templateClasses` 数组加入该类（`name` 会被作为 `styleMap` 的 key，重复会告警）。
-3. 建 `public/templates/{id}.json`（提供基础 `config`）。
-4. 在 `public/templates/index.json` 注册该 id（决定显示顺序）。
+3. 建 `public/data/templates/{id}.json`（提供基础 `config`）。
+4. 在 `public/data/templates/index.json` 注册该 id（决定显示顺序）。
 
 ## 开发方式
 

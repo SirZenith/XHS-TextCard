@@ -4,7 +4,7 @@
     "author": "geekfoxcharlie",
     "version": "1.0",
     "config": {
-        "coverImage": "assets/cover-cinematic-film.jpg",
+        "coverImage": "/assets/covers/cinematic-film.jpg",
         "coverFontSize": 46,
         "coverLineHeight": 1.32,
         "bgColor": "#1A1A18",

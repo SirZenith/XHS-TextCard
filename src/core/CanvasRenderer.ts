@@ -7,13 +7,13 @@
  * 3. 模板隔离：具体的视觉逻辑由 TemplateDefinitions 定义，渲染器仅负责调用和基础绘图。
  * 4. 高清适配：支持 Scale 参数进行预览与高清输出的无损切换。
  */
-import { DEFAULT_BRAND_TEXT, PREVIEW_HEIGHT, PREVIEW_WIDTH } from '../constants';
-import { TEMPLATE_DEFINITIONS } from './TemplateDefinitions';
+import { DEFAULT_BRAND_TEXT, PREVIEW_HEIGHT, PREVIEW_WIDTH } from '../utils/constants';
+import { TEMPLATE_DEFINITIONS } from './template_definitions';
 import { CANVAS_UTIL } from '../utils/canvas_utils';
-import type { TextStyle } from '../templates/type';
-import type { ContentBox, LayoutBlock, RenderOptions, TemplateConfig, TextSegment } from '../types';
+import type { TextStyle } from '../types/template';
+import type { ContentBox, LayoutBlock, RenderOptions, TemplateConfig, TextSegment } from '../types/types';
 
-const SOCIAL_ICONS: Record<string, { src: string }> = {
+const SOCIAL_ICONS: Record<string, { src: string; }> = {
     gongzhonghao: { src: 'assets/icons/gongzhonghao.png' },
     shipinhao: { src: 'assets/icons/shipinhao.png' },
     xiaohongshu: { src: 'assets/icons/xiaohongshu.png' },
@@ -65,7 +65,10 @@ export class CanvasRenderer {
                 this.imageCache.set(src, img);
                 resolve(img);
             };
-            img.onerror = () => resolve(null);
+            img.onerror = (...args) => {
+                console.log(src, args);
+                resolve(null);
+            };
             img.src = src;
         });
     }
@@ -667,7 +670,7 @@ export class CanvasRenderer {
         return undefined;
     }
 
-    private buildSegmentFont(segment: TextSegment, config: TemplateConfig, styles: TextStyle | undefined): { fontStyle: string; fontWeight: string; fontSize: number; fontFamily: string } {
+    private buildSegmentFont(segment: TextSegment, config: TemplateConfig, styles: TextStyle | undefined): { fontStyle: string; fontWeight: string; fontSize: number; fontFamily: string; } {
         return {
             fontStyle: segment.fontStyle || styles?.fontStyle || 'normal',
             fontWeight: segment.fontWeight || styles?.fontWeight || 'normal',

@@ -1,6 +1,6 @@
-import type { ContentBox, TemplateConfig, TextSegment } from "../types";
+import type { ContentBox, TemplateConfig, TextSegment } from "../types/types";
 import { TEMPLATE_UTIL } from "../utils/template_utils";
-import type { Template, TextStyle } from "./type";
+import type { Template, TextStyle } from "../types/template";
 
 /**
  * 星光质感 - 暗黑背景 + 星光粒子效果

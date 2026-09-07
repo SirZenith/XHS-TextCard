@@ -1,7 +1,7 @@
-import type { ContentBox, TemplateConfig, TextSegment } from '../types';
+import type { ContentBox, TemplateConfig, TextSegment } from './types';
 
 export interface TextStyle {
-    textColor: string
+    textColor: string;
     highlightColor?: string;
     codeBgColor?: string;
     fontFamily?: string;

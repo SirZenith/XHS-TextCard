@@ -1,4 +1,4 @@
-import type { PageNumberOptions, TemplateConfig } from '../types';
+import type { PageNumberOptions, TemplateConfig } from '../types/types';
 
 export namespace TEMPLATE_UTIL {
     /**
@@ -32,7 +32,7 @@ export namespace TEMPLATE_UTIL {
 
         ctx.fillText(text, x, y);
         ctx.restore();
-    }
+    };
 
     /**
      * 噪点纹理缓存
@@ -61,7 +61,7 @@ export namespace TEMPLATE_UTIL {
         noiseTextureCache.set(key, canvas);
 
         return canvas;
-    }
+    };
 
     /**
      * 纸张纹理缓存
@@ -126,5 +126,5 @@ export namespace TEMPLATE_UTIL {
 
         paperTextureCache.set(key, canvas);
         return canvas;
-    }
+    };
 }

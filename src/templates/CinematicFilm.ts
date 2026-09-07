@@ -1,6 +1,6 @@
-import type { ContentBox, TemplateConfig, TextSegment } from "../types";
+import type { ContentBox, TemplateConfig, TextSegment } from "../types/types";
 import { CANVAS_UTIL } from "../utils/canvas_utils";
-import type { Template, TextStyle } from "./type";
+import type { Template, TextStyle } from "../types/template";
 
 /**
  * 电影胶片 - 致敬 Adele《Someone Like You》MV

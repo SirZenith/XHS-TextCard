@@ -7,9 +7,9 @@
  * 3. 性能平衡：预览时使用适度的 Scale (如 2.0) 以平衡画质与内存占用。
  */
 import { CanvasRenderer } from '../core/CanvasRenderer';
-import { PREVIEW_HEIGHT, PREVIEW_WIDTH } from '../constants';
+import { PREVIEW_HEIGHT, PREVIEW_WIDTH } from '../utils/constants';
 import type { TemplateManager } from './TemplateManager';
-import type { LayoutBlock, TemplateConfig } from '../types';
+import type { LayoutBlock, TemplateConfig } from '../types/types';
 
 export class PreviewGenerator {
     private templateManager: TemplateManager;

@@ -7,9 +7,9 @@
  * 3. 跨页能力：支持对 Layout Blocks 进行高度检测与逻辑切分，为 TextSplitter 提供拆分依据。
  * 4. 富文本渲染：支持内联样式的组合（加粗、斜体、高亮、代码、标题级别）。
  */
-import { PREVIEW_WIDTH } from '../constants';
+import { PREVIEW_WIDTH } from '../utils/constants';
 import { CANVAS_UTIL } from '../utils/canvas_utils';
-import type { CodeSegment, EngineConfig, ImageMeasureResult, LayoutBlock, MathRenderResult, TableCellLayout, TableRowLayout, TextSegment } from '../types';
+import type { CodeSegment, EngineConfig, ImageMeasureResult, LayoutBlock, MathRenderResult, TableCellLayout, TableRowLayout, TextSegment } from '../types/types';
 
 export class CanvasTextEngine {
     private canvas: HTMLCanvasElement;
@@ -53,7 +53,7 @@ export class CanvasTextEngine {
         this.drawWidth = config.drawWidth || ((this.config.cardWidth || PREVIEW_WIDTH) - (Number(this.config.textPadding) * 2 || 70));
     }
 
-    setFont(options: { fontSize?: number; fontWeight?: string; fontStyle?: string; fontFamily?: string } = {}) {
+    setFont(options: { fontSize?: number; fontWeight?: string; fontStyle?: string; fontFamily?: string; } = {}) {
         const { fontSize = this.config.fontSize, fontWeight = 'normal', fontStyle = 'normal', fontFamily = this.config.fontFamily } = options;
         this.ctx.font = `${fontStyle} ${fontWeight} ${fontSize}px ${fontFamily}`;
         return this.ctx.font;
@@ -382,7 +382,7 @@ export class CanvasTextEngine {
         return false;
     }
 
-    getSvgDimensions(svgElement: SVGSVGElement): { width: number; height: number } {
+    getSvgDimensions(svgElement: SVGSVGElement): { width: number; height: number; } {
         if (!svgElement) return { width: 400, height: 300 };
         const viewBox = svgElement.viewBox && svgElement.viewBox.baseVal;
         if (viewBox && viewBox.width > 0 && viewBox.height > 0) {
@@ -592,7 +592,7 @@ export class CanvasTextEngine {
         };
     }
 
-    splitTableLayout(layout: LayoutBlock, availableHeight: number): { part1: LayoutBlock | null; part2: LayoutBlock } | null {
+    splitTableLayout(layout: LayoutBlock, availableHeight: number): { part1: LayoutBlock | null; part2: LayoutBlock; } | null {
         if (!layout || layout.type !== 'table-grid' || !layout.rows || layout.rows.length < 3) return null;
         const header = layout.rows[0];
         let usedHeight = header.height;
@@ -645,7 +645,7 @@ export class CanvasTextEngine {
     /**
      * 将原始文本拆分为行（用于简单文本或代码块）
      */
-    splitIntoLines(text: string, style: { fontSize?: number; fontWeight?: string } = {}, maxWidth: number = this.drawWidth): string[] {
+    splitIntoLines(text: string, style: { fontSize?: number; fontWeight?: string; } = {}, maxWidth: number = this.drawWidth): string[] {
         const { fontSize = this.config.fontSize, fontWeight = 'normal' } = style;
         const lines: string[] = [];
         let currentLine = '', currentWidth = 0;
@@ -681,194 +681,194 @@ export class CanvasTextEngine {
         if (!token) return layouts;
 
         switch (token.type) {
-            case 'centerBlock': {
-                // 内部 tokens 是块级 token（paragraph, heading 等），逐个布局并标记居中
-                const childTokens = token.tokens || [];
-                for (const child of childTokens) {
-                    const childLayouts = await this.layoutToken(child);
-                    for (const layout of childLayouts) {
-                        layout.align = 'center';
-                        layouts.push(layout);
-                    }
+        case 'centerBlock': {
+            // 内部 tokens 是块级 token（paragraph, heading 等），逐个布局并标记居中
+            const childTokens = token.tokens || [];
+            for (const child of childTokens) {
+                const childLayouts = await this.layoutToken(child);
+                for (const layout of childLayouts) {
+                    layout.align = 'center';
+                    layouts.push(layout);
                 }
-                break;
             }
-            case 'image': {
-                const imgData = await this.measureImage(token.href || '');
-                const marginTop = 10, marginBottom = 20;
+            break;
+        }
+        case 'image': {
+            const imgData = await this.measureImage(token.href || '');
+            const marginTop = 10, marginBottom = 20;
+            layouts.push({
+                type: 'image',
+                src: token.href || '',
+                alt: token.text || '',
+                width: imgData.width,
+                height: (imgData.height || 100) + marginTop + marginBottom,
+                contentHeight: imgData.height || 100,
+                marginTop,
+                marginBottom
+            });
+            break;
+        }
+        case 'mathBlock': {
+            const fontSize = this.config.fontSize * 0.9;
+            const math = await this.renderMath(token.text || '', true, fontSize);
+            if (math && math.image) {
+                const maxWidth = this.drawWidth;
+                const mathWidth = math.width || 0;
+                const scale = mathWidth > maxWidth ? maxWidth / mathWidth : 1;
+                const width = mathWidth * scale;
+                const contentHeight = (math.height || 0) * scale;
+                const marginTop = 0;
+                const marginBottom = this.config.fontSize * 0.8;
                 layouts.push({
-                    type: 'image',
-                    src: token.href || '',
-                    alt: token.text || '',
-                    width: imgData.width,
-                    height: (imgData.height || 100) + marginTop + marginBottom,
-                    contentHeight: imgData.height || 100,
+                    type: 'math-block',
+                    image: math.image,
+                    width,
+                    contentHeight,
+                    height: contentHeight + marginTop + marginBottom,
                     marginTop,
-                    marginBottom
+                    marginBottom,
+                    align: 'center'
                 });
-                break;
-            }
-            case 'mathBlock': {
-                const fontSize = this.config.fontSize * 0.9;
-                const math = await this.renderMath(token.text || '', true, fontSize);
-                if (math && math.image) {
-                    const maxWidth = this.drawWidth;
-                    const mathWidth = math.width || 0;
-                    const scale = mathWidth > maxWidth ? maxWidth / mathWidth : 1;
-                    const width = mathWidth * scale;
-                    const contentHeight = (math.height || 0) * scale;
-                    const marginTop = 0;
-                    const marginBottom = this.config.fontSize * 0.8;
-                    layouts.push({
-                        type: 'math-block',
-                        image: math.image,
-                        width,
-                        contentHeight,
-                        height: contentHeight + marginTop + marginBottom,
-                        marginTop,
-                        marginBottom,
-                        align: 'center'
-                    });
-                } else {
-                    const lines = this.splitIntoLines(math ? math.text : (token.text || ''));
-                    const marginBottom = this.config.fontSize * 0.8;
-                    layouts.push({
-                        type: 'code-block',
-                        lines: lines.map(text => ({ text, fontSize: this.config.fontSize * 0.9, isCode: true })),
-                        height: (lines.length * baseLineHeight) + marginBottom,
-                        marginTop: 0,
-                        marginBottom
-                    });
-                }
-                break;
-            }
-            case 'heading': {
-                const scales: Record<number, number> = { 1: this.config.h1Scale || 1.6, 2: this.config.h2Scale || 1.4, 3: this.config.h3Scale || 1.2 };
-                const fontSize = this.config.fontSize * (scales[token.depth || 0] || 1.1);
-                const lines = await this.layoutInlineText(token.tokens || [{ type: 'text', text: token.text }], this.drawWidth, {
-                    fontSize, fontWeight: '800', headingLevel: token.depth
-                });
-
-                const marginTop = fontSize * 0.6, marginBottom = fontSize * 0.4;
-                layouts.push({
-                    type: 'heading', depth: token.depth, lines,
-                    height: marginTop + (lines.length * fontSize * this.config.lineHeight) + marginBottom,
-                    marginTop, marginBottom
-                });
-                break;
-            }
-            case 'hr': {
-                layouts.push({ type: 'divider', height: 20 });
-                break;
-            }
-            case 'text':
-            case 'paragraph': {
-                const tokens = token.tokens;
-
-                // 如果段落只包含一个图片，则直接作为图片处理
-                if (tokens && tokens.length === 1 && tokens[0].type === 'image') {
-                    return await this.layoutToken(tokens[0]);
-                }
-
-                // 如果段落包含多个图片和其他文本，提取出来作为独立块
-                const hasImage = !!(tokens && tokens.some(t => t.type === 'image'));
-                if (hasImage && tokens) {
-                    const subLayouts: LayoutBlock[] = [];
-                    let currentTextTokens: MarkedToken[] = [];
-
-                    for (const subToken of tokens) {
-                        if (subToken.type === 'image') {
-                            if (currentTextTokens.length > 0) {
-                                subLayouts.push(...await this.layoutToken({ type: 'paragraph', tokens: currentTextTokens, text: '' }));
-                                currentTextTokens = [];
-                            }
-                            subLayouts.push(...await this.layoutToken(subToken));
-                        } else {
-                            currentTextTokens.push(subToken);
-                        }
-                    }
-
-                    if (currentTextTokens.length > 0) {
-                        subLayouts.push(...await this.layoutToken({ type: 'paragraph', tokens: currentTextTokens, text: '' }));
-                    }
-                    return subLayouts;
-                }
-
-                const lines = await this.layoutInlineText(tokens || [{ type: 'text', text: token.text || '' }]);
+            } else {
+                const lines = this.splitIntoLines(math ? math.text : (token.text || ''));
                 const marginBottom = this.config.fontSize * 0.8;
-                layouts.push({
-                    type: 'paragraph', lines, height: (lines.length * baseLineHeight) + marginBottom,
-                    marginTop: 0, marginBottom
-                });
-                break;
-            }
-            case 'blockquote': {
-                const indent = 20;
-                const lines = await this.layoutInlineText(token.tokens || [{ type: 'text', text: token.text }], this.drawWidth - indent);
-                const marginBottom = this.config.fontSize * 0.8;
-                layouts.push({
-                    type: 'blockquote', lines, indent, height: (lines.length * baseLineHeight) + marginBottom,
-                    marginTop: 0, marginBottom
-                });
-                break;
-            }
-            case 'list': {
-                const items = token.items || [];
-                for (let i = 0; i < items.length; i++) {
-                    const item = items[i];
-                    const prefix = token.ordered ? `${i + 1}. ` : '• ';
-                    const prefixWidth = this.measureTextWidth(prefix);
-                    let inlineTokens = item.tokens || [];
-                    if (inlineTokens.length === 1 && inlineTokens[0].type === 'paragraph') {
-                        inlineTokens = inlineTokens[0].tokens || [];
-                    }
-
-                    const lines = await this.layoutInlineText(inlineTokens, this.drawWidth - prefixWidth);
-                    const marginBottom = this.config.fontSize * 0.8;
-                    layouts.push({
-                        type: 'list-item', prefix, prefixWidth, lines,
-                        height: (lines.length * baseLineHeight) + marginBottom,
-                        marginTop: 0, marginBottom
-                    });
-                }
-                break;
-            }
-            case 'space': {
-                layouts.push({ type: 'space', height: this.config.fontSize });
-                break;
-            }
-            case 'table': {
-                const tableLayout = await this.layoutTable(token);
-                if (tableLayout) {
-                    layouts.push(tableLayout);
-                }
-                break;
-            }
-            case 'code': {
-                const language = String(token.lang || '').trim().toLowerCase();
-                if (language === 'mermaid') {
-                    const mermaidBlock = await this.renderMermaid(token.text || '');
-                    if (mermaidBlock) {
-                        layouts.push(mermaidBlock);
-                        break;
-                    }
-                }
-                await this.waitForHighlightJs();
-                const paddingX = 14;
-                const lines = this.splitCodeSegments(this.highlightCode(token.text || '', token.lang), this.drawWidth - (paddingX * 2));
-                const paddingY = 12;
-                const marginBottom = this.config.fontSize * 0.8;
-                const lineHeight = (this.config.fontSize * 0.82) * (Number(this.config.lineHeight) || 1.6);
                 layouts.push({
                     type: 'code-block',
-                    lines,
-                    paddingX,
-                    paddingY,
-                    height: (lines.length * lineHeight) + (paddingY * 2) + marginBottom,
+                    lines: lines.map(text => ({ text, fontSize: this.config.fontSize * 0.9, isCode: true })),
+                    height: (lines.length * baseLineHeight) + marginBottom,
+                    marginTop: 0,
+                    marginBottom
+                });
+            }
+            break;
+        }
+        case 'heading': {
+            const scales: Record<number, number> = { 1: this.config.h1Scale || 1.6, 2: this.config.h2Scale || 1.4, 3: this.config.h3Scale || 1.2 };
+            const fontSize = this.config.fontSize * (scales[token.depth || 0] || 1.1);
+            const lines = await this.layoutInlineText(token.tokens || [{ type: 'text', text: token.text }], this.drawWidth, {
+                fontSize, fontWeight: '800', headingLevel: token.depth
+            });
+
+            const marginTop = fontSize * 0.6, marginBottom = fontSize * 0.4;
+            layouts.push({
+                type: 'heading', depth: token.depth, lines,
+                height: marginTop + (lines.length * fontSize * this.config.lineHeight) + marginBottom,
+                marginTop, marginBottom
+            });
+            break;
+        }
+        case 'hr': {
+            layouts.push({ type: 'divider', height: 20 });
+            break;
+        }
+        case 'text':
+        case 'paragraph': {
+            const tokens = token.tokens;
+
+            // 如果段落只包含一个图片，则直接作为图片处理
+            if (tokens && tokens.length === 1 && tokens[0].type === 'image') {
+                return await this.layoutToken(tokens[0]);
+            }
+
+            // 如果段落包含多个图片和其他文本，提取出来作为独立块
+            const hasImage = !!(tokens && tokens.some(t => t.type === 'image'));
+            if (hasImage && tokens) {
+                const subLayouts: LayoutBlock[] = [];
+                let currentTextTokens: MarkedToken[] = [];
+
+                for (const subToken of tokens) {
+                    if (subToken.type === 'image') {
+                        if (currentTextTokens.length > 0) {
+                            subLayouts.push(...await this.layoutToken({ type: 'paragraph', tokens: currentTextTokens, text: '' }));
+                            currentTextTokens = [];
+                        }
+                        subLayouts.push(...await this.layoutToken(subToken));
+                    } else {
+                        currentTextTokens.push(subToken);
+                    }
+                }
+
+                if (currentTextTokens.length > 0) {
+                    subLayouts.push(...await this.layoutToken({ type: 'paragraph', tokens: currentTextTokens, text: '' }));
+                }
+                return subLayouts;
+            }
+
+            const lines = await this.layoutInlineText(tokens || [{ type: 'text', text: token.text || '' }]);
+            const marginBottom = this.config.fontSize * 0.8;
+            layouts.push({
+                type: 'paragraph', lines, height: (lines.length * baseLineHeight) + marginBottom,
+                marginTop: 0, marginBottom
+            });
+            break;
+        }
+        case 'blockquote': {
+            const indent = 20;
+            const lines = await this.layoutInlineText(token.tokens || [{ type: 'text', text: token.text }], this.drawWidth - indent);
+            const marginBottom = this.config.fontSize * 0.8;
+            layouts.push({
+                type: 'blockquote', lines, indent, height: (lines.length * baseLineHeight) + marginBottom,
+                marginTop: 0, marginBottom
+            });
+            break;
+        }
+        case 'list': {
+            const items = token.items || [];
+            for (let i = 0; i < items.length; i++) {
+                const item = items[i];
+                const prefix = token.ordered ? `${i + 1}. ` : '• ';
+                const prefixWidth = this.measureTextWidth(prefix);
+                let inlineTokens = item.tokens || [];
+                if (inlineTokens.length === 1 && inlineTokens[0].type === 'paragraph') {
+                    inlineTokens = inlineTokens[0].tokens || [];
+                }
+
+                const lines = await this.layoutInlineText(inlineTokens, this.drawWidth - prefixWidth);
+                const marginBottom = this.config.fontSize * 0.8;
+                layouts.push({
+                    type: 'list-item', prefix, prefixWidth, lines,
+                    height: (lines.length * baseLineHeight) + marginBottom,
                     marginTop: 0, marginBottom
                 });
-                break;
             }
+            break;
+        }
+        case 'space': {
+            layouts.push({ type: 'space', height: this.config.fontSize });
+            break;
+        }
+        case 'table': {
+            const tableLayout = await this.layoutTable(token);
+            if (tableLayout) {
+                layouts.push(tableLayout);
+            }
+            break;
+        }
+        case 'code': {
+            const language = String(token.lang || '').trim().toLowerCase();
+            if (language === 'mermaid') {
+                const mermaidBlock = await this.renderMermaid(token.text || '');
+                if (mermaidBlock) {
+                    layouts.push(mermaidBlock);
+                    break;
+                }
+            }
+            await this.waitForHighlightJs();
+            const paddingX = 14;
+            const lines = this.splitCodeSegments(this.highlightCode(token.text || '', token.lang), this.drawWidth - (paddingX * 2));
+            const paddingY = 12;
+            const marginBottom = this.config.fontSize * 0.8;
+            const lineHeight = (this.config.fontSize * 0.82) * (Number(this.config.lineHeight) || 1.6);
+            layouts.push({
+                type: 'code-block',
+                lines,
+                paddingX,
+                paddingY,
+                height: (lines.length * lineHeight) + (paddingY * 2) + marginBottom,
+                marginTop: 0, marginBottom
+            });
+            break;
+        }
         }
         return layouts;
     }
@@ -992,7 +992,7 @@ export class CanvasTextEngine {
     /**
      * 将布局块拆分为两部分，实现跨页排版
      */
-    splitLayout(layout: LayoutBlock, availableHeight: number): { part1: LayoutBlock; part2: LayoutBlock } | null {
+    splitLayout(layout: LayoutBlock, availableHeight: number): { part1: LayoutBlock; part2: LayoutBlock; } | null {
         if (!layout.lines || !Array.isArray(layout.lines) || layout.lines.length === 0) return null;
 
         const lines = layout.lines;

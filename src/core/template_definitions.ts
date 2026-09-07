@@ -5,8 +5,8 @@
  * 每个模板的绘制逻辑已拆分为 `src/templates/` 下的独立类（实现 Template 接口），
  * 这里仅负责注册实例并通过 id 提供统一访问入口。
  */
-import type { ContentBox, TemplateConfig } from '../types';
-import type { Template } from '../templates/type';
+import type { ContentBox, TemplateConfig } from '../types/types';
+import type { Template } from '../types/template';
 import { AuraGradient } from '../templates/AuraGradient';
 import { Blank } from '../templates/Blank';
 import { CinematicFilm } from '../templates/CinematicFilm';
@@ -19,6 +19,7 @@ import { Polaroid } from '../templates/Polaroid';
 import { ProDoc } from '../templates/ProDoc';
 import { StarryNight } from '../templates/StarryNight';
 import { SwissStudio } from '../templates/SwissStudio';
+import { Luli } from '../templates/Luli';
 
 export namespace TEMPLATE_DEFINITIONS {
     const templateClasses: Array<new () => Template> = [
@@ -28,13 +29,14 @@ export namespace TEMPLATE_DEFINITIONS {
         DeepNight,
         ElegantBook,
         IosMemo,
+        Luli,
         MinimalistMagazine,
         NotionStyle,
         Polaroid,
         ProDoc,
         StarryNight,
         SwissStudio,
-    ]
+    ];
 
     const styleMap = new Map<string, Template>();
     for (const Cls of templateClasses) {
@@ -67,7 +69,7 @@ export namespace TEMPLATE_DEFINITIONS {
             width: width - (padding * 2),
             height: height - topOffset - bottomOffset
         };
-    }
+    };
 
     export const getTemplate = (name: string): Template | undefined => {
         return styleMap.get(name);

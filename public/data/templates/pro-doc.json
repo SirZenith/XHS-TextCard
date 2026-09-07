@@ -4,8 +4,8 @@
     "author": "geekfoxcharlie",
     "version": "1.3",
     "config": {
-    "coverImage": "assets/cover-pro-doc.jpg",
-    "coverFontSize": 48,
+        "coverImage": "/assets/covers/pro-doc.jpg",
+        "coverFontSize": 48,
         "bgColor": "#F9FAFB",
         "textColor": "#111827",
         "fontSize": 16,

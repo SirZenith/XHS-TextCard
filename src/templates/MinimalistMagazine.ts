@@ -1,8 +1,8 @@
-import { PREVIEW_HEIGHT } from "../constants";
-import type { ContentBox, TemplateConfig, TextSegment } from "../types";
+import { PREVIEW_HEIGHT } from "../utils/constants";
+import type { ContentBox, TemplateConfig, TextSegment } from "../types/types";
 import { CANVAS_UTIL } from "../utils/canvas_utils";
 import { TEMPLATE_UTIL } from "../utils/template_utils";
-import type { Template, TextStyle } from "./type";
+import type { Template, TextStyle } from "../types/template";
 
 /**
  * 极简杂志 - 现代社论美学

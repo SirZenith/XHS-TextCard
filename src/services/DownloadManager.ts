@@ -7,8 +7,8 @@
  * 3. 批量支持：集成 JSZip 实现多页卡片的一键打包下载。
  */
 import { CanvasRenderer } from '../core/CanvasRenderer';
-import { OUTPUT_WIDTH, PREVIEW_HEIGHT, PREVIEW_WIDTH } from '../constants';
-import type { LayoutBlock, TemplateConfig } from '../types';
+import { OUTPUT_WIDTH, PREVIEW_HEIGHT, PREVIEW_WIDTH } from '../utils/constants';
+import type { LayoutBlock, TemplateConfig } from '../types/types';
 
 export class DownloadManager {
     private loadingElement: HTMLElement | null = null;
@@ -88,6 +88,14 @@ export class DownloadManager {
         });
     }
 
+    private getDigitCnt(num: number): number {
+        let digitCnt = 0;
+        for (let walk = Math.floor(Math.abs(num)); walk > 0; walk = Math.floor(walk / 10)) {
+            digitCnt++;
+        }
+        return digitCnt;
+    }
+
     /**
      * 批量打包下载所有图片
      */
@@ -99,9 +107,16 @@ export class DownloadManager {
             const zip = new JSZip();
             const totalCount = pages.length;
             const ext = this.exportFormat === 'jpeg' ? 'jpg' : 'png';
+            const digitCnt = this.getDigitCnt(totalCount);
             for (let i = 0; i < totalCount; i++) {
+                let indexStr = String(i + 1);
+                let delta = digitCnt - indexStr.length;
+                if (delta > 0) {
+                    indexStr = "0".repeat(delta) + indexStr;
+                }
+
                 const dataUrl = await this.capture(pages[i], config, templateId, i, totalCount);
-                zip.file(`card-${i + 1}.${ext}`, dataUrl.split(',')[1], { base64: true });
+                zip.file(`card-${indexStr}.${ext}`, dataUrl.split(',')[1], { base64: true });
             }
 
             const blob = await zip.generateAsync({ type: 'blob' });

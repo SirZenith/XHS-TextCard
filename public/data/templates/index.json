@@ -1,0 +1,56 @@
+{
+    "templates": [
+        {
+            "id": "luli",
+            "name": "陆离"
+        },
+        {
+            "id": "cinematic-film",
+            "name": "电影胶片"
+        },
+        {
+            "id": "starry-night",
+            "name": "星光质感"
+        },
+        {
+            "id": "polaroid",
+            "name": "复古拍立得"
+        },
+        {
+            "id": "notion-style",
+            "name": "效率笔记"
+        },
+        {
+            "id": "elegant-book",
+            "name": "书籍内页"
+        },
+        {
+            "id": "ios-memo",
+            "name": "苹果备忘录"
+        },
+        {
+            "id": "swiss-studio",
+            "name": "苏黎世工作室"
+        },
+        {
+            "id": "minimalist-magazine",
+            "name": "极简杂志"
+        },
+        {
+            "id": "aura-gradient",
+            "name": "弥散极光"
+        },
+        {
+            "id": "deep-night",
+            "name": "暗夜深思"
+        },
+        {
+            "id": "pro-doc",
+            "name": "大厂文档"
+        },
+        {
+            "id": "blank",
+            "name": "空白模板"
+        }
+    ]
+}

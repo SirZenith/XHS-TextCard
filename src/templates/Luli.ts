@@ -3,11 +3,8 @@ import { CANVAS_UTIL } from "../utils/canvas_utils";
 import { TEMPLATE_UTIL } from "../utils/template_utils";
 import type { Template, TextStyle } from "../types/template";
 
-/**
- * 空白模板 - 极致简约
- */
-export class Blank implements Template {
-    name: string = 'blank';
+export class Luli implements Template {
+    name: string = 'luli';
 
     public drawForeground(ctx: CanvasRenderingContext2D, width: number, height: number, index: number, totalCount: number, config: TemplateConfig): void {
         TEMPLATE_UTIL.drawPageNumber(ctx, width, height, index, totalCount, config);

@@ -13,7 +13,8 @@ import { PreviewGenerator } from './services/PreviewGenerator';
 import { TemplateManager } from './services/TemplateManager';
 import { TextSplitter } from './core/TextSplitter';
 import { MARKDOWN_UTIL } from './utils/markdown_util';
-import type { AppElements, LayoutBlock, TemplateConfig } from './types';
+import type { AppElements, LayoutBlock, TemplateConfig } from './types/types';
+import { DEFAULT_TEMPLATE } from './utils/constants';
 
 export class App {
     private templateManager: TemplateManager;
@@ -37,7 +38,7 @@ export class App {
         this.downloadManager = new DownloadManager();
         this.editorController = new EditorController();
 
-        this.currentTemplate = 'starry-night';
+        this.currentTemplate = DEFAULT_TEMPLATE;
         this.currentTemplateConfig = null;
         this.splitPages = [];
         this.splitter = null;
@@ -135,6 +136,7 @@ export class App {
 
             // 实时保存当前模板配置到本地（排除 coverImage，避免 LocalStorage 超限）
             if (this.currentTemplate) {
+                console.log(config);
                 const { coverImage, ...safeConfig } = config;
                 localStorage.setItem(`xhs_tpl_config_${this.currentTemplate}`, JSON.stringify(safeConfig));
             }
@@ -232,7 +234,7 @@ export class App {
             let lastId = this.currentTemplate;
             try {
                 lastId = localStorage.getItem('xhs_last_template_id') || this.currentTemplate;
-            } catch (e) { }
+            } catch (e) {}
 
             await this.selectTemplate(lastId);
         } catch (error) {
