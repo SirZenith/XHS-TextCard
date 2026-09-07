@@ -10,6 +10,7 @@
 import { DEFAULT_BRAND_TEXT, PREVIEW_HEIGHT, PREVIEW_WIDTH } from '../constants';
 import { TEMPLATE_DEFINITIONS } from './TemplateDefinitions';
 import { CANVAS_UTIL } from '../utils/canvas_utils';
+import type { TextStyle } from '../templates/type';
 import type { ContentBox, LayoutBlock, RenderOptions, TemplateConfig, TextSegment } from '../types';
 
 const SOCIAL_ICONS: Record<string, { src: string }> = {
@@ -632,12 +633,8 @@ export class CanvasRenderer {
                         lineWidth += segment.width || 0;
                         continue;
                     }
-                    const fontStyle = segment.fontStyle || 'normal';
-                    const fontWeight = segment.fontWeight || 'normal';
-                    const fontSize = Number(segment.fontSize) || Number(config.fontSize) || 16;
-                    const fontFamily = segment.fontFamily || (config.fontFamily === 'inherit'
-                        ? "-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', sans-serif"
-                        : (config.fontFamily || 'sans-serif'));
+                    const styles = this.getSegmentStyles(segment, config, templateId);
+                    const { fontStyle, fontWeight, fontSize, fontFamily } = this.buildSegmentFont(segment, config, styles);
                     ctx.font = `${fontStyle} ${fontWeight} ${fontSize}px ${fontFamily}`;
                     lineWidth += CANVAS_UTIL.measureTextWidth(ctx, segment.text || '', letterSpacing);
                 }
@@ -662,30 +659,43 @@ export class CanvasRenderer {
         }
     }
 
+    private getSegmentStyles(segment: TextSegment, config: TemplateConfig, templateId: string): TextStyle | undefined {
+        const template = TEMPLATE_DEFINITIONS.getTemplate(templateId);
+        if (template && template.getTextStyles) {
+            return template.getTextStyles(segment, config);
+        }
+        return undefined;
+    }
+
+    private buildSegmentFont(segment: TextSegment, config: TemplateConfig, styles: TextStyle | undefined): { fontStyle: string; fontWeight: string; fontSize: number; fontFamily: string } {
+        return {
+            fontStyle: segment.fontStyle || styles?.fontStyle || 'normal',
+            fontWeight: segment.fontWeight || styles?.fontWeight || 'normal',
+            fontSize: Number(segment.fontSize) || Number(config.fontSize) || 16,
+            fontFamily: segment.fontFamily || styles?.fontFamily || (config.fontFamily === 'inherit'
+                ? "-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', sans-serif"
+                : (config.fontFamily || 'sans-serif'))
+        };
+    }
+
     drawSegment(ctx: CanvasRenderingContext2D, segment: TextSegment, x: number, y: number, config: TemplateConfig, templateId: string) {
         if (segment.isMath && segment.image) {
             ctx.drawImage(segment.image, x, y, segment.width!, segment.height!);
             return;
         }
 
-        const fontStyle = segment.fontStyle || 'normal';
-        const fontWeight = segment.fontWeight || 'normal';
-        const fontSize = Number(segment.fontSize) || Number(config.fontSize) || 16;
-        const fontFamily = segment.fontFamily || (config.fontFamily === 'inherit' ? "-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', sans-serif" : (config.fontFamily || "sans-serif"));
+        const styles = this.getSegmentStyles(segment, config, templateId);
+
+        const { fontStyle, fontWeight, fontSize, fontFamily } = this.buildSegmentFont(segment, config, styles);
         ctx.font = `${fontStyle} ${fontWeight} ${fontSize}px ${fontFamily}`;
 
         let textColor = segment.color || config.textColor;
         let highlightColor = 'rgba(255, 243, 191, 0.7)';
         let codeBgColor = 'rgba(0,0,0,0.04)';
-
-        const template = TEMPLATE_DEFINITIONS.getTemplate(templateId);
-        if (template && template.getTextStyles) {
-            const styles = template.getTextStyles(segment, config);
-            if (styles) {
-                if (styles.textColor && !segment.color) textColor = styles.textColor;
-                if (styles.highlightColor) highlightColor = styles.highlightColor;
-                if (styles.codeBgColor) codeBgColor = styles.codeBgColor;
-            }
+        if (styles) {
+            if (styles.textColor && !segment.color) textColor = styles.textColor;
+            if (styles.highlightColor) highlightColor = styles.highlightColor;
+            if (styles.codeBgColor) codeBgColor = styles.codeBgColor;
         }
 
         const letterSpacing = Number(config.letterSpacing) || 0;

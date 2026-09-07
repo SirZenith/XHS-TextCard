@@ -4,6 +4,9 @@ export interface TextStyle {
     textColor: string
     highlightColor?: string;
     codeBgColor?: string;
+    fontFamily?: string;
+    fontWeight?: string;
+    fontStyle?: string;
 }
 
 export interface TerminalStyle {
