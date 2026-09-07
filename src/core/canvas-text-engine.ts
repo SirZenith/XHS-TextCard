@@ -8,7 +8,7 @@
  * 4. 富文本渲染：支持内联样式的组合（加粗、斜体、高亮、代码、标题级别）。
  */
 import { PREVIEW_WIDTH } from '../constants';
-import { CanvasUtils } from '../utils/canvas-utils';
+import { CANVAS_UTIL } from '../utils/canvas-utils';
 import type { CodeSegment, EngineConfig, ImageMeasureResult, LayoutBlock, MathRenderResult, TableCellLayout, TableRowLayout, TextSegment } from '../types';
 
 export class CanvasTextEngine {
@@ -71,7 +71,7 @@ export class CanvasTextEngine {
 
         this.setFont({ fontSize, fontWeight, fontStyle, fontFamily });
         const letterSpacing = Number(this.config.letterSpacing) || 0;
-        const width = CanvasUtils.measureTextWidth(this.ctx, text, letterSpacing);
+        const width = CANVAS_UTIL.measureTextWidth(this.ctx, text, letterSpacing);
 
         // 只有短文本才缓存，防止缓存无限增长
         if (text.length < 10) {
@@ -140,11 +140,11 @@ export class CanvasTextEngine {
             }
             const color = match[1] ? colors.comment
                 : match[2] ? colors.string
-                : match[3] ? colors.number
-                : match[4] ? colors.keyword
-                : match[5] ? colors.builtIn
-                : match[6] ? colors.function
-                : colors.text;
+                    : match[3] ? colors.number
+                        : match[4] ? colors.keyword
+                            : match[5] ? colors.builtIn
+                                : match[6] ? colors.function
+                                    : colors.text;
             segments.push({ text: match[0], color });
             lastIndex = tokenRule.lastIndex;
         }

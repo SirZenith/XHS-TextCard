@@ -9,7 +9,7 @@
  */
 import { DEFAULT_BRAND_TEXT, PREVIEW_HEIGHT, PREVIEW_WIDTH } from '../constants';
 import { TemplateDefinitions } from './TemplateDefinitions';
-import { CanvasUtils } from '../utils/canvas-utils';
+import { CANVAS_UTIL } from '../utils/canvas-utils';
 import type { ContentBox, LayoutBlock, RenderOptions, TemplateConfig, TextSegment } from '../types';
 
 const SOCIAL_ICONS: Record<string, { src: string }> = {
@@ -282,8 +282,8 @@ export class CanvasRenderer {
             const sprocketY_top = Math.round((letterboxH - sprocketH) / 2);
             const sprocketY_bottom = height - letterboxH + sprocketY_top;
             for (let x = 20; x < width - 10; x += 32) {
-                CanvasUtils.drawRoundedRect(ctx, x, sprocketY_top, sprocketW, sprocketH, 2, 'rgba(200, 184, 154, 0.12)');
-                CanvasUtils.drawRoundedRect(ctx, x, sprocketY_bottom, sprocketW, sprocketH, 2, 'rgba(200, 184, 154, 0.12)');
+                CANVAS_UTIL.drawRoundedRect(ctx, x, sprocketY_top, sprocketW, sprocketH, 2, 'rgba(200, 184, 154, 0.12)');
+                CANVAS_UTIL.drawRoundedRect(ctx, x, sprocketY_bottom, sprocketW, sprocketH, 2, 'rgba(200, 184, 154, 0.12)');
             }
 
             // 胶片编码
@@ -333,7 +333,7 @@ export class CanvasRenderer {
     drawBackground(ctx: CanvasRenderingContext2D, config: TemplateConfig, width: number, height: number) {
         ctx.save();
         if (config.bgMode === 'gradient' && typeof config.bgColor === 'string' && config.bgColor.includes('linear-gradient')) {
-            const gradient = CanvasUtils.createGradient(ctx, config.bgColor, width, height);
+            const gradient = CANVAS_UTIL.createGradient(ctx, config.bgColor, width, height);
             ctx.fillStyle = gradient || '#ffffff';
         } else {
             ctx.fillStyle = config.bgColor || '#ffffff';
@@ -344,7 +344,7 @@ export class CanvasRenderer {
 
     drawTemplateBackground(ctx: CanvasRenderingContext2D, templateId: string, config: TemplateConfig, width: number, height: number) {
         this.drawBackground(ctx, config, width, height);
-        const template = TemplateDefinitions[templateId];
+        const template = TemplateDefinitions.getTemplate(templateId);
         if (template && template.drawBackground) {
             ctx.save();
             template.drawBackground(ctx, width, height, config);
@@ -353,7 +353,7 @@ export class CanvasRenderer {
     }
 
     drawTextAreaBackground(ctx: CanvasRenderingContext2D, templateId: string, config: TemplateConfig, rect: ContentBox) {
-        const template = TemplateDefinitions[templateId];
+        const template = TemplateDefinitions.getTemplate(templateId);
         if (template && template.drawTextAreaBackground) {
             ctx.save();
             template.drawTextAreaBackground(ctx, rect, config);
@@ -364,7 +364,7 @@ export class CanvasRenderer {
     drawTemplateForeground(ctx: CanvasRenderingContext2D, templateId: string, config: TemplateConfig, width: number, height: number, index: number = 0, totalCount: number = 1, isCover: boolean = false) {
         if (isCover) return; // 封面不绘制页码等通用装饰
 
-        const template = TemplateDefinitions[templateId];
+        const template = TemplateDefinitions.getTemplate(templateId);
         if (template && template.drawForeground) {
             ctx.save();
             template.drawForeground(ctx, width, height, index, totalCount, config);
@@ -391,7 +391,7 @@ export class CanvasRenderer {
         let currentY = textAreaRect.y;
         ctx.save();
         ctx.textBaseline = 'top';
-        const template = TemplateDefinitions[templateId];
+        const template = TemplateDefinitions.getTemplate(templateId);
 
         for (const layout of layouts) {
             if (layout.type === 'space') {
@@ -460,7 +460,7 @@ export class CanvasRenderer {
             : (config.fontFamily || 'sans-serif');
 
         ctx.save();
-        CanvasUtils.drawRoundedRect(ctx, x, y, maxWidth, boxHeight, 8, background, true, border);
+        CANVAS_UTIL.drawRoundedRect(ctx, x, y, maxWidth, boxHeight, 8, background, true, border);
         ctx.fillStyle = textColor;
         ctx.font = `600 ${fontSize * 0.9}px ${fontFamily}`;
         ctx.textAlign = 'left';
@@ -555,14 +555,14 @@ export class CanvasRenderer {
         const contentHeight = layout.height - (layout.marginBottom || 0);
         let bgColor = 'rgba(15, 23, 42, 0.06)';
         let borderColor = 'rgba(15, 23, 42, 0.10)';
-        const template = TemplateDefinitions[templateId];
+        const template = TemplateDefinitions.getTemplate(templateId);
         if (template && template.getTextStyles) {
             const styles = template.getTextStyles({ isCode: true }, config);
             if (styles && styles.codeBgColor) bgColor = styles.codeBgColor;
         }
 
         ctx.save();
-        CanvasUtils.drawRoundedRect(ctx, x, y, maxWidth, contentHeight, 8, bgColor, true, borderColor);
+        CANVAS_UTIL.drawRoundedRect(ctx, x, y, maxWidth, contentHeight, 8, bgColor, true, borderColor);
         this.drawStyledLines(
             ctx,
             layout.lines!,
@@ -588,7 +588,7 @@ export class CanvasRenderer {
             ctx.save();
             // 绘制圆角图片
             ctx.beginPath();
-            CanvasUtils.drawRoundedRect(ctx, x, y, drawW, drawH, 8);
+            CANVAS_UTIL.drawRoundedRect(ctx, x, y, drawW, drawH, 8);
             ctx.clip();
             ctx.drawImage(img, x, y, drawW, drawH);
             ctx.restore();
@@ -639,7 +639,7 @@ export class CanvasRenderer {
                         ? "-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', sans-serif"
                         : (config.fontFamily || 'sans-serif'));
                     ctx.font = `${fontStyle} ${fontWeight} ${fontSize}px ${fontFamily}`;
-                    lineWidth += CanvasUtils.measureTextWidth(ctx, segment.text || '', letterSpacing);
+                    lineWidth += CANVAS_UTIL.measureTextWidth(ctx, segment.text || '', letterSpacing);
                 }
                 segmentX = align === 'right'
                     ? startX + drawWidth - lineWidth
@@ -652,7 +652,7 @@ export class CanvasRenderer {
                     if (segment.isMath) {
                         segmentX += segment.width || 0;
                     } else {
-                        segmentX += CanvasUtils.measureTextWidth(ctx, segment.text || '', letterSpacing);
+                        segmentX += CANVAS_UTIL.measureTextWidth(ctx, segment.text || '', letterSpacing);
                     }
                 }
             } else {
@@ -678,7 +678,7 @@ export class CanvasRenderer {
         let highlightColor = 'rgba(255, 243, 191, 0.7)';
         let codeBgColor = 'rgba(0,0,0,0.04)';
 
-        const template = TemplateDefinitions[templateId];
+        const template = TemplateDefinitions.getTemplate(templateId);
         if (template && template.getTextStyles) {
             const styles = template.getTextStyles(segment, config);
             if (styles) {
@@ -698,7 +698,7 @@ export class CanvasRenderer {
             ctx.fillRect(x, y + fontSize * 0.1, width, fontSize * 1.1);
         } else if (segment.isCode && !segment.isCodeBlock) {
             ctx.fillStyle = codeBgColor;
-            CanvasUtils.drawRoundedRect(ctx, x - 2, y + 1, width + 4, fontSize * 1.3, 4, ctx.fillStyle);
+            CANVAS_UTIL.drawRoundedRect(ctx, x - 2, y + 1, width + 4, fontSize * 1.3, 4, ctx.fillStyle);
         }
 
         ctx.fillStyle = textColor;
@@ -719,7 +719,7 @@ export class CanvasRenderer {
         const sigColor = config.signatureColor || '#555555';
         const sigStyle = config.signatureStyle || 'modern-pill';
         const fontFamily = config.fontFamily === 'inherit' ? "-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', sans-serif" : (config.fontFamily || "sans-serif");
-        const template = TemplateDefinitions[templateId];
+        const template = TemplateDefinitions.getTemplate(templateId);
 
         // 如果社交图标在底部居中，则将签名上移，确保图标在最底部且紧密连接
         let bottomOffset = 0;
@@ -756,7 +756,7 @@ export class CanvasRenderer {
             const pillWidth = metrics.width + 40;
             const pillHeight = 30;
             const pillY = height - 42 - bottomOffset;
-            CanvasUtils.drawRoundedRect(ctx, (width - pillWidth) / 2, pillY, pillWidth, pillHeight, 15, sigColor);
+            CANVAS_UTIL.drawRoundedRect(ctx, (width - pillWidth) / 2, pillY, pillWidth, pillHeight, 15, sigColor);
             ctx.fillStyle = '#ffffff';
             ctx.textAlign = 'center';
             ctx.fillText(sigText, width / 2, pillY + pillHeight / 2 + 5);
@@ -779,7 +779,7 @@ export class CanvasRenderer {
             ctx.font = `600 13px ${fontFamily}`;
             const boxWidth = ctx.measureText(sigText).width + 30;
             const boxHeight = 32, y = height - 45 - bottomOffset;
-            CanvasUtils.drawRoundedRect(ctx, (width - boxWidth) / 2, y, boxWidth, boxHeight, 16, 'rgba(255, 255, 255, 0.25)', true, 'rgba(255, 255, 255, 0.2)');
+            CANVAS_UTIL.drawRoundedRect(ctx, (width - boxWidth) / 2, y, boxWidth, boxHeight, 16, 'rgba(255, 255, 255, 0.25)', true, 'rgba(255, 255, 255, 0.2)');
             ctx.fillStyle = sigColor; ctx.textAlign = 'center';
             ctx.fillText(sigText, width / 2, y + boxHeight / 2 + 5);
         } else {

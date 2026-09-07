@@ -1,11 +1,11 @@
 /**
  * CanvasUtils - Canvas 绘图工具集
  */
-export const CanvasUtils = {
+export namespace CANVAS_UTIL {
     /**
      * 绘制圆角矩形
      */
-    drawRoundedRect(ctx: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, radius: number | { tl: number; tr: number; bl: number; br: number }, fillStyle?: string | CanvasGradient | CanvasPattern | null, stroke: boolean = false, strokeStyle: string = '') {
+    export const drawRoundedRect = (ctx: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, radius: number | { tl: number; tr: number; bl: number; br: number }, fillStyle?: string | CanvasGradient | CanvasPattern | null, stroke: boolean = false, strokeStyle: string = '') => {
         const r = typeof radius === 'number' ? { tl: radius, tr: radius, bl: radius, br: radius } : radius;
         ctx.beginPath();
         ctx.moveTo(x + r.tl, y);
@@ -21,13 +21,13 @@ export const CanvasUtils = {
 
         if (fillStyle) { ctx.fillStyle = fillStyle; ctx.fill(); }
         if (stroke) { ctx.strokeStyle = strokeStyle; ctx.lineWidth = 1; ctx.stroke(); }
-    },
+    }
 
     /**
      * 将 CSS 渐变语法转换为 CanvasGradient 对象
      * 支持多色值渐变
      */
-    createGradient(ctx: CanvasRenderingContext2D, cssGradient: string, width: number, height: number): CanvasGradient | null {
+    export const createGradient = (ctx: CanvasRenderingContext2D, cssGradient: string, width: number, height: number): CanvasGradient | null => {
         try {
             const angleMatch = cssGradient.match(/(\d+)deg/);
             const angle = angleMatch ? parseInt(angleMatch[1]) : 135;
@@ -54,20 +54,20 @@ export const CanvasUtils = {
             console.error('Gradient parsing failed:', e);
             return null;
         }
-    },
+    }
 
     /**
      * 测量文本真实宽度
      */
-    measureTextWidth(ctx: CanvasRenderingContext2D, text: string, letterSpacing: number = 0): number {
+    export const measureTextWidth = (ctx: CanvasRenderingContext2D, text: string, letterSpacing: number = 0): number => {
         if (!text) return 0;
         return ctx.measureText(text).width + (text.length * letterSpacing);
-    },
+    }
 
     /**
      * 十六进制颜色转 RGBA
      */
-    hexToRgba(hex: string, opacity: number = 1): string {
+    export const hexToRgba = (hex: string, opacity: number = 1): string => {
         if (!hex || typeof hex !== 'string') return `rgba(0,0,0,${opacity})`;
         let h = hex.replace('#', '');
         if (h.length === 3) h = h.split('').map(c => c + c).join('');

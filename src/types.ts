@@ -156,34 +156,6 @@ export interface PageNumberOptions {
     padZero?: boolean;
 }
 
-/** 模板文字样式（getTextStyles 返回值） */
-export interface TextStyles {
-    textColor?: string;
-    highlightColor?: string;
-    codeBgColor?: string;
-}
-
-/** 单个模板的定义 */
-export interface TemplateDefinition {
-    getContentBox?: (config: TemplateConfig, width: number, height: number) => ContentBox;
-    drawBackground?: (ctx: CanvasRenderingContext2D, width: number, height: number, config: TemplateConfig) => void;
-    drawTextAreaBackground?: (ctx: CanvasRenderingContext2D, rect: ContentBox, config: TemplateConfig) => void;
-    drawForeground?: (ctx: CanvasRenderingContext2D, width: number, height: number, index: number, totalCount: number, config: TemplateConfig) => void;
-    getTextStyles?: (segment: TextSegment, config: TemplateConfig) => TextStyles;
-    terminalStyles?: ((config: TemplateConfig) => TextStyles) | TextStyles;
-}
-
-/** TemplateDefinitions 注册表（索引签名允许按 templateId 动态访问模板） */
-export interface TemplateDefinitionsMap {
-    [templateId: string]: any;
-    getContentBox: (templateId: string, config: TemplateConfig, width: number, height: number) => ContentBox;
-    _drawPageNumber: (ctx: CanvasRenderingContext2D, width: number, height: number, index: number, totalCount: number, config: TemplateConfig, options?: PageNumberOptions) => void;
-    _noiseTextureCache: Map<string, HTMLCanvasElement>;
-    _paperTextureCache: Map<string, HTMLCanvasElement>;
-    _getNoiseTexture: (width: number, height: number) => HTMLCanvasElement;
-    _getPaperTexture: (width: number, height: number) => HTMLCanvasElement;
-}
-
 /** 模板对象（TemplateManager 加载结果） */
 export interface TemplateInfo {
     id: string;
