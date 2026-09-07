@@ -37,7 +37,7 @@ src/                      # 源码（TypeScript，ES 模块，唯一事实来源
   styles/main.css         # Tailwind 源文件（@theme 令牌 + @source）
 public/                   # 静态资源（构建时原样复制到 dist/）
   assets/                 # covers/ 封面图、icons/ 社交图标、template-*.png 模板预览
-  css/                    # 旧手写 CSS（页面尚未迁移到 Tailwind，勿删）
+  css/                    # 旧手写 CSS（about.html 等静态页仍使用；editor 已迁移 Tailwind）
   third-party/            # vendored 库：marked / jszip / mermaid / pickr
   data/                   # 运行时 fetch 的数据
     default-text.md       # 默认示例文本
@@ -146,7 +146,7 @@ npm run preview    # 本地预览构建产物
 
 - 源码只改 `src/*.ts`；`public/` 仅放静态资源，构建时原样复制。
 - 所有模块使用 `export`/`import`（类型用 `import type`）；新增 `.ts` 文件无需再手动改 HTML 脚本顺序。
-- 样式迁移：新代码用 Tailwind 工具类；`public/css/*.css` 在页面迁移完成前保留。
+- 样式迁移：editor.html 已迁移到 Tailwind（工具类 + `src/styles/main.css` 的 `@layer components`，含 JS 动态生成组件的类）；`public/css/*.css` 仅剩 about.html 等静态页使用。
 
 ## 布署方式
 
