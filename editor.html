@@ -39,16 +39,16 @@
         },{
           "@type": "ListItem",
           "position": 2,
-          "name": "工作台",
-          "item": "https://xhs-textcard.site/editor.html"
+          "name": "使用指南",
+          "item": "https://xhs-textcard.site/guide.html"
         }]
       }
     }
     </script>
 
-    <script src="js/lib/jszip.min.js"></script>
-    <script src="js/lib/marked.umd.min.js"></script>
-    <script src="js/lib/mermaid.min.js?v=10.9.1"></script>
+    <script src="third-party/jszip.min.js"></script>
+    <script src="third-party/marked.umd.min.js"></script>
+    <script src="third-party/mermaid.min.js?v=10.9.1"></script>
     <script>
         window.mermaidReady = Promise.resolve(window.mermaid).then((mermaid) => {
             if (!mermaid) throw new Error('Mermaid 本地库加载失败');
@@ -75,7 +75,7 @@
     <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
     <!-- Pickr -->
     <link rel="stylesheet" href="css/lib/monolith.min.css" />
-    <script src="js/lib/pickr.min.js"></script>
+    <script src="third-party/pickr.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <!-- 字体库 -->
@@ -667,18 +667,18 @@
     </div>
 
     <!-- JavaScript 模块 -->
-    <script src="js/constants.js"></script>
-    <script src="js/utils/markdown.js"></script>
-    <script src="js/utils/canvas-text-engine.js?v=20260717-rich-blocks"></script>
-    <script src="js/utils/canvas-utils.js"></script>
-    <script src="js/TemplateDefinitions.js"></script>
-    <script src="js/CanvasRenderer.js?v=20260717-rich-blocks"></script>
-    <script src="js/TemplateManager.js"></script>
-    <script src="js/TextSplitter.js?v=20260717-rich-blocks"></script>
-    <script src="js/PreviewGenerator.js"></script>
-    <script src="js/DownloadManager.js"></script>
-    <script src="js/EditorController.js"></script>
-    <script src="js/App.js?v=20260717-rich-blocks"></script>
+    <script src="dist/constants.js"></script>
+    <script src="dist/utils/markdown.js"></script>
+    <script src="dist/utils/canvas-text-engine.js?v=20260717-rich-blocks"></script>
+    <script src="dist/utils/canvas-utils.js"></script>
+    <script src="dist/TemplateDefinitions.js"></script>
+    <script src="dist/CanvasRenderer.js?v=20260717-rich-blocks"></script>
+    <script src="dist/TemplateManager.js"></script>
+    <script src="dist/TextSplitter.js?v=20260717-rich-blocks"></script>
+    <script src="dist/PreviewGenerator.js"></script>
+    <script src="dist/DownloadManager.js"></script>
+    <script src="dist/EditorController.js"></script>
+    <script src="dist/App.js?v=20260717-rich-blocks"></script>
 </body>
 
 </html>
