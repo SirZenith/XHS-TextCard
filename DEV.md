@@ -28,7 +28,7 @@ src/                      # 源码（TypeScript，ES 模块，唯一事实来源
     DownloadManager.ts    # 单张 / ZIP 批量下载
     EditorController.ts   # 侧边栏编辑面板
   templates/              # 每个模板一个类（实现 Template 接口）
-  utils/                  # canvas-utils.ts / markdown.ts / template-utils.ts
+  utils/                  # canvas_utils.ts / markdown_util.ts / template_utils.ts
   types.ts                # 共享接口（import type 引入）
   global.d.ts             # 第三方全局库的 ambient 类型（无 import/export）
   constants.ts            # 尺寸与默认参数
@@ -53,11 +53,80 @@ dist/                     # 构建产物（gitignore）
 
 ## 架构
 
-- **模块图**：`main.ts` → `App` →（`TemplateManager` / `PreviewGenerator` / `DownloadManager` / `EditorController` / `TextSplitter`）→ `CanvasRenderer` →（`TemplateDefinitions` / `CanvasUtils` / `CanvasTextEngine`）。
+- **模块图**：`main.ts` → `App` →（`TemplateManager` / `PreviewGenerator` / `DownloadManager` / `EditorController` / `TextSplitter`）→ `CanvasRenderer` →（`TEMPLATE_DEFINITIONS` / `CANVAS_UTIL` / `CanvasTextEngine`）。
 - **渲染管线**：`TextSplitter`（Markdown 经 `marked` 解析为 token → `LayoutBlock[][]` 分页）→ `CanvasRenderer`（依据 `TemplateDefinitions` 绘制每页画布）。
 - **第三方库为全局对象**：在 `editor.html` 用 `<script>` 加载（vendored `public/third-party/` + CDN 的 highlight.js / MathJax / 字体），类型声明集中在 `src/global.d.ts`。代码中通过 `typeof marked !== 'undefined'` 等守卫兜底。
-- **模板配置驱动**：`public/templates/index.json` 决定顺序，`{id}.json` 提供基础配置；绘制逻辑在 `src/templates/{Name}.ts` 的类中（实现 `Template` 接口），由 `src/core/TemplateDefinitions.ts` 注册实例。新增模板 = 建 JSON + 建类并 `new` 进 `styleMap` + 加入 `index.json`。
+- **模板配置驱动**：`public/templates/index.json` 决定顺序，`{id}.json` 提供基础配置；绘制逻辑在 `src/templates/{Name}.ts` 的类中（实现 `Template` 接口），由 `src/core/TemplateDefinitions.ts` 的 `templateClasses` 数组统一注册（详见下方「模板开发」）。
 - **持久化**：每模板配置存 `localStorage`（`xhs_tpl_config_<id>`、`xhs_last_template_id`、`xhs_edit_mode`）。
+
+## 模板开发（定义新模板）
+
+一个模板 = 一份 JSON 配置（`public/templates/{id}.json`）+ 一个绘制类（`src/templates/{Name}.ts`）。绘制类实现 `Template` 接口（定义见 `src/templates/type.d.ts`）：
+
+```ts
+interface Template {
+    name: string;        // 必填，= 模板 id，作为注册 key
+    getContentBox?: (config, width, height) => ContentBox;                          // 正文可用区域（分页与渲染共享）
+    drawBackground?: (ctx, width, height, config) => void;                          // 背景（画在正文之下）
+    drawTextAreaBackground?: (ctx, rect, config) => void;                           // 文本区背景（纸张/卡片）
+    drawForeground?: (ctx, width, height, index, totalCount, config) => void;       // 前景装饰/页码
+    getTextStyles?: (segment, config) => TextStyle;                                 // 按段定制颜色/字体
+    terminalStyles?: TerminalStyle | ((cfg) => TerminalStyle);                      // 终端风格签名配色
+}
+```
+
+### 绘制顺序
+
+`CanvasRenderer.render` 按固定层级调用模板钩子：`drawBackground` → `drawTextAreaBackground` → 水印 → 正文/封面 → `drawForeground`（封面页不调用）→ 签名 → 社交图标。
+
+### 关键参数
+
+- `config` 为 `TemplateConfig`（`src/types.ts`）：`bgColor`/`textColor`/`accentColor`/`fontSize`/`lineHeight`/`letterSpacing`/`textPadding`/`fontFamily`/`hasCover`/`hasSignature` 等。
+- 画布坐标统一按预览尺寸 `width`×`height`（500×667，常量 `PREVIEW_WIDTH`/`PREVIEW_HEIGHT` 见 `src/constants.ts`）；导出时由渲染器按 `scale` 放大，逻辑坐标不变。
+
+### 可用工具
+
+- `CANVAS_UTIL`（`src/utils/canvas_utils.ts`）：`drawRoundedRect` / `createGradient` / `measureTextWidth` / `hexToRgba`。
+- `TEMPLATE_UTIL`（`src/utils/template_utils.ts`）：`drawPageNumber` / `getNoiseTexture` / `getPaperTexture`。
+
+### getTextStyles（文本样式）
+
+返回 `TextStyle`，可指定颜色与字体（字体为后加能力）：
+
+```ts
+interface TextStyle {
+    textColor: string;
+    highlightColor?: string;   // ==高亮== 背景色
+    codeBgColor?: string;      // 行内代码背景色
+    fontFamily?: string;       // 覆盖字体
+    fontWeight?: string;       // 覆盖字重
+    fontStyle?: string;        // 覆盖字形（italic 等）
+}
+```
+
+优先级：`segment` 内联样式 > `getTextStyles` > `config` 全局值。
+
+### 新增模板步骤
+
+1. 建 `src/templates/{Name}.ts`，实现 `Template`，`name` = 模板 id：
+   ```ts
+   import type { TemplateConfig, TextSegment } from "../types";
+   import { TEMPLATE_UTIL } from "../utils/template_utils";
+   import type { Template, TextStyle } from "./type";
+
+   export class Blank implements Template {
+       name = 'blank';
+       drawForeground(ctx, width, height, index, totalCount, config) {
+           TEMPLATE_UTIL.drawPageNumber(ctx, width, height, index, totalCount, config);
+       }
+       getTextStyles(segment, config): TextStyle {
+           return { textColor: config.textColor || '#1A1A1A' };
+       }
+   }
+   ```
+2. 在 `src/core/TemplateDefinitions.ts` 的 `templateClasses` 数组加入该类（`name` 会被作为 `styleMap` 的 key，重复会告警）。
+3. 建 `public/templates/{id}.json`（提供基础 `config`）。
+4. 在 `public/templates/index.json` 注册该 id（决定显示顺序）。
 
 ## 开发方式
 
