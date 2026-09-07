@@ -8,7 +8,7 @@
  * 4. 高清适配：支持 Scale 参数进行预览与高清输出的无损切换。
  */
 import { DEFAULT_BRAND_TEXT, PREVIEW_HEIGHT, PREVIEW_WIDTH } from '../constants';
-import { TemplateDefinitions } from './TemplateDefinitions';
+import { TEMPLATE_DEFINITIONS } from './TemplateDefinitions';
 import { CANVAS_UTIL } from '../utils/canvas-utils';
 import type { ContentBox, LayoutBlock, RenderOptions, TemplateConfig, TextSegment } from '../types';
 
@@ -323,8 +323,8 @@ export class CanvasRenderer {
      * 获取内容框位置，遵循 TemplateDefinitions 的唯一真理
      */
     getTextAreaRect(config: TemplateConfig, width: number, height: number, templateId: string): ContentBox {
-        if (typeof TemplateDefinitions.getContentBox === 'function') {
-            return TemplateDefinitions.getContentBox(templateId, config, width, height);
+        if (typeof TEMPLATE_DEFINITIONS.getContentBox === 'function') {
+            return TEMPLATE_DEFINITIONS.getContentBox(templateId, config, width, height);
         }
         const padding = Number(config.textPadding) || 35;
         return { x: padding, y: padding, width: width - (padding * 2), height: height - (padding * 2) };
@@ -344,7 +344,7 @@ export class CanvasRenderer {
 
     drawTemplateBackground(ctx: CanvasRenderingContext2D, templateId: string, config: TemplateConfig, width: number, height: number) {
         this.drawBackground(ctx, config, width, height);
-        const template = TemplateDefinitions.getTemplate(templateId);
+        const template = TEMPLATE_DEFINITIONS.getTemplate(templateId);
         if (template && template.drawBackground) {
             ctx.save();
             template.drawBackground(ctx, width, height, config);
@@ -353,7 +353,7 @@ export class CanvasRenderer {
     }
 
     drawTextAreaBackground(ctx: CanvasRenderingContext2D, templateId: string, config: TemplateConfig, rect: ContentBox) {
-        const template = TemplateDefinitions.getTemplate(templateId);
+        const template = TEMPLATE_DEFINITIONS.getTemplate(templateId);
         if (template && template.drawTextAreaBackground) {
             ctx.save();
             template.drawTextAreaBackground(ctx, rect, config);
@@ -364,7 +364,7 @@ export class CanvasRenderer {
     drawTemplateForeground(ctx: CanvasRenderingContext2D, templateId: string, config: TemplateConfig, width: number, height: number, index: number = 0, totalCount: number = 1, isCover: boolean = false) {
         if (isCover) return; // 封面不绘制页码等通用装饰
 
-        const template = TemplateDefinitions.getTemplate(templateId);
+        const template = TEMPLATE_DEFINITIONS.getTemplate(templateId);
         if (template && template.drawForeground) {
             ctx.save();
             template.drawForeground(ctx, width, height, index, totalCount, config);
@@ -391,7 +391,7 @@ export class CanvasRenderer {
         let currentY = textAreaRect.y;
         ctx.save();
         ctx.textBaseline = 'top';
-        const template = TemplateDefinitions.getTemplate(templateId);
+        const template = TEMPLATE_DEFINITIONS.getTemplate(templateId);
 
         for (const layout of layouts) {
             if (layout.type === 'space') {
@@ -555,7 +555,7 @@ export class CanvasRenderer {
         const contentHeight = layout.height - (layout.marginBottom || 0);
         let bgColor = 'rgba(15, 23, 42, 0.06)';
         let borderColor = 'rgba(15, 23, 42, 0.10)';
-        const template = TemplateDefinitions.getTemplate(templateId);
+        const template = TEMPLATE_DEFINITIONS.getTemplate(templateId);
         if (template && template.getTextStyles) {
             const styles = template.getTextStyles({ isCode: true }, config);
             if (styles && styles.codeBgColor) bgColor = styles.codeBgColor;
@@ -678,7 +678,7 @@ export class CanvasRenderer {
         let highlightColor = 'rgba(255, 243, 191, 0.7)';
         let codeBgColor = 'rgba(0,0,0,0.04)';
 
-        const template = TemplateDefinitions.getTemplate(templateId);
+        const template = TEMPLATE_DEFINITIONS.getTemplate(templateId);
         if (template && template.getTextStyles) {
             const styles = template.getTextStyles(segment, config);
             if (styles) {
@@ -719,7 +719,7 @@ export class CanvasRenderer {
         const sigColor = config.signatureColor || '#555555';
         const sigStyle = config.signatureStyle || 'modern-pill';
         const fontFamily = config.fontFamily === 'inherit' ? "-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', sans-serif" : (config.fontFamily || "sans-serif");
-        const template = TemplateDefinitions.getTemplate(templateId);
+        const template = TEMPLATE_DEFINITIONS.getTemplate(templateId);
 
         // 如果社交图标在底部居中，则将签名上移，确保图标在最底部且紧密连接
         let bottomOffset = 0;

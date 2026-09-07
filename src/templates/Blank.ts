@@ -1,7 +1,7 @@
-import { TemplateConfig, TextSegment } from "../types";
+import type { TemplateConfig, TextSegment } from "../types";
 import { CANVAS_UTIL } from "../utils/canvas-utils";
 import { TEMPLATE_UTIL } from "../utils/template-utils";
-import { Template, TextStyle } from "./type";
+import type { Template, TextStyle } from "./type";
 
 /**
  * 空白模板 - 极致简约

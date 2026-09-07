@@ -1,8 +1,8 @@
 import { PREVIEW_HEIGHT, PREVIEW_WIDTH } from "../constants";
-import { ContentBox, TemplateConfig, TextSegment } from "../types";
+import type { ContentBox, TemplateConfig, TextSegment } from "../types";
 import { CANVAS_UTIL } from "../utils/canvas-utils";
 import { TEMPLATE_UTIL } from "../utils/template-utils";
-import { Template, TextStyle } from "./type";
+import type { Template, TextStyle } from "./type";
 
 /**
  * 复古拍立得 - 相纸留白与复古手写感

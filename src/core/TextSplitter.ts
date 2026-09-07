@@ -7,7 +7,7 @@
  * 3. 语义化分页：支持 Markdown 分割线 (---) 作为强制分页符。
  */
 import { PREVIEW_HEIGHT, PREVIEW_WIDTH } from '../constants';
-import { TemplateDefinitions } from './TemplateDefinitions';
+import { TEMPLATE_DEFINITIONS } from './TemplateDefinitions';
 import { CanvasTextEngine } from './canvas-text-engine';
 import { MarkdownParser } from '../utils/markdown';
 import type { ContentBox, LayoutBlock, TemplateConfig } from '../types';
@@ -52,7 +52,7 @@ export class TextSplitter {
      */
     calculateLayout() {
         // 核心布局尺寸定义来自于 TemplateDefinitions
-        const contentBox = TemplateDefinitions.getContentBox(
+        const contentBox = TEMPLATE_DEFINITIONS.getContentBox(
             this.templateId, this.config, PREVIEW_WIDTH, PREVIEW_HEIGHT
         );
         this.maxHeight = contentBox.height;

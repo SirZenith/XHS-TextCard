@@ -1,17 +1,17 @@
-import type { ContentBox, PageNumberOptions, TemplateConfig, TextSegment, TextStyles } from '../types';
+import type { ContentBox, TemplateConfig, TextSegment } from '../types';
 
-interface TextStyle {
+export interface TextStyle {
     textColor: string
     highlightColor?: string;
     codeBgColor?: string;
 }
 
-interface TerminalStyle {
+export interface TerminalStyle {
     bg: string;
     text: string;
 }
 
-interface Template {
+export interface Template {
     name: string;
 
     getContentBox?: (config: TemplateConfig, width: number, height: number) => ContentBox;

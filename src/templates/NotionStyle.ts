@@ -1,7 +1,7 @@
-import { ContentBox, TemplateConfig, TextSegment } from "../types";
+import type { ContentBox, TemplateConfig, TextSegment } from "../types";
 import { CANVAS_UTIL } from "../utils/canvas-utils";
 import { TEMPLATE_UTIL } from "../utils/template-utils";
-import { Template, TextStyle } from "./type";
+import type { Template, TextStyle } from "./type";
 
 /**
  * 效率笔记 (Notion风)
