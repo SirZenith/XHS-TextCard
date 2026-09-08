@@ -95,7 +95,7 @@
         <!-- 预览区域（左列） -->
         <div class="preview-panel col-start-1 flex flex-col gap-3 overflow-hidden rounded-xl border-none bg-transparent shadow-none max-xl:col-start-auto max-xl:col-span-2 max-xl:h-150 max-xl:rounded-lg max-lg:col-span-1 max-lg:min-h-125 edit-mode:rounded-xl edit-mode:border edit-mode:border-[rgba(226,232,240,0.8)] edit-mode:bg-white/95 edit-mode:shadow-[0_4px_20px_rgba(0,0,0,0.08)] max-xl:edit-mode:border-none max-xl:edit-mode:bg-transparent max-md:edit-mode:min-h-75">
             <div class="section-title flex shrink-0 items-center justify-between border-b border-[rgba(226,232,240,0.6)] bg-white/95 px-5 py-4 max-sm:px-3">
-                <button id="mobile-preview-back-btn" class="hidden max-sm:flex items-center justify-center rounded-sm border border-[rgba(226,232,240,0.8)] bg-white/90 px-3 py-2 text-ink-muted transition-all duration-300" title="返回模板编辑">
+                <button id="mobile-preview-back-btn" class="hidden max-sm:flex items-center justify-center rounded-sm border border-[rgba(226,232,240,0.8)] bg-white/90 px-4 py-2 text-ink-muted transition-all duration-300" title="返回模板编辑">
                     <i class="fas fa-chevron-left"></i>
                 </button>
                 <div class="max-sm:hidden bg-linear-to-br from-primary via-[#8b5cf6] to-[#d946ef] bg-clip-text text-lg font-semibold text-transparent">预览</div>
@@ -132,18 +132,16 @@
         <!-- 模板编辑器（中列） -->
         <div class="editor-panel col-start-3 flex min-w-60 flex-col overflow-hidden rounded-xl border border-[rgba(226,232,240,0.8)] bg-white/95 shadow-[0_4px_20px_rgba(0,0,0,0.08)] max-xl:col-start-auto max-xl:h-150 max-xl:rounded-lg edit-mode:hidden">
             <div class="section-title flex h-12.5 items-center border-b border-line px-3">
-                <div class="max-sm:hidden">
+                <button id="mobile-template-back-btn" class="hidden max-sm:flex items-center justify-center rounded-sm border border-[rgba(226,232,240,0.8)] bg-white/90 px-4 py-2 text-ink-muted transition-all duration-300">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <div class="max-sm:ml-auto">
                     <i class="fas fa-tools"></i>
                     <span>模板编辑</span>
                 </div>
-                <div class="ml-auto hidden max-sm:flex flex-1 items-center gap-2">
-                    <button id="mobile-template-back-btn" class="hidden max-sm:flex items-center justify-center rounded-sm border border-[rgba(226,232,240,0.8)] bg-white/90 px-4 py-2 text-ink-muted transition-all duration-300">
-                        <i class="fas fa-chevron-left"></i>
-                    </button>
-                    <button id="mobile-template-confirm-btn" class="hidden max-sm:flex ml-auto items-center justify-center rounded-sm border border-[rgba(226,232,240,0.8)] bg-white/90 px-4 py-2 text-sm font-semibold text-ink-muted transition-all duration-300">
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
-                </div>
+                <button id="mobile-template-confirm-btn" class="hidden max-sm:flex ml-auto items-center justify-center rounded-sm border border-[rgba(226,232,240,0.8)] bg-white/90 px-4 py-2 text-sm font-semibold text-ink-muted transition-all duration-300">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
             </div>
             <div class="@container flex min-h-0 flex-1 flex-col overflow-x-hidden px-3 pb-3">
                 <div class="mb-4 flex gap-2 rounded-md border-b-2 border-[rgba(226,232,240,0.5)] bg-white/30 p-1 pt-0">
@@ -642,7 +640,10 @@
         <!-- 输入区域（右列） -->
         <div class="edit-panel col-start-5 flex min-w-75 flex-col overflow-hidden overflow-y-auto rounded-xl border border-[rgba(226,232,240,0.8)] bg-white/95 shadow-[0_4px_20px_rgba(0,0,0,0.08)] edit-mode:col-start-2 max-xl:col-start-auto max-xl:h-150 max-xl:rounded-lg max-lg:max-h-75 max-xl:edit-mode:h-150 max-md:edit-mode:h-100">
             <div class="section-title flex h-12.5 items-center border-b border-line px-3 edit-mode:px-4 edit-mode:py-3">
-                <div class="ml-3 flex items-center gap-2 text-base font-bold">
+                <button class="hidden max-sm:flex items-center justify-center rounded-sm border border-[rgba(226,232,240,0.8)] bg-white/90 px-4 py-2 text-ink-muted transition-all duration-300">
+                    <i class="fas fa-chevron-left text-gray-200"></i>
+                </button>
+                <div class="max-sm:ml-auto ml-3 flex items-center gap-2 text-base font-bold">
                     <img src="/logo.png" alt="XHS-TextCard" width="20" height="20">
                     工作台
                 </div>
