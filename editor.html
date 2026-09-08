@@ -122,36 +122,39 @@
 
         <!-- 模板编辑器（中列） -->
         <div class="editor-panel col-start-3 flex min-w-[240px] flex-col overflow-hidden rounded-xl border border-[rgba(226,232,240,0.8)] bg-white/95 shadow-[0_4px_20px_rgba(0,0,0,0.08)] max-xl:col-start-auto max-xl:h-[600px] max-xl:rounded-lg edit-mode:hidden">
-            <div class="flex min-h-0 flex-1 flex-col overflow-x-hidden p-3">
+            <div class="@container flex min-h-0 flex-1 flex-col overflow-x-hidden p-3">
                 <div class="section-title">
                     <div>
-                        <i class="fas fa-tools"></i> 模板编辑
+                        <i class="fas fa-tools"></i>
+                        <span class="@max-[375px]:hidden">模板编辑</span>
                     </div>
                     <div class="ml-auto flex flex-row items-center gap-2 px-3">
                         <button class="inline-flex w-auto cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-md border border-[rgba(226,232,240,0.8)] bg-white/95 px-3 py-1 text-xs font-semibold leading-none text-ink transition-all duration-300 ease-normal hover:-translate-y-0.5 hover:border-transparent hover:bg-gradient-to-br hover:from-[#6366f1] hover:via-[#8b5cf6] hover:to-[#d946ef] hover:text-white hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)] active:translate-y-0 active:shadow-[0_2px_8px_rgba(0,0,0,0.1)]" id="reset-template-btn">
-                            <i class="fas fa-undo"></i> 恢复默认样式
+                            <i class="fas fa-undo"></i>
+                            <span class="@max-[375px]:hidden">恢复默认样式</span>
                         </button>
                         <button class="inline-flex w-auto cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-md border border-[rgba(220,53,69,0.2)] bg-[#fffcfc] px-3.5 py-1 text-xs font-medium leading-none text-[#dc3545] transition-all duration-300 ease-normal hover:-translate-y-0.5 hover:border-transparent hover:bg-gradient-to-br hover:from-[#6366f1] hover:via-[#8b5cf6] hover:to-[#d946ef] hover:text-white hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)]" id="reset-storage-btn">
-                            <i class="fas fa-trash-alt"></i> 重置所有设置
+                            <i class="fas fa-trash-alt"></i>
+                            <span class="@max-[375px]:hidden">重置所有设置</span>
                         </button>
                     </div>
                 </div>
                 <div class="mb-4 flex gap-2 rounded-md border-b-2 border-[rgba(226,232,240,0.5)] bg-white/30 p-1">
                     <button class="editor-tab active flex-1 cursor-pointer rounded-sm border-none bg-none px-2 py-2 text-xs font-medium text-ink-muted transition-all duration-300 ease-normal hover:bg-primary/10 hover:text-primary" data-tab="templates">
                         <i class="fas fa-palette"></i>
-                        选择模板
+                        <span class="@max-[375px]:hidden">选择模板</span>
                     </button>
                     <button class="editor-tab flex-1 cursor-pointer rounded-sm border-none bg-none px-2 py-2 text-xs font-medium text-ink-muted transition-all duration-300 ease-normal hover:bg-primary/10 hover:text-primary" data-tab="visual">
                         <i class="fas fa-magic"></i>
-                        基础配置
+                        <span class="@max-[375px]:hidden">基础配置</span>
                     </button>
                     <button class="editor-tab flex-1 cursor-pointer rounded-sm border-none bg-none px-2 py-2 text-xs font-medium text-ink-muted transition-all duration-300 ease-normal hover:bg-primary/10 hover:text-primary" data-tab="cover">
                         <i class="fas fa-image"></i>
-                        封面配置
+                        <span class="@max-[375px]:hidden">封面配置</span>
                     </button>
                     <button class="editor-tab flex-1 cursor-pointer rounded-sm border-none bg-none px-2 py-2 text-xs font-medium text-ink-muted transition-all duration-300 ease-normal hover:bg-primary/10 hover:text-primary" data-tab="export">
-                        <i class="fas fa-file-image"></i>
-                        导出格式
+                        <i class="fas fa-file-export"></i>
+                        <span class="@max-[375px]:hidden">导出</span>
                     </button>
                 </div>
 
@@ -505,7 +508,7 @@
 
                 <!-- 封面编辑器 -->
                 <div class="editor-content flex-1 min-h-0 overflow-x-hidden overflow-y-auto pr-1" id="cover-editor">
-                    <div class="columns-1 gap-x-5 md:columns-2 [column-rule:1px_solid_#e2e8f0] [&>div]:break-inside-avoid">
+                    <div>
                     <div class="form-group">
                         <div class="form-label">
                             <span><i class="fas fa-image"></i> 启用封面</span>

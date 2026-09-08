@@ -307,6 +307,14 @@
     text-align: center;
   }
 
+  /* 按钮内的图标不应继承标题图标的渐变裁切，跟随按钮文字颜色（含 hover 变白） */
+  .section-title button i {
+    background: none;
+    -webkit-background-clip: initial;
+    background-clip: initial;
+    -webkit-text-fill-color: currentColor;
+  }
+
   /* === 编辑面板 Tab 内容 === */
   .editor-content {
     display: none;
@@ -979,6 +987,16 @@
     color: white;
     border-color: transparent;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .edit-mode-toggle:hover i,
+  .edit-mode-toggle.active i {
+    color: white;
+  }
+
+  #reset-template-btn:hover i,
+  #reset-storage-btn:hover i {
+    color: white;
   }
 
   /* === 社交图标 === */
