@@ -33,6 +33,7 @@ export class App {
     private debounceTimer: number | undefined = undefined;
     private previewGenerationId: number = 0;
     private shouldScrollToStart: boolean = false;
+    private currentPreviewIndex: number = 0;
 
     constructor() {
         this.templateManager = new TemplateManager();
@@ -160,16 +161,12 @@ export class App {
         this.elements.textInput.addEventListener('input', () => this.schedulePreview(500));
         this.elements.downloadAllBtn.addEventListener('click', () => this.downloadAllImages());
         this.elements.resetTemplateBtn.addEventListener('click', () => this.resetTemplate());
-        this.elements.previewList.addEventListener('scroll',
-            () => requestAnimationFrame(() => this.updateActiveIndicator())
-        );
-
         this.elements.previewPrev.addEventListener('click', () => {
-            this.elements.previewList.scrollLeft -= this.elements.previewList.clientWidth;
+            this.showPreviewIndex(this.currentPreviewIndex - 1);
         });
 
         this.elements.previewNext.addEventListener('click', () => {
-            this.elements.previewList.scrollLeft += this.elements.previewList.clientWidth;
+            this.showPreviewIndex(this.currentPreviewIndex + 1);
         });
 
         if (this.elements.editModeToggle) {
@@ -193,25 +190,25 @@ export class App {
         localStorage.setItem('xhs_edit_mode', isEditMode ? 'true' : 'false');
     }
 
-    updateActiveIndicator() {
-        if (!this.elements.previewIndicators) return;
+    showPreviewIndex(index: number) {
+        const items = this.elements.previewList.querySelectorAll<HTMLElement>('.preview-item');
+        if (items.length === 0) return;
 
-        const scrollLeft = this.elements.previewList.scrollLeft;
-        const width = this.elements.previewList.clientWidth;
-        const index = Math.round(scrollLeft / width);
+        const maxIndex = items.length - 1;
+        const clamped = Math.max(0, Math.min(index, maxIndex));
+        this.currentPreviewIndex = clamped;
+
+        items.forEach((item, i) => {
+            item.classList.toggle('active', i === clamped);
+        });
 
         const indicators = this.elements.previewIndicators.querySelectorAll('.preview-indicator');
         indicators.forEach((indicator, i) => {
-            indicator.classList.toggle('active', i === index);
+            indicator.classList.toggle('active', i === clamped);
         });
 
-        if (this.elements.previewPrev) {
-            this.elements.previewPrev.disabled = scrollLeft <= 0;
-        }
-        if (this.elements.previewNext) {
-            const maxScroll = this.elements.previewList.scrollWidth - this.elements.previewList.clientWidth;
-            this.elements.previewNext.disabled = scrollLeft >= maxScroll - 5;
-        }
+        this.elements.previewPrev.disabled = clamped <= 0;
+        this.elements.previewNext.disabled = clamped >= maxIndex;
     }
 
     renderIndicators(count: number) {
@@ -322,6 +319,7 @@ export class App {
             this.elements.previewCount.textContent = '共 0 张图片';
             this.elements.downloadAllBtn.disabled = true;
             this.splitPages = [];
+            this.currentPreviewIndex = 0;
             this.renderIndicators(0);
             return;
         }
@@ -335,7 +333,6 @@ export class App {
         const templateConfig = this.currentTemplateConfig;
         if (!templateConfig) return;
 
-        const scrollLeft = this.elements.previewList.scrollLeft;
         this.elements.loading.classList.add('active');
 
         try {
@@ -355,6 +352,7 @@ export class App {
                 this.showEmptyState('没有可生成的内容，请检查输入格式。');
                 this.elements.loading.classList.remove('active');
                 this.elements.downloadAllBtn.disabled = true;
+                this.currentPreviewIndex = 0;
                 this.renderIndicators(0);
                 return;
             }
@@ -382,15 +380,9 @@ export class App {
             items.forEach(item => this.elements.previewList.appendChild(item));
             this.elements.loading.classList.remove('active');
 
-            requestAnimationFrame(() => {
-                if (this.shouldScrollToStart) {
-                    this.elements.previewList.scrollLeft = 0;
-                    this.shouldScrollToStart = false;
-                } else {
-                    this.elements.previewList.scrollLeft = scrollLeft;
-                }
-                this.updateActiveIndicator();
-            });
+            const targetIndex = this.shouldScrollToStart ? 0 : Math.min(this.currentPreviewIndex, this.splitPages.length - 1);
+            this.shouldScrollToStart = false;
+            this.showPreviewIndex(targetIndex);
         } catch (error) {
             if (generationId !== this.previewGenerationId) return;
             console.error('[App] Preview generation failed:', error);

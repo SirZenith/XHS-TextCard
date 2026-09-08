@@ -86,6 +86,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Sans+SC:wght@400;700&family=Noto+Serif+SC:wght@400;700&family=ZCOOL+KuaiLe&family=ZCOOL+QingKe+HuangYou&display=swap"
         rel="stylesheet">
+    <link href="/css/loader.min.css" rel="stylesheet">
 
     <link rel="icon" href="/logo.png" type="image/png">
     <link rel="apple-touch-icon" href="/logo.png">
@@ -98,6 +99,9 @@
         <div class="preview-panel col-start-1 flex flex-col gap-3 overflow-hidden rounded-xl border-none bg-transparent shadow-none max-xl:col-start-auto max-xl:col-span-2 max-xl:h-[600px] max-xl:rounded-lg max-lg:col-span-1 max-lg:min-h-[500px] edit-mode:rounded-xl edit-mode:border edit-mode:border-[rgba(226,232,240,0.8)] edit-mode:bg-white/95 edit-mode:shadow-[0_4px_20px_rgba(0,0,0,0.08)] max-xl:edit-mode:border-none max-xl:edit-mode:bg-transparent max-md:edit-mode:min-h-[300px]">
             <div class="flex shrink-0 items-center justify-between border-b border-[rgba(226,232,240,0.6)] bg-white/95 px-5 py-4">
                 <div class="bg-gradient-to-br from-[#6366f1] via-[#8b5cf6] to-[#d946ef] bg-clip-text text-lg font-semibold text-transparent">预览</div>
+                <div class="loading" id="loading">
+                    <div class="loader-inner line-scale"><div></div><div></div><div></div><div></div><div></div></div>
+                </div>
                 <div class="rounded-sm bg-gradient-to-br from-[#6366f1] via-[#8b5cf6] to-[#d946ef] px-3 py-1 text-sm font-medium text-white shadow-[0_1px_4px_rgba(0,0,0,0.05)]" id="preview-count">共 0 张图片</div>
             </div>
             <div class="preview-container relative flex min-h-0 flex-1 flex-col bg-gradient-to-b from-[#f8fafc]/95 to-[#eef2ff]/95">
@@ -115,7 +119,6 @@
                 </button>
                 <div class="pointer-events-none absolute bottom-5 left-1/2 z-10 flex -translate-x-1/2 gap-2" id="preview-indicators"></div>
             </div>
-            <div class="loading" id="loading">生成中...</div>
         </div>
 
         <div class="column-divider col-start-2 max-xl:hidden edit-mode:hidden" data-divider="1" title="拖动调整预览区宽度" aria-hidden="true"></div>
