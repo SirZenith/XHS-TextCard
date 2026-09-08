@@ -146,7 +146,7 @@ npm run preview    # 本地预览构建产物
 
 - 源码只改 `src/*.ts`；`public/` 仅放静态资源，构建时原样复制。
 - 所有模块使用 `export`/`import`（类型用 `import type`）；新增 `.ts` 文件无需再手动改 HTML 脚本顺序。
-- 样式迁移：editor.html 已迁移到 Tailwind（工具类 + `src/styles/main.css` 的 `@layer components`，含 JS 动态生成组件的类）；`public/css/` 已全部迁入 `src/styles/`（`base/`、`components/`、`layout/`、`pages/` 镜像目录 + `third-party/` 的 vendored 库），`about.html` 已转为 Vite 入口并通过 `src/about.ts` 打包其 CSS；仅剩 `guide.html`、`format-demo.html` 等纯静态页。
+- 样式迁移：全部样式已统一到 Tailwind v4。`src/styles/main.css`（编辑器）与 `src/styles/about.css`（落地页）均为 Tailwind 入口，`@theme` 设计令牌 + `@layer base/components` 使用 `@apply` 与工具类；`src/styles/third-party/` 存放 vendored 的 loader/pickr 样式；`guide.html`、`format-demo.html` 为纯静态页。
 
 ## 布署方式
 
