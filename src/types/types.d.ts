@@ -242,4 +242,6 @@ export interface AppElements {
     mobileTemplateBackBtn: HTMLButtonElement;
     mobileTemplateConfirmBtn: HTMLButtonElement;
     mobilePreviewBackBtn: HTMLButtonElement;
+    mobileDownloadSingleBtn: HTMLButtonElement;
+    mobileDownloadAllBtn: HTMLButtonElement;
 }

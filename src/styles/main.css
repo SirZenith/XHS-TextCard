@@ -677,6 +677,20 @@
   body.mobile-step-preview .preview-panel {
     display: flex;
   }
+
+  /* 预览卡片：隐藏每张卡片的头部信息，并放大卡片显示尺寸 */
+  .preview-item-header {
+    display: none;
+  }
+
+  .preview-image-wrapper {
+    max-width: 100%;
+  }
+
+  /* 下载按钮在 loading 显示时隐藏 */
+  .preview-panel:has(.loading.active) .mobile-download-btn {
+    display: none;
+  }
 }
 
 .loader-inner.line-scale {

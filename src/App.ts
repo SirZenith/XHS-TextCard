@@ -133,7 +133,9 @@ export class App {
             mobileInputConfirmBtn: document.getElementById('mobile-input-confirm-btn') as HTMLButtonElement,
             mobileTemplateBackBtn: document.getElementById('mobile-template-back-btn') as HTMLButtonElement,
             mobileTemplateConfirmBtn: document.getElementById('mobile-template-confirm-btn') as HTMLButtonElement,
-            mobilePreviewBackBtn: document.getElementById('mobile-preview-back-btn') as HTMLButtonElement
+            mobilePreviewBackBtn: document.getElementById('mobile-preview-back-btn') as HTMLButtonElement,
+            mobileDownloadSingleBtn: document.getElementById('mobile-download-single-btn') as HTMLButtonElement,
+            mobileDownloadAllBtn: document.getElementById('mobile-download-all-btn') as HTMLButtonElement
         };
 
         this.downloadManager.setLoadingElement(this.elements.loading);
@@ -182,12 +184,23 @@ export class App {
         this.elements.mobileTemplateBackBtn.addEventListener('click', () => this.setMobileStep('input'));
         this.elements.mobileTemplateConfirmBtn.addEventListener('click', () => this.setMobileStep('preview'));
         this.elements.mobilePreviewBackBtn.addEventListener('click', () => this.setMobileStep('template'));
+        this.elements.mobileDownloadSingleBtn.addEventListener('click', () => this.downloadSingleImage(this.currentPreviewIndex));
+        this.elements.mobileDownloadAllBtn.addEventListener('click', () => this.downloadAllImages());
+
+        window.matchMedia('(max-width: 640px)').addEventListener('change', () => this.updatePreviewCount());
     }
 
     setMobileStep(step: 'input' | 'template' | 'preview') {
         const body = document.body;
         body.classList.remove('mobile-step-input', 'mobile-step-template', 'mobile-step-preview');
         body.classList.add(`mobile-step-${step}`);
+    }
+
+    updatePreviewCount() {
+        const total = this.splitPages.length;
+        const current = total === 0 ? 0 : Math.min(Math.max(this.currentPreviewIndex, 0) + 1, total);
+        const isMobile = window.matchMedia('(max-width: 640px)').matches;
+        this.elements.previewCount.textContent = isMobile ? `${current}/${total}` : `共 ${total} 张图片`;
     }
 
     toggleEditMode() {
@@ -213,6 +226,7 @@ export class App {
         const maxIndex = items.length - 1;
         const clamped = Math.max(0, Math.min(index, maxIndex));
         this.currentPreviewIndex = clamped;
+        this.updatePreviewCount();
 
         items.forEach((item, i) => {
             item.classList.toggle('active', i === clamped);
@@ -332,10 +346,10 @@ export class App {
         const text = this.elements.textInput.value;
         if (!text) {
             this.showEmptyState('请输入文字内容');
-            this.elements.previewCount.textContent = '共 0 张图片';
             this.elements.downloadAllBtn.disabled = true;
             this.splitPages = [];
             this.currentPreviewIndex = 0;
+            this.updatePreviewCount();
             this.renderIndicators(0);
             return;
         }
@@ -361,7 +375,7 @@ export class App {
             if (generationId !== this.previewGenerationId) return;
             this.splitPages = splitPages;
 
-            this.elements.previewCount.textContent = `共 ${this.splitPages.length} 张图片`;
+            this.updatePreviewCount();
 
             if (this.splitPages.length === 0) {
                 this.elements.previewList.innerHTML = '';

@@ -94,7 +94,7 @@
     <div class="main-container relative grid h-screen min-w-75 p-3 bg-linear-to-br from-secondary to-[#eef2ff] grid-cols-[minmax(240px,var(--preview-col))_var(--divider-w)_minmax(280px,var(--editor-col))_var(--divider-w)_minmax(300px,var(--input-col))] grid-rows-[minmax(0,1fr)] max-xl:grid-cols-2 max-xl:grid-rows-[auto_1fr] max-xl:h-auto max-xl:overflow-auto max-xl:bg-linear-to-b max-xl:gap-3 max-lg:grid-cols-1 max-lg:grid-rows-[auto_1fr_auto] max-lg:min-h-screen max-lg:gap-3 edit-mode:grid-cols-[minmax(540px,1fr)_minmax(600px,1fr)] edit-mode:gap-3 max-3xl:edit-mode:grid-cols-[minmax(500px,1fr)_minmax(500px,1fr)] 3xl:edit-mode:grid-cols-[minmax(560px,1fr)_minmax(700px,1fr)] 4xl:edit-mode:grid-cols-[minmax(640px,1fr)_minmax(800px,1fr)] max-xl:edit-mode:grid-cols-2 max-xl:edit-mode:grid-rows-[auto_1fr] max-xl:edit-mode:h-auto max-md:edit-mode:grid-cols-1 max-md:edit-mode:grid-rows-[auto_1fr_auto]">
         <!-- 预览区域（左列） -->
         <div class="preview-panel col-start-1 flex flex-col gap-3 overflow-hidden rounded-xl border-none bg-transparent shadow-none max-xl:col-start-auto max-xl:col-span-2 max-xl:h-150 max-xl:rounded-lg max-lg:col-span-1 max-lg:min-h-125 edit-mode:rounded-xl edit-mode:border edit-mode:border-[rgba(226,232,240,0.8)] edit-mode:bg-white/95 edit-mode:shadow-[0_4px_20px_rgba(0,0,0,0.08)] max-xl:edit-mode:border-none max-xl:edit-mode:bg-transparent max-md:edit-mode:min-h-75">
-            <div class="flex shrink-0 items-center justify-between border-b border-[rgba(226,232,240,0.6)] bg-white/95 px-5 py-4">
+            <div class="flex shrink-0 items-center justify-between border-b border-[rgba(226,232,240,0.6)] bg-white/95 px-5 py-4 max-sm:px-3">
                 <button id="mobile-preview-back-btn" class="hidden max-sm:flex items-center justify-center rounded-sm border border-[rgba(226,232,240,0.8)] bg-white/90 px-3 py-2 text-ink-muted transition-all duration-300" title="返回模板编辑">
                     <i class="fas fa-chevron-left"></i>
                 </button>
@@ -102,6 +102,12 @@
                 <div class="loading" id="loading">
                     <div class="loader-inner line-scale"><div></div><div></div><div></div><div></div><div></div></div>
                 </div>
+                <button id="mobile-download-single-btn" class="mobile-download-btn hidden max-sm:inline-flex items-center gap-1 whitespace-nowrap rounded-sm border border-[rgba(226,232,240,0.8)] bg-white/90 px-2.5 py-1 text-xs font-medium text-ink transition-all duration-300" title="下载当前卡片">
+                    <i class="fas fa-download"></i>下载单张
+                </button>
+                <button id="mobile-download-all-btn" class="mobile-download-btn hidden max-sm:inline-flex items-center gap-1 whitespace-nowrap rounded-sm border border-[rgba(226,232,240,0.8)] bg-white/90 px-2.5 py-1 text-xs font-medium text-ink transition-all duration-300" title="打包下载全部图片">
+                    <i class="fas fa-file-archive"></i>下载全部
+                </button>
                 <div class="rounded-sm bg-linear-to-br from-primary via-[#8b5cf6] to-[#d946ef] px-3 py-1 text-sm font-medium text-white shadow-[0_1px_4px_rgba(0,0,0,0.05)]" id="preview-count">共 0 张图片</div>
             </div>
             <div class="preview-container relative flex min-h-0 flex-1 flex-col bg-linear-to-b from-secondary/95 to-[#eef2ff]/95">
