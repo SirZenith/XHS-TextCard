@@ -695,6 +695,15 @@
   .preview-panel:has(.loading.active) .mobile-download-btn {
     display: none;
   }
+
+  /* 下载按钮光标悬浮响应 */
+  .mobile-download-btn:hover {
+    border-color: transparent;
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #d946ef 100%);
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+  }
 }
 
 .loader-inner.line-scale {
