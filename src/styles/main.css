@@ -386,6 +386,10 @@
     @apply border-primary;
   }
 
+  .color-block {
+    @apply relative h-5.5 w-5.5 shrink-0 cursor-pointer rounded-sm shadow-[0_1px_4px_rgba(0,0,0,0.05)] transition-all duration-300 ease-normal;
+  }
+
   /* === 渐变编辑面板 === */
   .editor-popup {
     @apply relative z-[100] my-2 rounded-xl border border-line bg-white p-3 shadow-[0_4px_16px_rgba(0,0,0,0.1)];
