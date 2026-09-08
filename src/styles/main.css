@@ -678,7 +678,11 @@
     display: flex;
   }
 
-  /* 预览卡片：隐藏每张卡片的头部信息，并放大卡片显示尺寸 */
+  /* 预览卡片：全部显示以支持横向滑动翻页（原生 scroll-snap），隐藏头部信息 */
+  .preview-item {
+    display: flex;
+  }
+
   .preview-item-header {
     display: none;
   }

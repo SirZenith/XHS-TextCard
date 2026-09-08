@@ -188,6 +188,19 @@ export class App {
         this.elements.mobileDownloadAllBtn.addEventListener('click', () => this.downloadAllImages());
 
         window.matchMedia('(max-width: 640px)').addEventListener('change', () => this.updatePreviewCount());
+
+        this.initSwipeNavigation();
+    }
+
+    initSwipeNavigation() {
+        const container = this.elements.previewList;
+        let scrollTimer: number | undefined;
+
+        container.addEventListener('scroll', () => {
+            if (!this.isMobile()) return;
+            window.clearTimeout(scrollTimer);
+            scrollTimer = window.setTimeout(() => this.syncPreviewIndexFromScroll(), 100);
+        }, { passive: true });
     }
 
     setMobileStep(step: 'input' | 'template' | 'preview') {
@@ -239,6 +252,60 @@ export class App {
 
         this.elements.previewPrev.disabled = clamped <= 0;
         this.elements.previewNext.disabled = clamped >= maxIndex;
+
+        if (this.isMobile()) {
+            this.scrollPreviewTo(clamped);
+        }
+    }
+
+    isMobile(): boolean {
+        return window.matchMedia('(max-width: 640px)').matches;
+    }
+
+    scrollPreviewTo(index: number) {
+        const items = this.elements.previewList.querySelectorAll<HTMLElement>('.preview-item');
+        if (items.length === 0) return;
+        const target = items[index];
+        if (!target) return;
+
+        const container = this.elements.previewList;
+        const containerRect = container.getBoundingClientRect();
+        const itemRect = target.getBoundingClientRect();
+        const scrollLeft = container.scrollLeft + (itemRect.left - containerRect.left) - (container.clientWidth - target.offsetWidth) / 2;
+        container.scrollTo({ left: Math.max(0, scrollLeft), behavior: 'smooth' });
+    }
+
+    syncPreviewIndexFromScroll() {
+        if (!this.isMobile()) return;
+        const items = Array.from(this.elements.previewList.querySelectorAll<HTMLElement>('.preview-item'));
+        if (items.length === 0) return;
+
+        const container = this.elements.previewList;
+        const containerRect = container.getBoundingClientRect();
+        const center = containerRect.left + containerRect.width / 2;
+
+        let best = 0;
+        let bestDist = Infinity;
+        items.forEach((item, i) => {
+            const rect = item.getBoundingClientRect();
+            const dist = Math.abs((rect.left + rect.width / 2) - center);
+            if (dist < bestDist) {
+                bestDist = dist;
+                best = i;
+            }
+        });
+
+        if (best === this.currentPreviewIndex) return;
+        this.currentPreviewIndex = best;
+        this.updatePreviewCount();
+
+        items.forEach((item, i) => item.classList.toggle('active', i === best));
+
+        const indicators = this.elements.previewIndicators.querySelectorAll('.preview-indicator');
+        indicators.forEach((indicator, i) => indicator.classList.toggle('active', i === best));
+
+        this.elements.previewPrev.disabled = best <= 0;
+        this.elements.previewNext.disabled = best >= items.length - 1;
     }
 
     renderIndicators(count: number) {
