@@ -9,6 +9,7 @@
  */
 import { DownloadManager } from './services/DownloadManager';
 import { EditorController } from './services/EditorController';
+import { LayoutResizer } from './services/LayoutResizer';
 import { PreviewGenerator } from './services/PreviewGenerator';
 import { TemplateManager } from './services/TemplateManager';
 import { TextSplitter } from './core/TextSplitter';
@@ -21,6 +22,7 @@ export class App {
     private previewGenerator: PreviewGenerator;
     private downloadManager: DownloadManager;
     private editorController: EditorController;
+    private layoutResizer: LayoutResizer;
 
     private currentTemplate: string;
     private currentTemplateConfig: TemplateConfig | null;
@@ -37,6 +39,7 @@ export class App {
         this.previewGenerator = new PreviewGenerator(this.templateManager);
         this.downloadManager = new DownloadManager();
         this.editorController = new EditorController();
+        this.layoutResizer = new LayoutResizer(document.querySelector('.main-container') as HTMLElement);
 
         this.currentTemplate = DEFAULT_TEMPLATE;
         this.currentTemplateConfig = null;
@@ -49,6 +52,7 @@ export class App {
             MARKDOWN_UTIL.init();
             this.initElements();
             this.bindEvents();
+            this.layoutResizer.init();
             this.loadTemplates();
             this.setDefaultText();
             this.restoreEditMode();
@@ -98,8 +102,10 @@ export class App {
             previewPrev: document.getElementById('preview-prev') as HTMLButtonElement,
             previewNext: document.getElementById('preview-next') as HTMLButtonElement,
             loading: document.getElementById('loading')!,
+            templateEditor: document.getElementById('template-editor')!,
             visualEditor: document.getElementById('visual-editor')!,
             coverEditor: document.getElementById('cover-editor')!,
+            exportEditor: document.getElementById('export-editor')!,
             editorTabs: document.querySelectorAll<HTMLElement>('.editor-tab'),
             fontSizeInput: document.getElementById('font-size') as HTMLInputElement,
             fontSizeValue: document.getElementById('font-size-value')!,

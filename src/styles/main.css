@@ -71,6 +71,12 @@
   --panel-gap: 12px;
   --container-padding: 12px;
 
+  /* 三列布局各列宽度占比（fr），由 LayoutResizer 运行时写入 */
+  --preview-col: 1.15fr;
+  --editor-col: 1fr;
+  --input-col: 0.85fr;
+  --divider-w: 14px;
+
   --glass-bg: rgba(255, 255, 255, 0.95);
   --glass-bg-strong: rgba(255, 255, 255, 0.98);
   --glass-border: rgba(226, 232, 240, 0.8);
@@ -309,6 +315,31 @@
   .editor-content.active {
     display: flex;
     flex-direction: column;
+  }
+
+  /* === 三列布局拖拽分隔条 === */
+  .column-divider {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: col-resize;
+    z-index: 10;
+  }
+
+  .column-divider::after {
+    content: "";
+    width: 4px;
+    height: 48px;
+    border-radius: 999px;
+    background: transparent;
+    transition: background 0.2s var(--ease-normal), height 0.2s var(--ease-normal);
+  }
+
+  .column-divider:hover::after,
+  .column-divider.dragging::after {
+    background: var(--color-primary);
+    height: 72px;
   }
 
   /* === 各状态切换类（JS classList 驱动） === */

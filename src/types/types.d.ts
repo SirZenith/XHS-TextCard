@@ -212,8 +212,10 @@ export interface AppElements {
     previewPrev: HTMLButtonElement;
     previewNext: HTMLButtonElement;
     loading: HTMLElement;
+    templateEditor: HTMLElement;
     visualEditor: HTMLElement;
     coverEditor: HTMLElement;
+    exportEditor: HTMLElement;
     editorTabs: NodeListOf<HTMLElement>;
     fontSizeInput: HTMLInputElement;
     fontSizeValue: HTMLElement;

@@ -251,8 +251,10 @@ export class EditorController {
                 tab.classList.add('active');
 
                 const currentTab = tab.dataset.tab;
+                this.elements.templateEditor?.classList.toggle('active', currentTab === 'templates');
                 this.elements.visualEditor?.classList.toggle('active', currentTab === 'visual');
                 this.elements.coverEditor?.classList.toggle('active', currentTab === 'cover');
+                this.elements.exportEditor?.classList.toggle('active', currentTab === 'export');
             });
         });
 
