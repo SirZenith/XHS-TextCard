@@ -289,11 +289,11 @@
   }
 
   .editor-tab {
-    @apply flex-1 cursor-pointer rounded-sm border-2 border-line border-transparent hover:border-primary bg-none px-2 py-2 text-xs font-medium text-ink-muted transition-all duration-300 ease-normal;
+    @apply flex-1 cursor-pointer rounded-sm border-2 border-transparent hover:border-primary bg-none px-2 py-2 text-xs font-medium text-ink-muted transition-all duration-300 ease-normal;
   }
 
   .editor-tab.active {
-    @apply bg-linear-to-br from-primary via-[#8b5cf6] to-[#d946ef] font-semibold text-white shadow-[0_1px_4px_rgba(0,0,0,0.05)];
+    @apply bg-linear-to-br from-primary via-[#8b5cf6] to-[#d946ef] border-none font-semibold text-white shadow-[0_1px_4px_rgba(0,0,0,0.05)];
   }
 
   .format-btn.active {
