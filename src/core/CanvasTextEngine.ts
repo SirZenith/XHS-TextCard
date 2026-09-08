@@ -836,8 +836,20 @@ export class CanvasTextEngine {
                 }
                 break;
             }
-            case 'space': {
-                layouts.push({ type: 'space', height: this.config.fontSize });
+            case 'spacer': {
+                // 自定义空白块：::: spacer {高度} :::
+                // 高度为 0~1 之间的小数时，视为页面（输出）高度的百分比；否则为像素高度。
+                // 超出单页可用高度时截断到最大可用高度。
+                const requested = Number(token.height) || 0;
+                if (requested > 0) {
+                    let height = requested;
+                    if (requested > 0 && requested < 1) {
+                        const pageHeight = Number(this.config.pageHeight) || 0;
+                        height = requested * (pageHeight || Number(this.config.maxBlockHeight) || 0);
+                    }
+                    const maxBlock = Number(this.config.maxBlockHeight) || height;
+                    layouts.push({ type: 'space', height: Math.min(height, maxBlock) });
+                }
                 break;
             }
             case 'table': {

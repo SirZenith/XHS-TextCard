@@ -76,6 +76,36 @@ interface Template {
     drawForeground?: (ctx, width, height, index, totalCount, config) => void;       // 前景装饰/页码
     getTextStyles?: (segment, config) => TextStyle;                                 // 按段定制颜色/字体
     terminalStyles?: TerminalStyle | ((cfg) => TerminalStyle);                      // 终端风格签名配色
+    getHeaderBlock?: (config, context) => LayoutBlock[] | undefined;                // 文章开头内容块（题记/导语）
+}
+```
+
+### getHeaderBlock（文章开头内容块）
+
+返回第一页正文开头注入的布局块数组（封面页之后，随正文排版分页），直接返回 `LayoutBlock[]`：
+
+- `context.text`：全文内容，可用于统计字数/阅读时间等
+- `context.contentBox`：正文可用区域（`x`/`y`/`width`/`height`），用于计算空白高度、文本对齐
+- 布局块结构与 `CanvasTextEngine` 输出一致：`{ type, lines, height, marginTop, marginBottom, align, ... }`
+- 文本段的 `isHeader` 标记可在 `getTextStyles` 中识别并单独配色
+
+```ts
+public getHeaderBlock(config, context): LayoutBlock[] {
+    const charCnt = context.text.length;
+    const base = Number(config.fontSize) || 17;
+    const fontSize = base * 0.78;
+    const lineHeight = fontSize * (Number(config.lineHeight) || 1.7);
+    return [
+        { type: 'space', height: Math.round(context.contentBox.height * 0.1) },
+        {
+            type: 'paragraph',
+            align: 'center',
+            lines: [[{ text: `全文 ${charCnt} 字`, fontSize, isHeader: true }]],
+            height: lineHeight + fontSize * 0.8,
+            marginTop: 0,
+            marginBottom: fontSize * 0.8
+        }
+    ];
 }
 ```
 

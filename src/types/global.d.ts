@@ -23,6 +23,7 @@ interface MarkedToken {
     align?: string[];
     header?: MarkedTableCell[];
     rows?: MarkedTableCell[][];
+    height?: number;
 }
 
 interface MarkedLexer {
@@ -40,11 +41,11 @@ interface MarkedExtension {
 }
 
 interface MarkedRendererContext {
-    parser: { parse(tokens: MarkedToken[]): string };
+    parser: { parse(tokens: MarkedToken[]): string; };
 }
 
 interface MarkedApi {
-    use(options: { extensions: MarkedExtension[] }): void;
+    use(options: { extensions: MarkedExtension[]; }): void;
     setOptions(options: Record<string, unknown>): void;
     parse(text: string): string;
     lexer(text: string): MarkedToken[];
@@ -55,16 +56,16 @@ declare const marked: MarkedApi | undefined;
 /** highlight.js（CDN 加载） */
 interface HLJSApi {
     getLanguage?(name: string): unknown;
-    highlight(code: string, options: { language: string; ignoreIllegals?: boolean }): { value: string };
-    highlightAuto(code: string): { value: string };
+    highlight(code: string, options: { language: string; ignoreIllegals?: boolean; }): { value: string; };
+    highlightAuto(code: string): { value: string; };
 }
 
 declare const hljs: HLJSApi | undefined;
 
 /** MathJax（CDN 加载，editor.html 内联脚本写入 window.MathJax 配置） */
 interface MathJaxApi {
-    tex2svgPromise?: (text: string, options?: { display?: boolean }) => Promise<Element>;
-    startup?: { promise?: Promise<unknown> };
+    tex2svgPromise?: (text: string, options?: { display?: boolean; }) => Promise<Element>;
+    startup?: { promise?: Promise<unknown>; };
 }
 
 declare const MathJax: MathJaxApi | undefined;
@@ -72,13 +73,13 @@ declare const MathJax: MathJaxApi | undefined;
 /** Mermaid（vendored 10.9.1，window.mermaidReady 由 editor.html 内联脚本定义） */
 interface MermaidApi {
     initialize(options: Record<string, unknown>): void;
-    render(id: string, text: string): Promise<{ svg: string }>;
+    render(id: string, text: string): Promise<{ svg: string; }>;
 }
 
 /** Pickr 颜色选择器（vendored） */
 interface PickrColor {
-    toRGBA(): { toString(places?: number): string };
-    toHEXA(): { toString(): string };
+    toRGBA(): { toString(places?: number): string; };
+    toHEXA(): { toString(): string; };
 }
 
 interface PickrInstance {
@@ -103,8 +104,8 @@ declare const Pickr: {
 
 /** JSZip（vendored） */
 declare class JSZip {
-    file(name: string, data: string, options?: { base64?: boolean }): void;
-    generateAsync(options: { type: string }): Promise<Blob>;
+    file(name: string, data: string, options?: { base64?: boolean; }): void;
+    generateAsync(options: { type: string; }): Promise<Blob>;
 }
 
 /** window 全局扩展 */

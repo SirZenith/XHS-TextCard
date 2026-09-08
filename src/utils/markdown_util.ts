@@ -119,14 +119,40 @@ export namespace MARKDOWN_UTIL {
             }
         };
 
-        marked.use({ extensions: [mathBlockExtension, inlineMathExtension, highlightExtension, centerBlockExtension] });
+        // 添加 ::: spacer {高度} ::: 自定义空白语法
+        // 高度为 0~1 之间的小数时视为页面高度的百分比，否则为像素高度
+        const spacerBlockExtension: MarkedExtension = {
+            name: 'spacerBlock',
+            level: 'block',
+            start(src: string): number | undefined {
+                const match = src.match(/^[ \t]*:::[ \t]*spacer/m);
+                return match ? match.index : undefined;
+            },
+            tokenizer(src: string): MarkedToken | undefined {
+                // 支持整数与小数高度：::: spacer 40 :::
+                const rule = /^[ \t]*:::[ \t]*spacer[ \t]+(\d+(?:\.\d+)?)[ \t]*:::[ \t]*(?:\n|$)/;
+                const match = rule.exec(src);
+                if (!match) return undefined;
+                return {
+                    type: 'spacer',
+                    raw: match[0],
+                    text: match[1],
+                    height: parseFloat(match[1])
+                };
+            },
+            renderer(token: MarkedToken): string {
+                return `<div style="height:${token.height}px"></div>`;
+            }
+        };
+
+        marked.use({ extensions: [mathBlockExtension, inlineMathExtension, highlightExtension, centerBlockExtension, spacerBlockExtension] });
         marked.setOptions({ breaks: true, gfm: true });
         isInitialized = true;
-    }
+    };
 
     export const parse = (text: string): string => {
         if (typeof marked === 'undefined') return text.replace(/\n/g, '<br>');
         if (!isInitialized) init();
         return marked.parse(text);
-    }
+    };
 }

@@ -1,4 +1,4 @@
-import type { ContentBox, TemplateConfig, TextSegment } from './types';
+import type { ContentBox, GetHeaderContext, LayoutBlock, TemplateConfig, TextSegment } from './types';
 
 export interface TextStyle {
     textColor: string;
@@ -25,4 +25,7 @@ export interface Template {
 
     getTextStyles?: (segment: TextSegment, config: TemplateConfig) => TextStyle;
     terminalStyles?: TerminalStyle | ((cfg: TemplateConfig) => TerminalStyle);
+
+    /** 返回文章开头内容块（随正文排版，仅第一页正文开头） */
+    getHeaderBlock?: (config: TemplateConfig, context: GetHeaderContext) => LayoutBlock[] | undefined;
 }

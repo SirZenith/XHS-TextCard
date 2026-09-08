@@ -37,6 +37,11 @@ export interface TemplateConfig {
     [key: string]: any;
 }
 
+export interface GetHeaderContext {
+    text: string;
+    contentBox: ContentBox;
+}
+
 /** CanvasTextEngine 内部排版配置 */
 export interface EngineConfig {
     fontSize: number;
@@ -47,6 +52,7 @@ export interface EngineConfig {
     cardWidth?: number;
     drawWidth?: number;
     maxBlockHeight?: number;
+    pageHeight?: number;
     textColor?: string;
     h1Scale?: number;
     h2Scale?: number;
@@ -69,6 +75,7 @@ export interface TextSegment {
     mathFallback?: boolean;
     textDecoration?: string;
     headingLevel?: number;
+    isHeader?: boolean;
     image?: HTMLImageElement;
     width?: number;
     height?: number;

@@ -10,7 +10,7 @@ import { PREVIEW_HEIGHT, PREVIEW_WIDTH } from '../utils/constants';
 import { TEMPLATE_DEFINITIONS } from './template_definitions';
 import { CanvasTextEngine } from './CanvasTextEngine';
 import { MARKDOWN_UTIL } from '../utils/markdown_util';
-import type { LayoutBlock, TemplateConfig } from '../types/types';
+import type { ContentBox, LayoutBlock, TemplateConfig } from '../types/types';
 
 export class TextSplitter {
     private config: TemplateConfig;
@@ -18,6 +18,7 @@ export class TextSplitter {
     private engine: CanvasTextEngine;
     private maxHeight: number = 0;
     private contentWidth: number = 0;
+    private contentBox: ContentBox = { x: 0, y: 0, width: 0, height: 0 };
 
     constructor(config: TemplateConfig, templateId: string = 'polaroid') {
         this.config = config;
@@ -28,7 +29,8 @@ export class TextSplitter {
         this.engine.updateConfig({
             ...config,
             drawWidth: this.contentWidth,
-            maxBlockHeight: this.maxHeight
+            maxBlockHeight: this.maxHeight,
+            pageHeight: PREVIEW_HEIGHT
         });
     }
 
@@ -43,7 +45,8 @@ export class TextSplitter {
         this.engine.updateConfig({
             ...config,
             drawWidth: this.contentWidth,
-            maxBlockHeight: this.maxHeight
+            maxBlockHeight: this.maxHeight,
+            pageHeight: PREVIEW_HEIGHT
         });
     }
 
@@ -55,6 +58,7 @@ export class TextSplitter {
         const contentBox = TEMPLATE_DEFINITIONS.getContentBox(
             this.templateId, this.config, PREVIEW_WIDTH, PREVIEW_HEIGHT
         );
+        this.contentBox = contentBox;
         this.maxHeight = contentBox.height;
         this.contentWidth = contentBox.width;
     }
@@ -98,6 +102,10 @@ export class TextSplitter {
                 height: 0
             }]);
         }
+
+        // 2. 注入模板开头内容块（题记/导语等，仅第一页正文前；封面标题提取在前，不受影响）
+        const template = TEMPLATE_DEFINITIONS.getTemplate(this.templateId);
+        const headerBlocks = template?.getHeaderBlock?.(this.config, { text, contentBox: this.contentBox });
 
         let currentPage: { layouts: LayoutBlock[]; totalHeight: number; } = { layouts: [], totalHeight: 0 };
 
@@ -146,6 +154,13 @@ export class TextSplitter {
                 }
             }
         };
+
+        // 先排版模板开头内容块
+        if (Array.isArray(headerBlocks)) {
+            for (const block of headerBlocks) {
+                processLayout(block);
+            }
+        }
 
         for (const token of tokens) {
             if (token.type === 'hr') {
