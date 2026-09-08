@@ -486,7 +486,7 @@
 
   /* === 预览列表（JS 动态生成） === */
   .preview-item {
-    @apply hidden min-h-0 w-full flex-col items-center justify-start py-5;
+    @apply hidden min-h-0 w-full flex-col items-center justify-start pt-0 pb-5 md:py-5;
     flex: 0 0 100%;
     height: 100%;
     scroll-snap-align: center;
