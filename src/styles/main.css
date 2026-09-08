@@ -240,7 +240,7 @@
   }
 
   .section-title i {
-    @apply w-4 bg-clip-text text-center text-transparent;
+    @apply w-4 bg-clip-text text-center;
     background-image: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #d946ef 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -642,6 +642,40 @@
   to {
     opacity: 1;
     transform: translateY(0) translateX(-50%);
+  }
+}
+
+/* ========================================
+ * 手机端三区单屏切换（body.mobile-step-* 驱动）
+ * 非分层样式，覆盖 Tailwind 分层的 max-* 尺寸与 edit-mode 规则。
+ * ======================================== */
+@media (max-width: 640px) {
+  .main-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    height: 100dvh;
+    min-height: 0;
+    padding: 0;
+  }
+
+  .preview-panel,
+  .editor-panel,
+  .left-panel {
+    display: none;
+    flex: 1;
+    min-height: 0;
+    max-height: none;
+    height: 100%;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  body.mobile-step-input .left-panel,
+  body.mobile-step-template .editor-panel,
+  body.mobile-step-preview .preview-panel {
+    display: flex;
   }
 }
 

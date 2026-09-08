@@ -53,6 +53,7 @@ export class App {
             MARKDOWN_UTIL.init();
             this.initElements();
             this.bindEvents();
+            this.setMobileStep('input');
             this.layoutResizer.init();
             this.loadTemplates();
             this.setDefaultText();
@@ -128,7 +129,11 @@ export class App {
             hasCoverCheck: document.getElementById('has-cover') as HTMLInputElement,
             coverTitleInput: document.getElementById('cover-title') as HTMLTextAreaElement,
             coverFontSizeInput: document.getElementById('cover-font-size') as HTMLInputElement,
-            editModeToggle: document.getElementById('edit-mode-toggle') as HTMLButtonElement
+            editModeToggle: document.getElementById('edit-mode-toggle') as HTMLButtonElement,
+            mobileInputConfirmBtn: document.getElementById('mobile-input-confirm-btn') as HTMLButtonElement,
+            mobileTemplateBackBtn: document.getElementById('mobile-template-back-btn') as HTMLButtonElement,
+            mobileTemplateConfirmBtn: document.getElementById('mobile-template-confirm-btn') as HTMLButtonElement,
+            mobilePreviewBackBtn: document.getElementById('mobile-preview-back-btn') as HTMLButtonElement
         };
 
         this.downloadManager.setLoadingElement(this.elements.loading);
@@ -172,6 +177,17 @@ export class App {
         if (this.elements.editModeToggle) {
             this.elements.editModeToggle.addEventListener('click', () => this.toggleEditMode());
         }
+
+        this.elements.mobileInputConfirmBtn.addEventListener('click', () => this.setMobileStep('template'));
+        this.elements.mobileTemplateBackBtn.addEventListener('click', () => this.setMobileStep('input'));
+        this.elements.mobileTemplateConfirmBtn.addEventListener('click', () => this.setMobileStep('preview'));
+        this.elements.mobilePreviewBackBtn.addEventListener('click', () => this.setMobileStep('template'));
+    }
+
+    setMobileStep(step: 'input' | 'template' | 'preview') {
+        const body = document.body;
+        body.classList.remove('mobile-step-input', 'mobile-step-template', 'mobile-step-preview');
+        body.classList.add(`mobile-step-${step}`);
     }
 
     toggleEditMode() {

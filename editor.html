@@ -95,7 +95,10 @@
         <!-- 预览区域（左列） -->
         <div class="preview-panel col-start-1 flex flex-col gap-3 overflow-hidden rounded-xl border-none bg-transparent shadow-none max-xl:col-start-auto max-xl:col-span-2 max-xl:h-150 max-xl:rounded-lg max-lg:col-span-1 max-lg:min-h-125 edit-mode:rounded-xl edit-mode:border edit-mode:border-[rgba(226,232,240,0.8)] edit-mode:bg-white/95 edit-mode:shadow-[0_4px_20px_rgba(0,0,0,0.08)] max-xl:edit-mode:border-none max-xl:edit-mode:bg-transparent max-md:edit-mode:min-h-75">
             <div class="flex shrink-0 items-center justify-between border-b border-[rgba(226,232,240,0.6)] bg-white/95 px-5 py-4">
-                <div class="bg-linear-to-br from-primary via-[#8b5cf6] to-[#d946ef] bg-clip-text text-lg font-semibold text-transparent">预览</div>
+                <button id="mobile-preview-back-btn" class="hidden max-sm:flex items-center justify-center rounded-sm border border-[rgba(226,232,240,0.8)] bg-white/90 px-3 py-2 text-ink-muted transition-all duration-300" title="返回模板编辑">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <div class="max-sm:hidden bg-linear-to-br from-primary via-[#8b5cf6] to-[#d946ef] bg-clip-text text-lg font-semibold text-transparent">预览</div>
                 <div class="loading" id="loading">
                     <div class="loader-inner line-scale"><div></div><div></div><div></div><div></div><div></div></div>
                 </div>
@@ -618,6 +621,15 @@
                     </div>
                 </div>
             </div>
+
+            <div class="hidden max-sm:flex items-center gap-3 border-t border-[rgba(226,232,240,0.6)] bg-white/95 p-3">
+                <button id="mobile-template-back-btn" class="flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-md border border-[rgba(226,232,240,0.8)] bg-white/95 px-4 py-2 text-sm font-semibold text-ink transition-all duration-300">
+                    <i class="fas fa-chevron-left"></i> 返回
+                </button>
+                <button id="mobile-template-confirm-btn" class="flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-md bg-linear-to-br from-primary via-[#8b5cf6] to-[#d946ef] px-4 py-2 text-sm font-semibold text-white transition-all duration-300">
+                    确认 <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
         </div>
 
         <div class="column-divider col-start-4 max-xl:hidden edit-mode:hidden" data-divider="2" title="拖动调整输入区宽度" aria-hidden="true"></div>
@@ -629,9 +641,10 @@
                     <img src="/logo.png" alt="XHS-TextCard" width="20" height="20">
                     工作台
                 </div>
-                <button class="edit-mode-toggle ml-auto flex items-center justify-center rounded-sm border border-[rgba(226,232,240,0.8)] bg-white/90 px-3 py-2 text-ink-muted transition-all duration-300" id="edit-mode-toggle" title="专注编辑模式">
+                <button class="edit-mode-toggle ml-auto flex items-center justify-center rounded-sm border border-[rgba(226,232,240,0.8)] bg-white/90 px-3 py-2 text-ink-muted transition-all duration-300 max-sm:hidden" id="edit-mode-toggle" title="专注编辑模式">
                     <i class="fas fa-expand-alt"></i>
                 </button>
+                <button id="mobile-input-confirm-btn" class="hidden max-sm:flex ml-auto items-center justify-center rounded-sm border border-[rgba(226,232,240,0.8)] bg-white/90 px-4 py-2 text-sm font-semibold text-ink-muted transition-all duration-300" title="确认">确认</button>
             </div>
             <div class="input-section relative flex flex-1 flex-col border-b border-[rgba(226,232,240,0.6)] p-5">
                 <div class="section-title">

@@ -238,4 +238,8 @@ export interface AppElements {
     coverTitleInput: HTMLTextAreaElement;
     coverFontSizeInput: HTMLInputElement;
     editModeToggle: HTMLButtonElement;
+    mobileInputConfirmBtn: HTMLButtonElement;
+    mobileTemplateBackBtn: HTMLButtonElement;
+    mobileTemplateConfirmBtn: HTMLButtonElement;
+    mobilePreviewBackBtn: HTMLButtonElement;
 }
