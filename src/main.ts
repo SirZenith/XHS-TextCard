@@ -1,4 +1,7 @@
+import './styles/third-party/monolith.min.css';
 import './styles/main.css';
+import './styles/third-party/loader.min.css';
+
 import { App } from './App';
 
 // 全局错误捕获

@@ -12,6 +12,7 @@ export default defineConfig({
         index: 'index.html',
         editor: 'editor.html',
         'rich-blocks': 'rich-blocks.html',
+        about: 'about.html',
       },
     },
   },
