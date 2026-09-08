@@ -20,3 +20,12 @@ window.onunhandledrejection = function (event: PromiseRejectionEvent) {
 
 const app = new App();
 app.init();
+
+// 生产环境注册 Service Worker（离线缓存 + 移动端可安装为 Web App）
+if ('serviceWorker' in navigator && import.meta.env.PROD) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch((err) => {
+            console.warn('[SW] 注册失败：', err);
+        });
+    });
+}
