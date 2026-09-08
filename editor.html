@@ -14,8 +14,7 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://xhs-textcard.site/editor.html">
     <meta property="og:title" content="工作台 | 文字卡排版工具">
-    <meta property="og:description"
-        content="本工具支持 Markdown 语法解析、多款大师级模板与品牌防盗水印。纯本地渲染，隐私零风险，零基础轻松制作小红书爆款卡片！">
+    <meta property="og:description" content="本工具支持 Markdown 语法解析、多款大师级模板与品牌防盗水印。纯本地渲染，隐私零风险，零基础轻松制作小红书爆款卡片！">
     <meta property="og:site_name" content="textcard-gen">
     <meta property="og:locale" content="zh_CN">
     <meta property="og:image" content="/og-image.png">
@@ -91,30 +90,50 @@
 
 <body class="h-screen overflow-x-hidden bg-surface font-system text-ink">
     <h1 class="sr-only">文字卡排版工具</h1>
-    <div class="main-container relative grid h-screen min-w-75 p-3 bg-linear-to-br from-secondary to-[#eef2ff] grid-cols-[minmax(240px,var(--preview-col))_var(--divider-w)_minmax(280px,var(--editor-col))_var(--divider-w)_minmax(300px,var(--input-col))] grid-rows-[minmax(0,1fr)] max-xl:grid-cols-2 max-xl:grid-rows-[auto_1fr] max-xl:h-auto max-xl:overflow-auto max-xl:bg-linear-to-b max-xl:gap-3 max-lg:grid-cols-1 max-lg:grid-rows-[auto_1fr_auto] max-lg:min-h-screen max-lg:gap-3 edit-mode:grid-cols-[minmax(540px,1fr)_minmax(600px,1fr)] edit-mode:gap-3 max-3xl:edit-mode:grid-cols-[minmax(500px,1fr)_minmax(500px,1fr)] 3xl:edit-mode:grid-cols-[minmax(560px,1fr)_minmax(700px,1fr)] 4xl:edit-mode:grid-cols-[minmax(640px,1fr)_minmax(800px,1fr)] max-xl:edit-mode:grid-cols-2 max-xl:edit-mode:grid-rows-[auto_1fr] max-xl:edit-mode:h-auto max-md:edit-mode:grid-cols-1 max-md:edit-mode:grid-rows-[auto_1fr_auto]">
+    <div
+        class="main-container relative grid h-screen min-w-75 p-3 bg-linear-to-br from-secondary to-[#eef2ff] grid-cols-[minmax(240px,var(--preview-col))_var(--divider-w)_minmax(280px,var(--editor-col))_var(--divider-w)_minmax(300px,var(--input-col))] grid-rows-[minmax(0,1fr)] max-xl:grid-cols-2 max-xl:grid-rows-[auto_1fr] max-xl:h-auto max-xl:overflow-auto max-xl:bg-linear-to-b max-xl:gap-3 max-lg:grid-cols-1 max-lg:grid-rows-[auto_1fr_auto] max-lg:min-h-screen max-lg:gap-3 edit-mode:grid-cols-[minmax(540px,1fr)_minmax(600px,1fr)] edit-mode:gap-3 max-3xl:edit-mode:grid-cols-[minmax(500px,1fr)_minmax(500px,1fr)] 3xl:edit-mode:grid-cols-[minmax(560px,1fr)_minmax(700px,1fr)] 4xl:edit-mode:grid-cols-[minmax(640px,1fr)_minmax(800px,1fr)] max-xl:edit-mode:grid-cols-2 max-xl:edit-mode:grid-rows-[auto_1fr] max-xl:edit-mode:h-auto max-md:edit-mode:grid-cols-1 max-md:edit-mode:grid-rows-[auto_1fr_auto]">
         <!-- 预览区域（左列） -->
-        <div class="preview-panel col-start-1 flex flex-col gap-1 overflow-hidden rounded-xl border-none bg-transparent shadow-none max-xl:col-start-auto max-xl:col-span-2 max-xl:h-150 max-xl:rounded-lg max-lg:col-span-1 max-lg:min-h-125 edit-mode:rounded-xl edit-mode:border edit-mode:border-[rgba(226,232,240,0.8)] edit-mode:bg-white/95 edit-mode:shadow-[0_4px_20px_rgba(0,0,0,0.08)] max-xl:edit-mode:border-none max-xl:edit-mode:bg-transparent max-md:edit-mode:min-h-75">
-            <div class="section-title flex shrink-0 items-center justify-between border-b border-[rgba(226,232,240,0.6)] bg-white/95 px-5 py-4 max-sm:px-3">
-                <button id="mobile-preview-back-btn" class="hidden max-sm:flex items-center justify-center rounded-sm border border-[rgba(226,232,240,0.8)] bg-white/90 px-4 py-2 text-ink-muted transition-all duration-300" title="返回模板编辑">
+        <div
+            class="preview-panel col-start-1 flex flex-col gap-1 overflow-hidden rounded-xl border-none bg-transparent shadow-none max-xl:col-start-auto max-xl:col-span-2 max-xl:h-150 max-xl:rounded-lg max-lg:col-span-1 max-lg:min-h-125 edit-mode:rounded-xl edit-mode:border edit-mode:border-[rgba(226,232,240,0.8)] edit-mode:bg-white/95 edit-mode:shadow-[0_4px_20px_rgba(0,0,0,0.08)] max-xl:edit-mode:border-none max-xl:edit-mode:bg-transparent max-md:edit-mode:min-h-75">
+            <div
+                class="section-title flex shrink-0 items-center justify-between border-b border-[rgba(226,232,240,0.6)] bg-white/95 px-5 py-4 max-sm:px-3">
+                <button id="mobile-preview-back-btn"
+                    class="hidden max-sm:flex items-center justify-center rounded-sm border border-[rgba(226,232,240,0.8)] bg-white/90 px-4 py-2 text-ink-muted transition-all duration-300"
+                    title="返回模板编辑">
                     <i class="fas fa-chevron-left"></i>
                 </button>
-                <div class="max-sm:hidden bg-linear-to-br from-primary via-[#8b5cf6] to-[#d946ef] bg-clip-text text-lg font-semibold text-transparent">预览</div>
+                <div
+                    class="max-sm:hidden bg-linear-to-br from-primary via-[#8b5cf6] to-[#d946ef] bg-clip-text text-lg font-semibold text-transparent">
+                    预览</div>
                 <div class="loading" id="loading">
-                    <div class="loader-inner line-scale"><div></div><div></div><div></div><div></div><div></div></div>
+                    <div class="loader-inner line-scale">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
                 </div>
-                <button id="mobile-download-single-btn" class="mobile-download-btn hidden max-sm:inline-flex items-center gap-1 whitespace-nowrap rounded-sm border border-[rgba(226,232,240,0.8)] bg-white/90 px-2.5 py-1 text-xs font-medium text-ink transition-all duration-300" title="下载当前卡片">
+                <button id="mobile-download-single-btn"
+                    class="mobile-download-btn hidden max-sm:inline-flex items-center gap-1 whitespace-nowrap rounded-sm border border-[rgba(226,232,240,0.8)] bg-white/90 px-2.5 py-2 text-sm font-medium text-ink transition-all duration-300"
+                    title="下载当前卡片">
                     <i class="fas fa-download"></i>下载单张
                 </button>
-                <button id="mobile-download-all-btn" class="mobile-download-btn hidden max-sm:inline-flex items-center gap-1 whitespace-nowrap rounded-sm border border-[rgba(226,232,240,0.8)] bg-white/90 px-2.5 py-1 text-xs font-medium text-ink transition-all duration-300" title="打包下载全部图片">
+                <button id="mobile-download-all-btn"
+                    class="mobile-download-btn hidden max-sm:inline-flex items-center gap-1 whitespace-nowrap rounded-sm border border-[rgba(226,232,240,0.8)] bg-white/90 px-2.5 py-2 text-sm font-medium text-ink transition-all duration-300"
+                    title="打包下载全部图片">
                     <i class="fas fa-file-archive"></i>下载全部
                 </button>
-                <div class="rounded-sm bg-linear-to-br from-primary via-[#8b5cf6] to-[#d946ef] px-3 py-1 text-sm font-medium text-white shadow-[0_1px_4px_rgba(0,0,0,0.05)]" id="preview-count">共 0 张图片</div>
+                <div class="rounded-sm bg-linear-to-br from-primary via-[#8b5cf6] to-[#d946ef] px-2.5 py-2 text-sm font-medium text-white shadow-[0_1px_4px_rgba(0,0,0,0.05)]"
+                    id="preview-count">...</div>
             </div>
-            <div class="preview-container relative flex min-h-0 flex-1 flex-col bg-linear-to-b from-secondary/95 to-[#eef2ff]/95">
+            <div
+                class="preview-container relative flex min-h-0 flex-1 flex-col bg-linear-to-b from-secondary/95 to-[#eef2ff]/95">
                 <button class="preview-nav prev" id="preview-prev" title="上一张">
                     <i class="fas fa-chevron-left"></i>
                 </button>
-                <div class="no-scrollbar flex flex-1 snap-x snap-mandatory flex-row gap-0 overflow-x-auto overflow-y-hidden overscroll-contain p-1 pb-5 md:p-5" id="preview-list">
+                <div class="no-scrollbar flex flex-1 snap-x snap-mandatory flex-row gap-0 overflow-x-auto overflow-y-hidden overscroll-contain p-1 pb-5 md:p-5"
+                    id="preview-list">
                     <div class="empty-state">
                         <div class="empty-state-icon">📝</div>
                         <div>输入文字并选择模板后将自动生成预览</div>
@@ -123,57 +142,76 @@
                 <button class="preview-nav next" id="preview-next" title="下一张">
                     <i class="fas fa-chevron-right"></i>
                 </button>
-                <div class="pointer-events-none absolute bottom-5 left-1/2 z-10 flex -translate-x-1/2 gap-2" id="preview-indicators"></div>
+                <div class="pointer-events-none absolute bottom-5 left-1/2 z-10 flex -translate-x-1/2 gap-2"
+                    id="preview-indicators"></div>
             </div>
         </div>
 
-        <div class="column-divider col-start-2 max-xl:hidden edit-mode:hidden" data-divider="1" title="拖动调整预览区宽度" aria-hidden="true"></div>
+        <div class="column-divider col-start-2 max-xl:hidden edit-mode:hidden" data-divider="1" title="拖动调整预览区宽度"
+            aria-hidden="true"></div>
 
         <!-- 模板编辑器（中列） -->
-        <div class="editor-panel col-start-3 flex min-w-60 flex-col overflow-hidden rounded-xl border border-[rgba(226,232,240,0.8)] bg-white/95 shadow-[0_4px_20px_rgba(0,0,0,0.08)] max-xl:col-start-auto max-xl:h-150 max-xl:rounded-lg edit-mode:hidden">
+        <div
+            class="editor-panel col-start-3 flex min-w-60 flex-col overflow-hidden rounded-xl border border-[rgba(226,232,240,0.8)] bg-white/95 shadow-[0_4px_20px_rgba(0,0,0,0.08)] max-xl:col-start-auto max-xl:h-150 max-xl:rounded-lg edit-mode:hidden">
             <div class="section-title flex h-12.5 items-center border-b border-line px-3">
-                <button id="mobile-template-back-btn" class="hidden max-sm:flex items-center justify-center rounded-sm border border-[rgba(226,232,240,0.8)] bg-white/90 px-4 py-2 text-ink-muted transition-all duration-300">
+                <button id="mobile-template-back-btn"
+                    class="hidden max-sm:flex items-center justify-center rounded-sm border border-[rgba(226,232,240,0.8)] bg-white/90 px-4 py-2 text-ink-muted transition-all duration-300">
                     <i class="fas fa-chevron-left"></i>
                 </button>
                 <div class="max-sm:ml-auto">
                     <i class="fas fa-tools"></i>
                     <span>模板编辑</span>
                 </div>
-                <button id="mobile-template-confirm-btn" class="hidden max-sm:flex ml-auto items-center justify-center rounded-sm border border-[rgba(226,232,240,0.8)] bg-white/90 px-4 py-2 text-sm font-semibold text-ink-muted transition-all duration-300">
+                <button id="mobile-template-confirm-btn"
+                    class="hidden max-sm:flex ml-auto items-center justify-center rounded-sm border border-[rgba(226,232,240,0.8)] bg-white/90 px-4 py-2 text-sm font-semibold text-ink-muted transition-all duration-300">
                     <i class="fas fa-chevron-right"></i>
                 </button>
             </div>
             <div class="@container flex min-h-0 flex-1 flex-col overflow-x-hidden px-3 pb-3">
                 <div class="mb-4 flex gap-2 rounded-md border-b-2 border-[rgba(226,232,240,0.5)] bg-white/30 p-1 pt-0">
-                    <button class="editor-tab active flex-1 cursor-pointer rounded-sm border-none bg-none px-2 py-2 text-xs font-medium text-ink-muted transition-all duration-300 ease-normal hover:bg-primary/10 hover:text-primary" data-tab="templates">
+                    <button
+                        class="editor-tab active flex-1 cursor-pointer rounded-sm border-none bg-none px-2 py-2 text-xs font-medium text-ink-muted transition-all duration-300 ease-normal hover:bg-primary/10 hover:text-primary"
+                        data-tab="templates">
                         <i class="fas fa-palette"></i>
                         <span class="@max-[375px]:hidden">选择模板</span>
                     </button>
-                    <button class="editor-tab flex-1 cursor-pointer rounded-sm border-none bg-none px-2 py-2 text-xs font-medium text-ink-muted transition-all duration-300 ease-normal hover:bg-primary/10 hover:text-primary" data-tab="visual">
+                    <button
+                        class="editor-tab flex-1 cursor-pointer rounded-sm border-none bg-none px-2 py-2 text-xs font-medium text-ink-muted transition-all duration-300 ease-normal hover:bg-primary/10 hover:text-primary"
+                        data-tab="visual">
                         <i class="fas fa-magic"></i>
                         <span class="@max-[375px]:hidden">基础配置</span>
                     </button>
-                    <button class="editor-tab flex-1 cursor-pointer rounded-sm border-none bg-none px-2 py-2 text-xs font-medium text-ink-muted transition-all duration-300 ease-normal hover:bg-primary/10 hover:text-primary" data-tab="cover">
+                    <button
+                        class="editor-tab flex-1 cursor-pointer rounded-sm border-none bg-none px-2 py-2 text-xs font-medium text-ink-muted transition-all duration-300 ease-normal hover:bg-primary/10 hover:text-primary"
+                        data-tab="cover">
                         <i class="fas fa-image"></i>
                         <span class="@max-[375px]:hidden">封面配置</span>
                     </button>
-                    <button class="editor-tab flex-1 cursor-pointer rounded-sm border-none bg-none px-2 py-2 text-xs font-medium text-ink-muted transition-all duration-300 ease-normal hover:bg-primary/10 hover:text-primary" data-tab="export">
+                    <button
+                        class="editor-tab flex-1 cursor-pointer rounded-sm border-none bg-none px-2 py-2 text-xs font-medium text-ink-muted transition-all duration-300 ease-normal hover:bg-primary/10 hover:text-primary"
+                        data-tab="export">
                         <i class="fas fa-file-export"></i>
                         <span class="@max-[375px]:hidden">导出</span>
                     </button>
                 </div>
 
                 <!-- 模板选择编辑器 -->
-                <div class="editor-content active flex-1 min-h-0 overflow-x-hidden overflow-y-auto pr-1" id="template-editor">
+                <div class="editor-content active flex-1 min-h-0 overflow-x-hidden overflow-y-auto pr-1"
+                    id="template-editor">
                     <div class="flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto py-2 pr-1" id="template-list">
                         <!-- 模板列表将通过 JavaScript 动态生成 -->
                     </div>
-                    <div class="mt-2 flex shrink-0 items-center gap-2 border-t border-[rgba(226,232,240,0.5)] pr-1 pt-2">
-                        <button class="inline-flex flex-1 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-md border border-[rgba(226,232,240,0.8)] bg-white/95 px-3 py-2 text-xs font-semibold leading-none text-ink transition-all duration-300 ease-normal hover:-translate-y-0.5 hover:border-transparent hover:bg-linear-to-br hover:from-primary hover:via-[#8b5cf6] hover:to-[#d946ef] hover:text-white hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)] active:translate-y-0 active:shadow-[0_2px_8px_rgba(0,0,0,0.1)]" id="reset-template-btn">
+                    <div
+                        class="mt-2 flex shrink-0 items-center gap-2 border-t border-[rgba(226,232,240,0.5)] pr-1 pt-2">
+                        <button
+                            class="inline-flex flex-1 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-md border border-[rgba(226,232,240,0.8)] bg-white/95 px-3 py-2 text-xs font-semibold leading-none text-ink transition-all duration-300 ease-normal hover:-translate-y-0.5 hover:border-transparent hover:bg-linear-to-br hover:from-primary hover:via-[#8b5cf6] hover:to-[#d946ef] hover:text-white hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)] active:translate-y-0 active:shadow-[0_2px_8px_rgba(0,0,0,0.1)]"
+                            id="reset-template-btn">
                             <i class="fas fa-undo"></i>
                             <span>恢复默认样式</span>
                         </button>
-                        <button class="inline-flex flex-1 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-md border border-[rgba(220,53,69,0.2)] bg-[#fffcfc] px-3.5 py-2 text-xs font-medium leading-none text-[#dc3545] transition-all duration-300 ease-normal hover:-translate-y-0.5 hover:border-transparent hover:bg-linear-to-br hover:from-primary hover:via-[#8b5cf6] hover:to-[#d946ef] hover:text-white hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)]" id="reset-storage-btn">
+                        <button
+                            class="inline-flex flex-1 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-md border border-[rgba(220,53,69,0.2)] bg-[#fffcfc] px-3.5 py-2 text-xs font-medium leading-none text-[#dc3545] transition-all duration-300 ease-normal hover:-translate-y-0.5 hover:border-transparent hover:bg-linear-to-br hover:from-primary hover:via-[#8b5cf6] hover:to-[#d946ef] hover:text-white hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)]"
+                            id="reset-storage-btn">
                             <i class="fas fa-trash-alt"></i>
                             <span>重置所有设置</span>
                         </button>
@@ -183,426 +221,481 @@
                 <!-- 可视化编辑器 -->
                 <div class="editor-content flex-1 min-h-0 overflow-x-hidden overflow-y-auto pr-1" id="visual-editor">
                     <div>
-                    <div class="form-group">
-                        <div class="flex gap-1 rounded-md bg-secondary p-1">
-                            <button class="bg-mode-btn active flex-1 cursor-pointer rounded-sm border-none bg-none px-1 py-2 text-xs font-medium text-ink-muted transition-all duration-300 ease-normal hover:text-ink [&>i]:mb-1 [&>i]:block [&>i]:text-sm" data-mode="solid" title="纯色">
-                                <i class="fas fa-square"></i>
-                            </button>
-                            <button class="bg-mode-btn flex-1 cursor-pointer rounded-sm border-none bg-none px-1 py-2 text-xs font-medium text-ink-muted transition-all duration-300 ease-normal hover:text-ink [&>i]:mb-1 [&>i]:block [&>i]:text-sm" data-mode="gradient" title="渐变">
-                                <i class="fas fa-layer-group"></i>
-                            </button>
+                        <div class="form-group">
+                            <div class="flex gap-1 rounded-md bg-secondary p-1">
+                                <button
+                                    class="bg-mode-btn active flex-1 cursor-pointer rounded-sm border-none bg-none px-1 py-2 text-xs font-medium text-ink-muted transition-all duration-300 ease-normal hover:text-ink [&>i]:mb-1 [&>i]:block"
+                                    data-mode="solid" title="纯色">
+                                    <i class="fas fa-square"></i>
+                                </button>
+                                <button
+                                    class="bg-mode-btn flex-1 cursor-pointer rounded-sm border-none bg-none px-1 py-2 text-xs font-medium text-ink-muted transition-all duration-300 ease-normal hover:text-ink [&>i]:mb-1 [&>i]:block"
+                                    data-mode="gradient" title="渐变">
+                                    <i class="fas fa-layer-group"></i>
+                                </button>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label class="form-label">
-                            <i class="fas fa-fill-drip"></i> 背景颜色 / 渐变
-                        </label>
-                        <div class="flex w-full flex-wrap items-center gap-1 p-1" id="bg-color-presets" role="group" aria-label="背景颜色选择">
-                            <!-- 纯色预设 (莫兰迪色系 + 活力色系) -->
-                            <div class="solid-presets flex min-w-max flex-nowrap gap-1">
-                                <div class="color-preset color-block" data-color="#ffffff" title="纯白" role="button"
-                                    aria-label="白色背景" tabindex="0"></div>
-                                <div class="color-preset color-block" data-color="#E8D5C4" title="浅杏" role="button"
-                                    aria-label="浅杏色背景" tabindex="0"></div>
-                                <div class="color-preset color-block" data-color="#B5C0D0" title="灰蓝" role="button"
-                                    aria-label="灰蓝色背景" tabindex="0"></div>
-                                <div class="color-preset color-block" data-color="#CCD3CA" title="豆沙绿" role="button"
-                                    aria-label="豆沙绿色背景" tabindex="0"></div>
-                                <div class="color-preset color-block" data-color="#F5E8DD" title="浅咖" role="button"
-                                    aria-label="浅咖色背景" tabindex="0"></div>
-                                <div class="color-preset color-block" data-color="#9290C3" title="莫兰紫" role="button"
-                                    aria-label="莫兰紫色背景" tabindex="0"></div>
-                                <div class="color-preset color-block" data-color="#7C9D96" title="灰绿" role="button"
-                                    aria-label="灰绿色背景" tabindex="0"></div>
-                                <div class="color-preset color-block" data-color="#1a1a1b" title="暗黑" role="button"
-                                    aria-label="暗黑色背景" tabindex="0"></div>
-                                <div class="color-preset color-block" data-color="#667eea" title="渐变蓝" role="button"
-                                    aria-label="渐变蓝色背景" tabindex="0"></div>
-                                <div class="color-preset color-block" data-color="#f472b6" title="玫瑰粉" role="button"
-                                    aria-label="玫瑰粉色背景" tabindex="0"></div>
-                                <div class="color-preset color-block" data-color="#22d3ee" title="赛博青" role="button"
-                                    aria-label="赛博青色背景" tabindex="0"></div>
-                                <div class="color-preset color-block" data-color="#0f172a" title="深空蓝" role="button"
-                                    aria-label="深空蓝背景" tabindex="0"></div>
-                            </div>
-                            <!-- 渐变预设 -->
-                            <div class="gradient-presets flex min-w-max flex-nowrap gap-1">
-                                <div class="color-preset color-block"
-                                    style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)"
-                                    data-color="linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)" title="晨曦"
-                                    role="button" aria-label="晨曦渐变" tabindex="0"></div>
-                                <div class="color-preset relative color-block"
-                                    style="background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%)"
-                                    data-color="linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%)" title="晴空"
-                                    role="button" aria-label="晴空渐变" tabindex="0"></div>
-                                <div class="color-preset relative color-block"
-                                    style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)"
-                                    data-color="linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)" title="蜜桃"
-                                    role="button" aria-label="蜜桃渐变" tabindex="0"></div>
-                                <div class="color-preset relative color-block"
-                                    style="background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%)"
-                                    data-color="linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%)" title="梦幻"
-                                    role="button" aria-label="梦幻渐变" tabindex="0"></div>
-                                <div class="color-preset relative color-block"
-                                    style="background: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%)"
-                                    data-color="linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%)" title="木质"
-                                    role="button" aria-label="木质渐变" tabindex="0"></div>
-                                <div class="color-preset relative color-block"
-                                    style="background: linear-gradient(135deg, #cfd9df 0%, #e2ebf0 100%)"
-                                    data-color="linear-gradient(135deg, #cfd9df 0%, #e2ebf0 100%)" title="素雅"
-                                    role="button" aria-label="素雅渐变" tabindex="0"></div>
-                                <div class="color-preset relative color-block"
-                                    style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
-                                    data-color="linear-gradient(135deg, #667eea 0%, #764ba2 100%)" title="流光"
-                                    role="button" aria-label="流光渐变" tabindex="0"></div>
-                                <div class="color-preset relative color-block"
-                                    style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%)"
-                                    data-color="linear-gradient(135deg, #f093fb 0%, #f5576c 100%)" title="粉橙"
-                                    role="button" aria-label="粉橙渐变" tabindex="0"></div>
-                                <div class="color-preset relative color-block"
-                                    style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)"
-                                    data-color="linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)" title="赛博"
-                                    role="button" aria-label="赛博渐变" tabindex="0"></div>
-                                <div class="color-preset relative color-block"
-                                    style="background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%)"
-                                    data-color="linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%)"
-                                    title="星空" role="button" aria-label="星空渐变" tabindex="0"></div>
-                                <div class="color-preset relative color-block"
-                                    style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%)"
-                                    data-color="linear-gradient(135deg, #fa709a 0%, #fee140 100%)" title="日出"
-                                    role="button" aria-label="日出渐变" tabindex="0"></div>
-                                <div class="color-preset relative color-block"
-                                    style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)"
-                                    data-color="linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)" title="樱花"
-                                    role="button" aria-label="樱花渐变" tabindex="0"></div>
-                            </div>
-                            <div class="color-picker-wrapper" id="bg-color-picker-container">
-                                <div id="bg-color-picker"></div>
-                                <i class="fas fa-plus"></i>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 渐变配置面板 (初始隐藏) -->
-                    <div id="gradient-editor-panel" class="editor-popup">
-                        <div class="mb-3 flex items-center justify-between text-xs font-semibold text-ink">
-                            <span>渐变设置</span>
-                            <i class="close-popup cursor-pointer rounded-sm px-1 py-1 text-ink-muted transition-all duration-300 ease-normal hover:bg-secondary hover:text-ink fas fa-times"></i>
-                        </div>
-                        <div class="form-group popup-form-group">
-                            <label class="form-label">起始颜色</label>
-                            <div id="gradient-start-picker"></div>
-                        </div>
-                        <div class="form-group popup-form-group">
-                            <label class="form-label">结束颜色</label>
-                            <div id="gradient-end-picker"></div>
-                        </div>
-                        <div class="form-group popup-form-group">
+                        <div class="form-group">
                             <label class="form-label">
-                                角度
-                                <span class="ml-2 rounded bg-[#f0f4ff] px-1.5 py-0.5 text-[11px] font-bold text-primary" id="gradient-angle-value">135deg</span>
+                                <i class="fas fa-fill-drip"></i> 背景颜色 / 渐变
                             </label>
-                            <input type="range" class="form-range" id="gradient-angle" min="0" max="360" value="135">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">
-                            <i class="fas fa-font"></i> 文字颜色配置
-                        </label>
-
-                        <div class="mb-3.75">
-                            <label class="form-label mb-2 text-xs text-[#666]">正文颜色</label>
-                            <div class="flex w-full flex-wrap items-center gap-1 p-1" id="text-color-presets" role="group" aria-label="文字颜色选择">
-                                <div class="color-preset color-block" style="background-color: #333333" data-color="#333333"
-                                    title="深灰" role="button" aria-label="深灰色文字" tabindex="0"></div>
-                                <div class="color-preset color-block" style="background-color: #000000" data-color="#000000"
-                                    title="纯黑" role="button" aria-label="黑色文字" tabindex="0"></div>
-                                <div class="color-preset color-block" style="background-color: #495057" data-color="#495057"
-                                    title="中灰" role="button" aria-label="中灰色文字" tabindex="0"></div>
-                                <div class="color-preset color-block" style="background-color: #1c7ed6" data-color="#1c7ed6"
-                                    title="极光蓝" role="button" aria-label="极光蓝色文字" tabindex="0"></div>
-                                <div class="color-preset color-block" style="background-color: #d6336c" data-color="#d6336c"
-                                    title="玫瑰红" role="button" aria-label="玫瑰红色文字" tabindex="0"></div>
-                                <div class="color-preset color-block" style="background-color: #37b24d" data-color="#37b24d"
-                                    title="森林绿" role="button" aria-label="森林绿色文字" tabindex="0"></div>
-                                <div class="color-preset color-block" style="background-color: #f08c00" data-color="#f08c00"
-                                    title="琥珀橙" role="button" aria-label="琥珀色文字" tabindex="0"></div>
-                                <div class="color-preset color-block" style="background-color: #ffffff" data-color="#ffffff"
-                                    title="纯白" role="button" aria-label="白色文字" tabindex="0"></div>
-                                <div class="color-picker-wrapper" id="text-color-picker-container">
-                                    <div id="text-color-picker"></div>
+                            <div class="flex w-full flex-wrap items-center gap-1 p-1" id="bg-color-presets" role="group"
+                                aria-label="背景颜色选择">
+                                <!-- 纯色预设 (莫兰迪色系 + 活力色系) -->
+                                <div class="solid-presets flex min-w-max flex-nowrap gap-1">
+                                    <div class="color-preset color-block" data-color="#ffffff" title="纯白" role="button"
+                                        aria-label="白色背景" tabindex="0"></div>
+                                    <div class="color-preset color-block" data-color="#E8D5C4" title="浅杏" role="button"
+                                        aria-label="浅杏色背景" tabindex="0"></div>
+                                    <div class="color-preset color-block" data-color="#B5C0D0" title="灰蓝" role="button"
+                                        aria-label="灰蓝色背景" tabindex="0"></div>
+                                    <div class="color-preset color-block" data-color="#CCD3CA" title="豆沙绿" role="button"
+                                        aria-label="豆沙绿色背景" tabindex="0"></div>
+                                    <div class="color-preset color-block" data-color="#F5E8DD" title="浅咖" role="button"
+                                        aria-label="浅咖色背景" tabindex="0"></div>
+                                    <div class="color-preset color-block" data-color="#9290C3" title="莫兰紫" role="button"
+                                        aria-label="莫兰紫色背景" tabindex="0"></div>
+                                    <div class="color-preset color-block" data-color="#7C9D96" title="灰绿" role="button"
+                                        aria-label="灰绿色背景" tabindex="0"></div>
+                                    <div class="color-preset color-block" data-color="#1a1a1b" title="暗黑" role="button"
+                                        aria-label="暗黑色背景" tabindex="0"></div>
+                                    <div class="color-preset color-block" data-color="#667eea" title="渐变蓝" role="button"
+                                        aria-label="渐变蓝色背景" tabindex="0"></div>
+                                    <div class="color-preset color-block" data-color="#f472b6" title="玫瑰粉" role="button"
+                                        aria-label="玫瑰粉色背景" tabindex="0"></div>
+                                    <div class="color-preset color-block" data-color="#22d3ee" title="赛博青" role="button"
+                                        aria-label="赛博青色背景" tabindex="0"></div>
+                                    <div class="color-preset color-block" data-color="#0f172a" title="深空蓝" role="button"
+                                        aria-label="深空蓝背景" tabindex="0"></div>
+                                </div>
+                                <!-- 渐变预设 -->
+                                <div class="gradient-presets flex min-w-max flex-nowrap gap-1">
+                                    <div class="color-preset color-block"
+                                        style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)"
+                                        data-color="linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)" title="晨曦"
+                                        role="button" aria-label="晨曦渐变" tabindex="0"></div>
+                                    <div class="color-preset relative color-block"
+                                        style="background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%)"
+                                        data-color="linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%)" title="晴空"
+                                        role="button" aria-label="晴空渐变" tabindex="0"></div>
+                                    <div class="color-preset relative color-block"
+                                        style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)"
+                                        data-color="linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)" title="蜜桃"
+                                        role="button" aria-label="蜜桃渐变" tabindex="0"></div>
+                                    <div class="color-preset relative color-block"
+                                        style="background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%)"
+                                        data-color="linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%)" title="梦幻"
+                                        role="button" aria-label="梦幻渐变" tabindex="0"></div>
+                                    <div class="color-preset relative color-block"
+                                        style="background: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%)"
+                                        data-color="linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%)" title="木质"
+                                        role="button" aria-label="木质渐变" tabindex="0"></div>
+                                    <div class="color-preset relative color-block"
+                                        style="background: linear-gradient(135deg, #cfd9df 0%, #e2ebf0 100%)"
+                                        data-color="linear-gradient(135deg, #cfd9df 0%, #e2ebf0 100%)" title="素雅"
+                                        role="button" aria-label="素雅渐变" tabindex="0"></div>
+                                    <div class="color-preset relative color-block"
+                                        style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
+                                        data-color="linear-gradient(135deg, #667eea 0%, #764ba2 100%)" title="流光"
+                                        role="button" aria-label="流光渐变" tabindex="0"></div>
+                                    <div class="color-preset relative color-block"
+                                        style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%)"
+                                        data-color="linear-gradient(135deg, #f093fb 0%, #f5576c 100%)" title="粉橙"
+                                        role="button" aria-label="粉橙渐变" tabindex="0"></div>
+                                    <div class="color-preset relative color-block"
+                                        style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)"
+                                        data-color="linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)" title="赛博"
+                                        role="button" aria-label="赛博渐变" tabindex="0"></div>
+                                    <div class="color-preset relative color-block"
+                                        style="background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%)"
+                                        data-color="linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%)"
+                                        title="星空" role="button" aria-label="星空渐变" tabindex="0"></div>
+                                    <div class="color-preset relative color-block"
+                                        style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%)"
+                                        data-color="linear-gradient(135deg, #fa709a 0%, #fee140 100%)" title="日出"
+                                        role="button" aria-label="日出渐变" tabindex="0"></div>
+                                    <div class="color-preset relative color-block"
+                                        style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)"
+                                        data-color="linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)" title="樱花"
+                                        role="button" aria-label="樱花渐变" tabindex="0"></div>
+                                </div>
+                                <div class="color-picker-wrapper" id="bg-color-picker-container">
+                                    <div id="bg-color-picker"></div>
                                     <i class="fas fa-plus"></i>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="mb-3.75">
-                            <label class="form-label mb-2 text-xs text-[#666]">强调颜色</label>
-                            <div class="flex w-full flex-wrap items-center gap-1 p-1" id="accent-color-presets" role="group" aria-label="强调颜色选择">
-                                <div class="color-preset color-block" style="background-color: #FF9500" data-color="#FF9500"
-                                    title="经典橙" role="button" aria-label="橙色强调" tabindex="0"></div>
-                                <div class="color-preset color-block" style="background-color: #FF2D55" data-color="#FF2D55"
-                                    title="活力红" role="button" aria-label="红色强调" tabindex="0"></div>
-                                <div class="color-preset color-block" style="background-color: #007AFF" title="商务蓝"
-                                    data-color="#007AFF" role="button" aria-label="蓝色强调" tabindex="0"></div>
-                                <div class="color-preset color-block" style="background-color: #34C759" title="清新绿"
-                                    data-color="#34C759" role="button" aria-label="绿色强调" tabindex="0"></div>
-                                <div class="color-preset color-block" style="background-color: #5856D6" title="优雅紫"
-                                    data-color="#5856D6" role="button" aria-label="紫色强调" tabindex="0"></div>
-                                <div class="color-preset color-block" style="background-color: #00F5FF" title="赛博青"
-                                    data-color="#00F5FF" role="button" aria-label="青色强调" tabindex="0"></div>
-                                <div class="color-preset color-block" style="background-color: #FF4500" title="瑞士红"
-                                    data-color="#FF4500" role="button" aria-label="橙红色强调" tabindex="0"></div>
-                                <div class="color-preset color-block" style="background-color: #000000" title="纯黑"
-                                    data-color="#000000" role="button" aria-label="黑色强调" tabindex="0"></div>
-                                <div class="color-preset color-block" style="background-color: #fbbf24" title="星光金"
-                                    data-color="#fbbf24" role="button" aria-label="金色强调" tabindex="0"></div>
-                                <div class="color-preset color-block" style="background-color: #f472b6" title="玫瑰粉"
-                                    data-color="#f472b6" role="button" aria-label="粉色强调" tabindex="0"></div>
-                                <div class="color-picker-wrapper" id="accent-color-picker-container">
-                                    <div id="accent-color-picker"></div>
-                                    <i class="fas fa-plus"></i>
-                                </div>
+                        <!-- 渐变配置面板 (初始隐藏) -->
+                        <div id="gradient-editor-panel" class="editor-popup">
+                            <div class="mb-3 flex items-center justify-between text-xs font-semibold text-ink">
+                                <span>渐变设置</span>
+                                <i
+                                    class="close-popup cursor-pointer rounded-sm px-1 py-1 text-ink-muted transition-all duration-300 ease-normal hover:bg-secondary hover:text-ink fas fa-times"></i>
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">
-                            <span><i class="fas fa-text-height"></i> 字体大小</span>
-                            <span class="ml-2 rounded bg-[#f0f4ff] px-1.5 py-0.5 text-[11px] font-bold text-primary" id="font-size-value">16px</span>
-                        </label>
-                        <input type="range" class="form-range" id="font-size" min="12" max="32" value="16">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">
-                            <span><i class="fas fa-arrows-alt-v"></i> 行高</span>
-                            <span class="ml-2 rounded bg-[#f0f4ff] px-1.5 py-0.5 text-[11px] font-bold text-primary" id="line-height-value">1.8</span>
-                        </label>
-                        <input type="range" class="form-range" id="line-height" min="1.2" max="3" step="0.1"
-                            value="1.8">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">
-                            <span><i class="fas fa-arrows-alt-h"></i> 字间距</span>
-                            <span class="ml-2 rounded bg-[#f0f4ff] px-1.5 py-0.5 text-[11px] font-bold text-primary" id="letter-spacing-value">0.5px</span>
-                        </label>
-                        <input type="range" class="form-range" id="letter-spacing" min="0" max="3" step="0.1"
-                            value="0.5">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">
-                            <span><i class="fas fa-compress-alt"></i> 内边距</span>
-                            <span class="ml-2 rounded bg-[#f0f4ff] px-1.5 py-0.5 text-[11px] font-bold text-primary" id="text-padding-value">40px</span>
-                        </label>
-                        <input type="range" class="form-range" id="text-padding" min="20" max="80" step="5" value="40">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">
-                            <i class="fas fa-font"></i> 字体族
-                        </label>
-                        <select class="form-input" id="font-family">
-                            <option
-                                value="-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif"
-                                selected>苹方 / 系统默认 (简约)</option>
-                            <option value="'Smiley Sans', sans-serif">得意黑 (潮流时尚)</option>
-                            <option value="'LXGW WenKai Screen', sans-serif">霞鹜文楷 (文艺书卷)</option>
-                            <option value="'Noto Serif SC', serif">思源宋体 (优雅大气)</option>
-                            <option value="'Noto Sans SC', sans-serif">思源黑体 (标准清晰)</option>
-                            <option value="'ZCOOL QingKe HuangYou', cursive">站酷黄油体 (创意趣味)</option>
-                            <option value="'ZCOOL KuaiLe', cursive">站酷快乐体 (活泼灵动)</option>
-                            <option value="'Ma Shan Zheng', cursive">马善政毛笔 (艺术书法)</option>
-                            <option value="'STKaiti', 'KaiTi', serif">楷体 (经典传承)</option>
-                        </select>
-                    </div>
-
-                    <!-- 标题样式配置 -->
-                    <div class="form-group mt-5 border-t border-dashed border-line pt-3.75">
-                        <label class="form-label mb-3.75">
-                            <i class="fas fa-heading"></i> 标题字号
-                        </label>
-
-                        <div class="form-group mt-2.5">
-                            <label class="form-label mb-2 text-xs text-[#666]">
-                                <span>一级标题 (H1) 字号倍率</span>
-                                <span class="ml-2 rounded bg-[#f0f4ff] px-1.5 py-0.5 text-[11px] font-bold text-primary" id="h1-scale-value">1.6x</span>
-                            </label>
-                            <input type="range" class="form-range" id="h1-scale" min="1.0" max="5.0" step="0.1"
-                                value="1.6">
+                            <div class="form-group popup-form-group">
+                                <label class="form-label">起始颜色</label>
+                                <div id="gradient-start-picker"></div>
+                            </div>
+                            <div class="form-group popup-form-group">
+                                <label class="form-label">结束颜色</label>
+                                <div id="gradient-end-picker"></div>
+                            </div>
+                            <div class="form-group popup-form-group">
+                                <label class="form-label">
+                                    角度
+                                    <span
+                                        class="ml-2 rounded bg-[#f0f4ff] px-1.5 py-0.5 text-[11px] font-bold text-primary"
+                                        id="gradient-angle-value">135deg</span>
+                                </label>
+                                <input type="range" class="form-range" id="gradient-angle" min="0" max="360"
+                                    value="135">
+                            </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="form-label mb-2 text-xs text-[#666]">
-                                <span>二级标题 (H2) 字号倍率</span>
-                                <span class="ml-2 rounded bg-[#f0f4ff] px-1.5 py-0.5 text-[11px] font-bold text-primary" id="h2-scale-value">1.4x</span>
+                            <label class="form-label">
+                                <i class="fas fa-font"></i> 文字颜色配置
                             </label>
-                            <input type="range" class="form-range" id="h2-scale" min="1.0" max="4.0" step="0.1"
-                                value="1.4">
+
+                            <div class="mb-3.75">
+                                <label class="form-label mb-2 text-xs text-[#666]">正文颜色</label>
+                                <div class="flex w-full flex-wrap items-center gap-1 p-1" id="text-color-presets"
+                                    role="group" aria-label="文字颜色选择">
+                                    <div class="color-preset color-block" style="background-color: #333333"
+                                        data-color="#333333" title="深灰" role="button" aria-label="深灰色文字" tabindex="0">
+                                    </div>
+                                    <div class="color-preset color-block" style="background-color: #000000"
+                                        data-color="#000000" title="纯黑" role="button" aria-label="黑色文字" tabindex="0">
+                                    </div>
+                                    <div class="color-preset color-block" style="background-color: #495057"
+                                        data-color="#495057" title="中灰" role="button" aria-label="中灰色文字" tabindex="0">
+                                    </div>
+                                    <div class="color-preset color-block" style="background-color: #1c7ed6"
+                                        data-color="#1c7ed6" title="极光蓝" role="button" aria-label="极光蓝色文字" tabindex="0">
+                                    </div>
+                                    <div class="color-preset color-block" style="background-color: #d6336c"
+                                        data-color="#d6336c" title="玫瑰红" role="button" aria-label="玫瑰红色文字" tabindex="0">
+                                    </div>
+                                    <div class="color-preset color-block" style="background-color: #37b24d"
+                                        data-color="#37b24d" title="森林绿" role="button" aria-label="森林绿色文字" tabindex="0">
+                                    </div>
+                                    <div class="color-preset color-block" style="background-color: #f08c00"
+                                        data-color="#f08c00" title="琥珀橙" role="button" aria-label="琥珀色文字" tabindex="0">
+                                    </div>
+                                    <div class="color-preset color-block" style="background-color: #ffffff"
+                                        data-color="#ffffff" title="纯白" role="button" aria-label="白色文字" tabindex="0">
+                                    </div>
+                                    <div class="color-picker-wrapper" id="text-color-picker-container">
+                                        <div id="text-color-picker"></div>
+                                        <i class="fas fa-plus"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3.75">
+                                <label class="form-label mb-2 text-xs text-[#666]">强调颜色</label>
+                                <div class="flex w-full flex-wrap items-center gap-1 p-1" id="accent-color-presets"
+                                    role="group" aria-label="强调颜色选择">
+                                    <div class="color-preset color-block" style="background-color: #FF9500"
+                                        data-color="#FF9500" title="经典橙" role="button" aria-label="橙色强调" tabindex="0">
+                                    </div>
+                                    <div class="color-preset color-block" style="background-color: #FF2D55"
+                                        data-color="#FF2D55" title="活力红" role="button" aria-label="红色强调" tabindex="0">
+                                    </div>
+                                    <div class="color-preset color-block" style="background-color: #007AFF" title="商务蓝"
+                                        data-color="#007AFF" role="button" aria-label="蓝色强调" tabindex="0"></div>
+                                    <div class="color-preset color-block" style="background-color: #34C759" title="清新绿"
+                                        data-color="#34C759" role="button" aria-label="绿色强调" tabindex="0"></div>
+                                    <div class="color-preset color-block" style="background-color: #5856D6" title="优雅紫"
+                                        data-color="#5856D6" role="button" aria-label="紫色强调" tabindex="0"></div>
+                                    <div class="color-preset color-block" style="background-color: #00F5FF" title="赛博青"
+                                        data-color="#00F5FF" role="button" aria-label="青色强调" tabindex="0"></div>
+                                    <div class="color-preset color-block" style="background-color: #FF4500" title="瑞士红"
+                                        data-color="#FF4500" role="button" aria-label="橙红色强调" tabindex="0"></div>
+                                    <div class="color-preset color-block" style="background-color: #000000" title="纯黑"
+                                        data-color="#000000" role="button" aria-label="黑色强调" tabindex="0"></div>
+                                    <div class="color-preset color-block" style="background-color: #fbbf24" title="星光金"
+                                        data-color="#fbbf24" role="button" aria-label="金色强调" tabindex="0"></div>
+                                    <div class="color-preset color-block" style="background-color: #f472b6" title="玫瑰粉"
+                                        data-color="#f472b6" role="button" aria-label="粉色强调" tabindex="0"></div>
+                                    <div class="color-picker-wrapper" id="accent-color-picker-container">
+                                        <div id="accent-color-picker"></div>
+                                        <i class="fas fa-plus"></i>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="form-label mb-2 text-xs text-[#666]">
-                                <span>三级标题 (H3) 字号倍率</span>
-                                <span class="ml-2 rounded bg-[#f0f4ff] px-1.5 py-0.5 text-[11px] font-bold text-primary" id="h3-scale-value">1.2x</span>
+                            <label class="form-label">
+                                <span><i class="fas fa-text-height"></i> 字体大小</span>
+                                <span class="ml-2 rounded bg-[#f0f4ff] px-1.5 py-0.5 text-[11px] font-bold text-primary"
+                                    id="font-size-value">16px</span>
                             </label>
-                            <input type="range" class="form-range" id="h3-scale" min="1.0" max="3.0" step="0.1"
-                                value="1.2">
+                            <input type="range" class="form-range" id="font-size" min="12" max="32" value="16">
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <div class="form-label">
-                            <span><i class="fas fa-stamp"></i> 背景水印</span>
-                            <label class="relative inline-flex cursor-pointer items-center">
-                                <input type="checkbox" id="has-watermark" class="peer sr-only" aria-label="启用背景水印">
-                                <span class="relative h-5 w-9 rounded-full bg-line transition-colors duration-300 ease-normal after:absolute after:left-0.5 after:top-0.5 after:h-4 after:w-4 after:rounded-full after:bg-white after:shadow after:transition-transform after:duration-300 after:ease-normal peer-checked:bg-primary peer-checked:after:translate-x-4"></span>
+                        <div class="form-group">
+                            <label class="form-label">
+                                <span><i class="fas fa-arrows-alt-v"></i> 行高</span>
+                                <span class="ml-2 rounded bg-[#f0f4ff] px-1.5 py-0.5 text-[11px] font-bold text-primary"
+                                    id="line-height-value">1.8</span>
                             </label>
+                            <input type="range" class="form-range" id="line-height" min="1.2" max="3" step="0.1"
+                                value="1.8">
                         </div>
-                        <div class="watermark-options mt-2 flex items-center gap-2">
-                            <div class="flex-1">
-                                <input type="text" class="form-input" id="watermark-text" placeholder="水印文字 (如: @我的账号)">
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                <span><i class="fas fa-arrows-alt-h"></i> 字间距</span>
+                                <span class="ml-2 rounded bg-[#f0f4ff] px-1.5 py-0.5 text-[11px] font-bold text-primary"
+                                    id="letter-spacing-value">0.5px</span>
+                            </label>
+                            <input type="range" class="form-range" id="letter-spacing" min="0" max="3" step="0.1"
+                                value="0.5">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                <span><i class="fas fa-compress-alt"></i> 内边距</span>
+                                <span class="ml-2 rounded bg-[#f0f4ff] px-1.5 py-0.5 text-[11px] font-bold text-primary"
+                                    id="text-padding-value">40px</span>
+                            </label>
+                            <input type="range" class="form-range" id="text-padding" min="20" max="80" step="5"
+                                value="40">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-font"></i> 字体族
+                            </label>
+                            <select class="form-input" id="font-family">
+                                <option
+                                    value="-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif"
+                                    selected>苹方 / 系统默认 (简约)</option>
+                                <option value="'Smiley Sans', sans-serif">得意黑 (潮流时尚)</option>
+                                <option value="'LXGW WenKai Screen', sans-serif">霞鹜文楷 (文艺书卷)</option>
+                                <option value="'Noto Serif SC', serif">思源宋体 (优雅大气)</option>
+                                <option value="'Noto Sans SC', sans-serif">思源黑体 (标准清晰)</option>
+                                <option value="'ZCOOL QingKe HuangYou', cursive">站酷黄油体 (创意趣味)</option>
+                                <option value="'ZCOOL KuaiLe', cursive">站酷快乐体 (活泼灵动)</option>
+                                <option value="'Ma Shan Zheng', cursive">马善政毛笔 (艺术书法)</option>
+                                <option value="'STKaiti', 'KaiTi', serif">楷体 (经典传承)</option>
+                            </select>
+                        </div>
+
+                        <!-- 标题样式配置 -->
+                        <div class="form-group mt-5 border-t border-dashed border-line pt-3.75">
+                            <label class="form-label mb-3.75">
+                                <i class="fas fa-heading"></i> 标题字号
+                            </label>
+
+                            <div class="form-group mt-2.5">
+                                <label class="form-label mb-2 text-xs text-[#666]">
+                                    <span>一级标题 (H1) 字号倍率</span>
+                                    <span
+                                        class="ml-2 rounded bg-[#f0f4ff] px-1.5 py-0.5 text-[11px] font-bold text-primary"
+                                        id="h1-scale-value">1.6x</span>
+                                </label>
+                                <input type="range" class="form-range" id="h1-scale" min="1.0" max="5.0" step="0.1"
+                                    value="1.6">
                             </div>
-                            <div class="flex-[0_0_44px]">
-                                <div class="color-picker-wrapper small" title="水印颜色">
-                                    <div id="watermark-color-picker"></div>
-                                    <i class="fas fa-palette"></i>
+
+                            <div class="form-group">
+                                <label class="form-label mb-2 text-xs text-[#666]">
+                                    <span>二级标题 (H2) 字号倍率</span>
+                                    <span
+                                        class="ml-2 rounded bg-[#f0f4ff] px-1.5 py-0.5 text-[11px] font-bold text-primary"
+                                        id="h2-scale-value">1.4x</span>
+                                </label>
+                                <input type="range" class="form-range" id="h2-scale" min="1.0" max="4.0" step="0.1"
+                                    value="1.4">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label mb-2 text-xs text-[#666]">
+                                    <span>三级标题 (H3) 字号倍率</span>
+                                    <span
+                                        class="ml-2 rounded bg-[#f0f4ff] px-1.5 py-0.5 text-[11px] font-bold text-primary"
+                                        id="h3-scale-value">1.2x</span>
+                                </label>
+                                <input type="range" class="form-range" id="h3-scale" min="1.0" max="3.0" step="0.1"
+                                    value="1.2">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="form-label">
+                                <span><i class="fas fa-stamp"></i> 背景水印</span>
+                                <label class="relative inline-flex cursor-pointer items-center">
+                                    <input type="checkbox" id="has-watermark" class="peer sr-only" aria-label="启用背景水印">
+                                    <span
+                                        class="relative h-5 w-9 rounded-full bg-line transition-colors duration-300 ease-normal after:absolute after:left-0.5 after:top-0.5 after:h-4 after:w-4 after:rounded-full after:bg-white after:shadow after:transition-transform after:duration-300 after:ease-normal peer-checked:bg-primary peer-checked:after:translate-x-4"></span>
+                                </label>
+                            </div>
+                            <div class="watermark-options mt-2 flex items-center gap-2">
+                                <div class="flex-1">
+                                    <input type="text" class="form-input" id="watermark-text"
+                                        placeholder="水印文字 (如: @我的账号)">
+                                </div>
+                                <div class="flex-[0_0_44px]">
+                                    <div class="color-picker-wrapper small" title="水印颜色">
+                                        <div id="watermark-color-picker"></div>
+                                        <i class="fas fa-palette"></i>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <div class="form-label">
-                            <span><i class="fas fa-signature"></i> 签名栏</span>
-                            <label class="relative inline-flex cursor-pointer items-center">
-                                <input type="checkbox" id="has-signature" class="peer sr-only" aria-label="启用签名栏">
-                                <span class="relative h-5 w-9 rounded-full bg-line transition-colors duration-300 ease-normal after:absolute after:left-0.5 after:top-0.5 after:h-4 after:w-4 after:rounded-full after:bg-white after:shadow after:transition-transform after:duration-300 after:ease-normal peer-checked:bg-primary peer-checked:after:translate-x-4"></span>
-                            </label>
-                        </div>
-                        <div id="signature-options" class="signature-options mt-2 flex items-center gap-2">
-                            <div class="flex-1">
-                                <input type="text" class="form-input" id="signature-text"
-                                    placeholder="签名内容 (如: 我的名字)">
+                        <div class="form-group">
+                            <div class="form-label">
+                                <span><i class="fas fa-signature"></i> 签名栏</span>
+                                <label class="relative inline-flex cursor-pointer items-center">
+                                    <input type="checkbox" id="has-signature" class="peer sr-only" aria-label="启用签名栏">
+                                    <span
+                                        class="relative h-5 w-9 rounded-full bg-line transition-colors duration-300 ease-normal after:absolute after:left-0.5 after:top-0.5 after:h-4 after:w-4 after:rounded-full after:bg-white after:shadow after:transition-transform after:duration-300 after:ease-normal peer-checked:bg-primary peer-checked:after:translate-x-4"></span>
+                                </label>
                             </div>
-                            <div class="flex-[0_0_44px]">
-                                <div class="color-picker-wrapper small" title="签名颜色">
-                                    <div id="signature-color-picker"></div>
-                                    <i class="fas fa-palette"></i>
+                            <div id="signature-options" class="signature-options mt-2 flex items-center gap-2">
+                                <div class="flex-1">
+                                    <input type="text" class="form-input" id="signature-text"
+                                        placeholder="签名内容 (如: 我的名字)">
+                                </div>
+                                <div class="flex-[0_0_44px]">
+                                    <div class="color-picker-wrapper small" title="签名颜色">
+                                        <div id="signature-color-picker"></div>
+                                        <i class="fas fa-palette"></i>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <div class="form-label">
-                            <span><i class="fas fa-th"></i> 网格辅助线</span>
-                            <label class="relative inline-flex cursor-pointer items-center">
-                                <input type="checkbox" id="show-grid" class="peer sr-only" aria-label="显示网格辅助线">
-                                <span class="relative h-5 w-9 rounded-full bg-line transition-colors duration-300 ease-normal after:absolute after:left-0.5 after:top-0.5 after:h-4 after:w-4 after:rounded-full after:bg-white after:shadow after:transition-transform after:duration-300 after:ease-normal peer-checked:bg-primary peer-checked:after:translate-x-4"></span>
-                            </label>
+                        <div class="form-group">
+                            <div class="form-label">
+                                <span><i class="fas fa-th"></i> 网格辅助线</span>
+                                <label class="relative inline-flex cursor-pointer items-center">
+                                    <input type="checkbox" id="show-grid" class="peer sr-only" aria-label="显示网格辅助线">
+                                    <span
+                                        class="relative h-5 w-9 rounded-full bg-line transition-colors duration-300 ease-normal after:absolute after:left-0.5 after:top-0.5 after:h-4 after:w-4 after:rounded-full after:bg-white after:shadow after:transition-transform after:duration-300 after:ease-normal peer-checked:bg-primary peer-checked:after:translate-x-4"></span>
+                                </label>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <div class="form-label">
-                            <span><i class="fas fa-list-ol"></i> 显示页码</span>
-                            <label class="relative inline-flex cursor-pointer items-center">
-                                <input type="checkbox" id="show-page-number" class="peer sr-only" aria-label="显示右下角页码">
-                                <span class="relative h-5 w-9 rounded-full bg-line transition-colors duration-300 ease-normal after:absolute after:left-0.5 after:top-0.5 after:h-4 after:w-4 after:rounded-full after:bg-white after:shadow after:transition-transform after:duration-300 after:ease-normal peer-checked:bg-primary peer-checked:after:translate-x-4"></span>
-                            </label>
+                        <div class="form-group">
+                            <div class="form-label">
+                                <span><i class="fas fa-list-ol"></i> 显示页码</span>
+                                <label class="relative inline-flex cursor-pointer items-center">
+                                    <input type="checkbox" id="show-page-number" class="peer sr-only"
+                                        aria-label="显示右下角页码">
+                                    <span
+                                        class="relative h-5 w-9 rounded-full bg-line transition-colors duration-300 ease-normal after:absolute after:left-0.5 after:top-0.5 after:h-4 after:w-4 after:rounded-full after:bg-white after:shadow after:transition-transform after:duration-300 after:ease-normal peer-checked:bg-primary peer-checked:after:translate-x-4"></span>
+                                </label>
+                            </div>
                         </div>
-                    </div>
                     </div>
                 </div>
 
                 <!-- 封面编辑器 -->
                 <div class="editor-content flex-1 min-h-0 overflow-x-hidden overflow-y-auto pr-1" id="cover-editor">
                     <div>
-                    <div class="form-group">
-                        <div class="form-label">
-                            <span><i class="fas fa-image"></i> 启用封面</span>
-                            <label class="relative inline-flex cursor-pointer items-center">
-                                <input type="checkbox" id="has-cover" class="peer sr-only" aria-label="启用图文封面">
-                                <span class="relative h-5 w-9 rounded-full bg-line transition-colors duration-300 ease-normal after:absolute after:left-0.5 after:top-0.5 after:h-4 after:w-4 after:rounded-full after:bg-white after:shadow after:transition-transform after:duration-300 after:ease-normal peer-checked:bg-primary peer-checked:after:translate-x-4"></span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div id="cover-options-container" class="flex flex-col gap-2">
-                        <div class="form-group">
-                            <label class="form-label mb-2 text-xs text-[#666]">封面标题</label>
-                            <textarea class="form-input form-textarea" id="cover-title" placeholder="封面标题，支持换行"
-                                rows="3"></textarea>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label mb-2 text-xs text-[#666]">封面图片</label>
-                            <button class="btn-small w-full" id="upload-cover-btn">
-                                <i class="fas fa-upload"></i> 上传图片
-                            </button>
-                            <input type="file" id="cover-image-input" class="hidden" accept="image/*">
-                            <div class="truncate mt-1.25 max-w-30 text-center text-xs text-[#888]" id="cover-file-name">默认背景</div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label mb-2 text-xs text-[#666]">
-                                <span>封面字号</span>
-                                <span class="ml-2 rounded bg-[#f0f4ff] px-1.5 py-0.5 text-[11px] font-bold text-primary" id="cover-font-size-value">48px</span>
-                            </label>
-                            <input type="range" class="form-range" id="cover-font-size" min="24" max="96" value="48">
-                        </div>
-
                         <div class="form-group">
                             <div class="form-label">
-                                <span><i class="fas fa-share-alt"></i> 社交图标</span>
+                                <span><i class="fas fa-image"></i> 启用封面</span>
                                 <label class="relative inline-flex cursor-pointer items-center">
-                                    <input type="checkbox" id="has-social-icons" class="peer sr-only" aria-label="启用社交媒体图标">
-                                    <span class="relative h-5 w-9 rounded-full bg-line transition-colors duration-300 ease-normal after:absolute after:left-0.5 after:top-0.5 after:h-4 after:w-4 after:rounded-full after:bg-white after:shadow after:transition-transform after:duration-300 after:ease-normal peer-checked:bg-primary peer-checked:after:translate-x-4"></span>
+                                    <input type="checkbox" id="has-cover" class="peer sr-only" aria-label="启用图文封面">
+                                    <span
+                                        class="relative h-5 w-9 rounded-full bg-line transition-colors duration-300 ease-normal after:absolute after:left-0.5 after:top-0.5 after:h-4 after:w-4 after:rounded-full after:bg-white after:shadow after:transition-transform after:duration-300 after:ease-normal peer-checked:bg-primary peer-checked:after:translate-x-4"></span>
                                 </label>
                             </div>
-                            <div id="social-icons-options" class="hidden flex-col gap-2.5">
-                                <div class="flex flex-col gap-1.5">
-                                    <label class="form-label mb-0 text-[13px] text-[#666]">
-                                        <i class="fas fa-map-marker-alt"></i> 图标位置
+                        </div>
+
+                        <div id="cover-options-container" class="flex flex-col gap-2">
+                            <div class="form-group">
+                                <label class="form-label mb-2 text-xs text-[#666]">封面标题</label>
+                                <textarea class="form-input form-textarea" id="cover-title" placeholder="封面标题，支持换行"
+                                    rows="3"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label mb-2 text-xs text-[#666]">封面图片</label>
+                                <button class="btn-small w-full" id="upload-cover-btn">
+                                    <i class="fas fa-upload"></i> 上传图片
+                                </button>
+                                <input type="file" id="cover-image-input" class="hidden" accept="image/*">
+                                <div class="truncate mt-1.25 max-w-30 text-center text-xs text-[#888]"
+                                    id="cover-file-name">默认背景</div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label mb-2 text-xs text-[#666]">
+                                    <span>封面字号</span>
+                                    <span
+                                        class="ml-2 rounded bg-[#f0f4ff] px-1.5 py-0.5 text-[11px] font-bold text-primary"
+                                        id="cover-font-size-value">48px</span>
+                                </label>
+                                <input type="range" class="form-range" id="cover-font-size" min="24" max="96"
+                                    value="48">
+                            </div>
+
+                            <div class="form-group">
+                                <div class="form-label">
+                                    <span><i class="fas fa-share-alt"></i> 社交图标</span>
+                                    <label class="relative inline-flex cursor-pointer items-center">
+                                        <input type="checkbox" id="has-social-icons" class="peer sr-only"
+                                            aria-label="启用社交媒体图标">
+                                        <span
+                                            class="relative h-5 w-9 rounded-full bg-line transition-colors duration-300 ease-normal after:absolute after:left-0.5 after:top-0.5 after:h-4 after:w-4 after:rounded-full after:bg-white after:shadow after:transition-transform after:duration-300 after:ease-normal peer-checked:bg-primary peer-checked:after:translate-x-4"></span>
                                     </label>
-                                    <div class="flex gap-1">
-                                        <button class="format-btn active flex-1 cursor-pointer rounded-md border-2 border-line bg-white px-3 py-2 text-xs font-semibold text-ink transition-all duration-300 ease-normal hover:border-primary" data-position="top-right" title="右上角">
-                                            右上角
-                                        </button>
-                                        <button class="format-btn flex-1 cursor-pointer rounded-md border-2 border-line bg-white px-3 py-2 text-xs font-semibold text-ink transition-all duration-300 ease-normal hover:border-primary" data-position="bottom-center" title="底部居中">
-                                            底部居中
-                                        </button>
-                                    </div>
                                 </div>
-                                <div class="social-icons-grid mt-1.5 grid grid-cols-3 gap-2">
-                                    <div class="social-icon-item flex aspect-square w-full cursor-pointer items-center justify-center rounded-lg border-2 border-[#e5e5e5] bg-[#f8f9fa] transition-all duration-200 hover:scale-105 hover:border-primary [&>img]:h-3/5 [&>img]:w-3/5 [&>img]:object-contain" data-icon="gongzhonghao" title="公众号">
-                                        <img src="/assets/icons/gongzhonghao.png" alt="公众号">
+                                <div id="social-icons-options" class="hidden flex-col gap-2.5">
+                                    <div class="flex flex-col gap-1.5">
+                                        <label class="form-label mb-0 text-[13px] text-[#666]">
+                                            <i class="fas fa-map-marker-alt"></i> 图标位置
+                                        </label>
+                                        <div class="flex gap-1">
+                                            <button
+                                                class="format-btn active flex-1 cursor-pointer rounded-md border-2 border-line bg-white px-3 py-2 text-xs font-semibold text-ink transition-all duration-300 ease-normal hover:border-primary"
+                                                data-position="top-right" title="右上角">
+                                                右上角
+                                            </button>
+                                            <button
+                                                class="format-btn flex-1 cursor-pointer rounded-md border-2 border-line bg-white px-3 py-2 text-xs font-semibold text-ink transition-all duration-300 ease-normal hover:border-primary"
+                                                data-position="bottom-center" title="底部居中">
+                                                底部居中
+                                            </button>
+                                        </div>
                                     </div>
-                                    <div class="social-icon-item flex aspect-square w-full cursor-pointer items-center justify-center rounded-lg border-2 border-[#e5e5e5] bg-[#f8f9fa] transition-all duration-200 hover:scale-105 hover:border-primary [&>img]:h-3/5 [&>img]:w-3/5 [&>img]:object-contain" data-icon="shipinhao" title="视频号">
-                                        <img src="/assets/icons/shipinhao.png" alt="视频号">
-                                    </div>
-                                    <div class="social-icon-item flex aspect-square w-full cursor-pointer items-center justify-center rounded-lg border-2 border-[#e5e5e5] bg-[#f8f9fa] transition-all duration-200 hover:scale-105 hover:border-primary [&>img]:h-3/5 [&>img]:w-3/5 [&>img]:object-contain" data-icon="xiaohongshu" title="小红书">
-                                        <img src="/assets/icons/xiaohongshu.png" alt="小红书">
-                                    </div>
-                                    <div class="social-icon-item flex aspect-square w-full cursor-pointer items-center justify-center rounded-lg border-2 border-[#e5e5e5] bg-[#f8f9fa] transition-all duration-200 hover:scale-105 hover:border-primary [&>img]:h-3/5 [&>img]:w-3/5 [&>img]:object-contain" data-icon="zhihu" title="知乎">
-                                        <img src="/assets/icons/zhihu.png" alt="知乎">
-                                    </div>
-                                    <div class="social-icon-item flex aspect-square w-full cursor-pointer items-center justify-center rounded-lg border-2 border-[#e5e5e5] bg-[#f8f9fa] transition-all duration-200 hover:scale-105 hover:border-primary [&>img]:h-3/5 [&>img]:w-3/5 [&>img]:object-contain" data-icon="douyin" title="抖音">
-                                        <img src="/assets/icons/douyin.png" alt="抖音">
-                                    </div>
-                                    <div class="social-icon-item flex aspect-square w-full cursor-pointer items-center justify-center rounded-lg border-2 border-[#e5e5e5] bg-[#f8f9fa] transition-all duration-200 hover:scale-105 hover:border-primary [&>img]:h-3/5 [&>img]:w-3/5 [&>img]:object-contain" data-icon="bilibili" title="Bilibili">
-                                        <img src="/assets/icons/bilibili.png" alt="Bilibili">
+                                    <div class="social-icons-grid mt-1.5 grid grid-cols-3 gap-2">
+                                        <div class="social-icon-item flex aspect-square w-full cursor-pointer items-center justify-center rounded-lg border-2 border-[#e5e5e5] bg-[#f8f9fa] transition-all duration-200 hover:scale-105 hover:border-primary [&>img]:h-3/5 [&>img]:object-contain"
+                                            data-icon="gongzhonghao" title="公众号">
+                                            <img src="/assets/icons/gongzhonghao.png" alt="公众号">
+                                        </div>
+                                        <div class="social-icon-item flex aspect-square w-full cursor-pointer items-center justify-center rounded-lg border-2 border-[#e5e5e5] bg-[#f8f9fa] transition-all duration-200 hover:scale-105 hover:border-primary [&>img]:h-3/5 [&>img]:object-contain"
+                                            data-icon="shipinhao" title="视频号">
+                                            <img src="/assets/icons/shipinhao.png" alt="视频号">
+                                        </div>
+                                        <div class="social-icon-item flex aspect-square w-full cursor-pointer items-center justify-center rounded-lg border-2 border-[#e5e5e5] bg-[#f8f9fa] transition-all duration-200 hover:scale-105 hover:border-primary [&>img]:h-3/5 [&>img]:object-contain"
+                                            data-icon="xiaohongshu" title="小红书">
+                                            <img src="/assets/icons/xiaohongshu.png" alt="小红书">
+                                        </div>
+                                        <div class="social-icon-item flex aspect-square w-full cursor-pointer items-center justify-center rounded-lg border-2 border-[#e5e5e5] bg-[#f8f9fa] transition-all duration-200 hover:scale-105 hover:border-primary [&>img]:h-3/5 [&>img]:object-contain"
+                                            data-icon="zhihu" title="知乎">
+                                            <img src="/assets/icons/zhihu.png" alt="知乎">
+                                        </div>
+                                        <div class="social-icon-item flex aspect-square w-full cursor-pointer items-center justify-center rounded-lg border-2 border-[#e5e5e5] bg-[#f8f9fa] transition-all duration-200 hover:scale-105 hover:border-primary [&>img]:h-3/5 [&>img]:object-contain"
+                                            data-icon="douyin" title="抖音">
+                                            <img src="/assets/icons/douyin.png" alt="抖音">
+                                        </div>
+                                        <div class="social-icon-item flex aspect-square w-full cursor-pointer items-center justify-center rounded-lg border-2 border-[#e5e5e5] bg-[#f8f9fa] transition-all duration-200 hover:scale-105 hover:border-primary [&>img]:h-3/5 [&>img]:object-contain"
+                                            data-icon="bilibili" title="Bilibili">
+                                            <img src="/assets/icons/bilibili.png" alt="Bilibili">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
                     </div>
                 </div>
 
@@ -613,10 +706,14 @@
                             <i class="fas fa-file-image"></i> 导出格式
                         </label>
                         <div class="flex gap-1">
-                            <button class="format-btn active flex-1 cursor-pointer rounded-md border-2 border-line bg-white px-3 py-2 text-xs font-semibold text-ink transition-all duration-300 ease-normal hover:border-primary" data-format="png" title="PNG格式：无损压缩，适合需要透明背景">
+                            <button
+                                class="format-btn active flex-1 cursor-pointer rounded-md border-2 border-line bg-white px-3 py-2 text-xs font-semibold text-ink transition-all duration-300 ease-normal hover:border-primary"
+                                data-format="png" title="PNG格式：无损压缩，适合需要透明背景">
                                 PNG
                             </button>
-                            <button class="format-btn flex-1 cursor-pointer rounded-md border-2 border-line bg-white px-3 py-2 text-xs font-semibold text-ink transition-all duration-300 ease-normal hover:border-primary" data-format="jpeg" title="JPEG格式：文件更小，在小红书安卓端缩略图显示更清晰">
+                            <button
+                                class="format-btn flex-1 cursor-pointer rounded-md border-2 border-line bg-white px-3 py-2 text-xs font-semibold text-ink transition-all duration-300 ease-normal hover:border-primary"
+                                data-format="jpeg" title="JPEG格式：文件更小，在小红书安卓端缩略图显示更清晰">
                                 JPEG
                             </button>
                         </div>
@@ -626,7 +723,9 @@
                         <label class="form-label">
                             <i class="fas fa-download"></i> 批量导出
                         </label>
-                        <button class="inline-flex h-11 w-full cursor-pointer items-center justify-center gap-2 rounded-md bg-linear-to-br from-primary via-[#8b5cf6] to-[#d946ef] px-5 py-3 text-sm font-semibold leading-none text-white shadow-[0_2px_8px_rgba(0,0,0,0.1)] transition-all duration-300 ease-normal hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)] active:-translate-y-px active:shadow-[0_2px_8px_rgba(0,0,0,0.1)] disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none" id="download-all-btn" disabled>
+                        <button
+                            class="inline-flex h-11 w-full cursor-pointer items-center justify-center gap-2 rounded-md bg-linear-to-br from-primary via-[#8b5cf6] to-[#d946ef] px-5 py-3 text-sm font-semibold leading-none text-white shadow-[0_2px_8px_rgba(0,0,0,0.1)] transition-all duration-300 ease-normal hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)] active:-translate-y-px disabled:opacity-50"
+                            id="download-all-btn" disabled>
                             <i class="fas fa-download"></i>
                             打包下载全部图片
                         </button>
@@ -635,22 +734,29 @@
             </div>
         </div>
 
-        <div class="column-divider col-start-4 max-xl:hidden edit-mode:hidden" data-divider="2" title="拖动调整输入区宽度" aria-hidden="true"></div>
+        <div class="column-divider col-start-4 max-xl:hidden edit-mode:hidden" data-divider="2" title="拖动调整输入区宽度"
+            aria-hidden="true"></div>
 
         <!-- 输入区域（右列） -->
-        <div class="edit-panel col-start-5 flex min-w-75 flex-col overflow-hidden overflow-y-auto rounded-xl border border-[rgba(226,232,240,0.8)] bg-white/95 shadow-[0_4px_20px_rgba(0,0,0,0.08)] edit-mode:col-start-2 max-xl:col-start-auto max-xl:h-150 max-xl:rounded-lg max-lg:max-h-75 max-xl:edit-mode:h-150 max-md:edit-mode:h-100">
+        <div
+            class="edit-panel col-start-5 flex min-w-75 flex-col overflow-hidden overflow-y-auto rounded-xl border border-[rgba(226,232,240,0.8)] bg-white/95 shadow-[0_4px_20px_rgba(0,0,0,0.08)] edit-mode:col-start-2 max-xl:col-start-auto max-xl:h-150 max-xl:rounded-lg max-lg:max-h-75 max-xl:edit-mode:h-150 max-md:edit-mode:h-100">
             <div class="section-title flex h-12.5 items-center border-b border-line px-3 edit-mode:px-4 edit-mode:py-3">
-                <button class="hidden max-sm:flex items-center justify-center rounded-sm border border-[rgba(226,232,240,0.8)] bg-white/90 px-4 py-2 text-ink-muted transition-all duration-300">
+                <button
+                    class="hidden max-sm:flex items-center justify-center rounded-sm border border-[rgba(226,232,240,0.8)] bg-white/90 px-4 py-2 text-ink-muted transition-all duration-300">
                     <i class="fas fa-chevron-left text-gray-200"></i>
                 </button>
                 <div class="max-sm:ml-auto ml-3 flex items-center gap-2 text-base font-bold">
                     <img src="/logo.png" alt="XHS-TextCard" width="20" height="20">
                     工作台
                 </div>
-                <button class="edit-mode-toggle ml-auto flex items-center justify-center rounded-sm border border-[rgba(226,232,240,0.8)] bg-white/90 px-3 py-2 text-ink-muted transition-all duration-300 max-sm:hidden" id="edit-mode-toggle" title="专注编辑模式">
+                <button
+                    class="edit-mode-toggle ml-auto flex items-center justify-center rounded-sm border border-[rgba(226,232,240,0.8)] bg-white/90 px-3 py-2 text-ink-muted transition-all duration-300 max-sm:hidden"
+                    id="edit-mode-toggle" title="专注编辑模式">
                     <i class="fas fa-expand-alt"></i>
                 </button>
-                <button id="mobile-input-confirm-btn" class="hidden max-sm:flex ml-auto items-center justify-center rounded-sm border border-[rgba(226,232,240,0.8)] bg-white/90 px-4 py-2 text-sm font-semibold text-ink-muted transition-all duration-300" title="确认">
+                <button id="mobile-input-confirm-btn"
+                    class="hidden max-sm:flex ml-auto items-center justify-center rounded-sm border border-[rgba(226,232,240,0.8)] bg-white/90 px-4 py-2 text-sm font-semibold text-ink-muted transition-all duration-300"
+                    title="确认">
                     <i class="fas fa-chevron-right"></i>
                 </button>
             </div>
@@ -684,7 +790,8 @@
                         </div>
                     </div>
                 </div>
-                <textarea id="text-input" class="w-full flex-1 min-h-100 resize-y rounded-lg border border-[rgba(226,232,240,0.8)] bg-white p-4 text-sm leading-relaxed transition-[border-color,box-shadow] duration-300 ease-normal focus:border-primary focus:shadow-[0_0_0_4px_rgba(99,102,241,0.15),0_2px_8px_rgba(0,0,0,0.08)] focus:outline-none"></textarea>
+                <textarea id="text-input"
+                    class="w-full flex-1 min-h-100 resize-y rounded-lg border border-[rgba(226,232,240,0.8)] bg-white p-4 text-sm leading-relaxed transition-[border-color,box-shadow] duration-300 ease-normal focus:shadow-[0_0_0_4px_rgba(99,102,241,0.15),0_2px_8px_rgba(0,0,0,0.08)] focus:outline-none"></textarea>
             </div>
         </div>
     </div>
