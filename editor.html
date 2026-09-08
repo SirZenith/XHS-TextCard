@@ -98,7 +98,7 @@
             <div
                 class="section-title flex shrink-0 items-center justify-between border-b border-[rgba(226,232,240,0.6)] bg-white/95 px-5 py-4 max-sm:px-3">
                 <button id="mobile-preview-back-btn"
-                    class="hidden max-sm:flex items-center justify-center rounded-sm border border-[rgba(226,232,240,0.8)] bg-white/90 px-4 py-2 text-ink-muted transition-all duration-300"
+                    class="hidden max-sm:flex items-center justify-center rounded-sm border border-[rgba(226,232,240,0.8)] bg-white/90 px-4 py-1.5 text-ink-muted transition-all duration-300"
                     title="返回模板编辑">
                     <i class="fas fa-chevron-left"></i>
                 </button>
@@ -115,16 +115,16 @@
                     </div>
                 </div>
                 <button id="mobile-download-single-btn"
-                    class="mobile-download-btn hidden max-sm:inline-flex items-center gap-1 whitespace-nowrap rounded-sm border border-[rgba(226,232,240,0.8)] bg-white/90 px-2.5 py-2 text-sm font-medium text-ink transition-all duration-300"
+                    class="mobile-download-btn hidden max-sm:inline-flex items-center gap-1 whitespace-nowrap rounded-sm border border-[rgba(226,232,240,0.8)] bg-white/90 px-2.5 py-1.5 text-sm font-medium text-ink transition-all duration-300"
                     title="下载当前卡片">
                     <i class="fas fa-download"></i>下载单张
                 </button>
                 <button id="mobile-download-all-btn"
-                    class="mobile-download-btn hidden max-sm:inline-flex items-center gap-1 whitespace-nowrap rounded-sm border border-[rgba(226,232,240,0.8)] bg-white/90 px-2.5 py-2 text-sm font-medium text-ink transition-all duration-300"
+                    class="mobile-download-btn hidden max-sm:inline-flex items-center gap-1 whitespace-nowrap rounded-sm border border-[rgba(226,232,240,0.8)] bg-white/90 px-2.5 py-1.5 text-sm font-medium text-ink transition-all duration-300"
                     title="打包下载全部图片">
                     <i class="fas fa-file-archive"></i>下载全部
                 </button>
-                <div class="rounded-sm bg-linear-to-br from-primary via-[#8b5cf6] to-[#d946ef] px-2.5 py-2 text-sm font-medium text-white shadow-[0_1px_4px_rgba(0,0,0,0.05)]"
+                <div class="rounded-sm bg-linear-to-br from-primary via-[#8b5cf6] to-[#d946ef] bg-clip-text border-2 border-line border-primary px-2.5 py-1.5 text-sm font-medium text-transparent shadow-[0_1px_4px_rgba(0,0,0,0.05)]"
                     id="preview-count">...</div>
             </div>
             <div
@@ -155,7 +155,7 @@
             class="editor-panel col-start-3 flex min-w-60 flex-col overflow-hidden rounded-xl border border-[rgba(226,232,240,0.8)] bg-white/95 shadow-[0_4px_20px_rgba(0,0,0,0.08)] max-xl:col-start-auto max-xl:h-150 max-xl:rounded-lg edit-mode:hidden">
             <div class="section-title flex h-12.5 items-center border-b border-line px-3">
                 <button id="mobile-template-back-btn"
-                    class="hidden max-sm:flex items-center justify-center rounded-sm border border-[rgba(226,232,240,0.8)] bg-white/90 px-4 py-2 text-ink-muted transition-all duration-300">
+                    class="hidden max-sm:flex items-center justify-center rounded-sm border border-[rgba(226,232,240,0.8)] bg-white/90 px-4 py-1.5 text-ink-muted transition-all duration-300">
                     <i class="fas fa-chevron-left"></i>
                 </button>
                 <div class="max-sm:ml-auto">
@@ -163,33 +163,25 @@
                     <span>模板编辑</span>
                 </div>
                 <button id="mobile-template-confirm-btn"
-                    class="hidden max-sm:flex ml-auto items-center justify-center rounded-sm border border-[rgba(226,232,240,0.8)] bg-white/90 px-4 py-2 text-sm font-semibold text-ink-muted transition-all duration-300">
+                    class="hidden max-sm:flex ml-auto items-center justify-center rounded-sm border border-[rgba(226,232,240,0.8)] bg-white/90 px-4 py-1.5 text-sm font-semibold text-ink-muted transition-all duration-300">
                     <i class="fas fa-chevron-right"></i>
                 </button>
             </div>
             <div class="@container flex min-h-0 flex-1 flex-col overflow-x-hidden px-3 pb-3">
                 <div class="mb-4 flex gap-2 rounded-md border-b-2 border-[rgba(226,232,240,0.5)] bg-white/30 p-1 pt-0">
-                    <button
-                        class="editor-tab active flex-1 cursor-pointer rounded-sm border-none bg-none px-2 py-2 text-xs font-medium text-ink-muted transition-all duration-300 ease-normal hover:bg-primary/10 hover:text-primary"
-                        data-tab="templates">
+                    <button class="editor-tab active" data-tab="templates">
                         <i class="fas fa-palette"></i>
                         <span class="@max-[375px]:hidden">选择模板</span>
                     </button>
-                    <button
-                        class="editor-tab flex-1 cursor-pointer rounded-sm border-none bg-none px-2 py-2 text-xs font-medium text-ink-muted transition-all duration-300 ease-normal hover:bg-primary/10 hover:text-primary"
-                        data-tab="visual">
+                    <button class="editor-tab" data-tab="visual">
                         <i class="fas fa-magic"></i>
                         <span class="@max-[375px]:hidden">基础配置</span>
                     </button>
-                    <button
-                        class="editor-tab flex-1 cursor-pointer rounded-sm border-none bg-none px-2 py-2 text-xs font-medium text-ink-muted transition-all duration-300 ease-normal hover:bg-primary/10 hover:text-primary"
-                        data-tab="cover">
+                    <button class="editor-tab" data-tab="cover">
                         <i class="fas fa-image"></i>
                         <span class="@max-[375px]:hidden">封面配置</span>
                     </button>
-                    <button
-                        class="editor-tab flex-1 cursor-pointer rounded-sm border-none bg-none px-2 py-2 text-xs font-medium text-ink-muted transition-all duration-300 ease-normal hover:bg-primary/10 hover:text-primary"
-                        data-tab="export">
+                    <button class="editor-tab" data-tab="export">
                         <i class="fas fa-file-export"></i>
                         <span class="@max-[375px]:hidden">导出</span>
                     </button>
@@ -223,14 +215,10 @@
                     <div>
                         <div class="form-group">
                             <div class="flex gap-1 rounded-md bg-secondary p-1">
-                                <button
-                                    class="bg-mode-btn active flex-1 cursor-pointer rounded-sm border-none bg-none px-1 py-2 text-xs font-medium text-ink-muted transition-all duration-300 ease-normal hover:text-ink [&>i]:mb-1 [&>i]:block"
-                                    data-mode="solid" title="纯色">
+                                <button class="bg-mode-btn active" data-mode="solid" title="纯色">
                                     <i class="fas fa-square"></i>
                                 </button>
-                                <button
-                                    class="bg-mode-btn flex-1 cursor-pointer rounded-sm border-none bg-none px-1 py-2 text-xs font-medium text-ink-muted transition-all duration-300 ease-normal hover:text-ink [&>i]:mb-1 [&>i]:block"
-                                    data-mode="gradient" title="渐变">
+                                <button class="bg-mode-btn" data-mode="gradient" title="渐变">
                                     <i class="fas fa-layer-group"></i>
                                 </button>
                             </div>
@@ -724,7 +712,7 @@
                             <i class="fas fa-download"></i> 批量导出
                         </label>
                         <button
-                            class="inline-flex h-11 w-full cursor-pointer items-center justify-center gap-2 rounded-md bg-linear-to-br from-primary via-[#8b5cf6] to-[#d946ef] px-5 py-3 text-sm font-semibold leading-none text-white shadow-[0_2px_8px_rgba(0,0,0,0.1)] transition-all duration-300 ease-normal hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)] active:-translate-y-px disabled:opacity-50"
+                            class="h-11 w-full flex-1 cursor-pointer rounded-md border-2 border-line bg-white px-3 py-2 text-xs font-semibold text-ink transition-all duration-300 ease-normal hover:border-primary"
                             id="download-all-btn" disabled>
                             <i class="fas fa-download"></i>
                             打包下载全部图片
@@ -742,7 +730,7 @@
             class="edit-panel col-start-5 flex min-w-75 flex-col overflow-hidden overflow-y-auto rounded-xl border border-[rgba(226,232,240,0.8)] bg-white/95 shadow-[0_4px_20px_rgba(0,0,0,0.08)] edit-mode:col-start-2 max-xl:col-start-auto max-xl:h-150 max-xl:rounded-lg max-lg:max-h-75 max-xl:edit-mode:h-150 max-md:edit-mode:h-100">
             <div class="section-title flex h-12.5 items-center border-b border-line px-3 edit-mode:px-4 edit-mode:py-3">
                 <button
-                    class="hidden max-sm:flex items-center justify-center rounded-sm border border-[rgba(226,232,240,0.8)] bg-white/90 px-4 py-2 text-ink-muted transition-all duration-300">
+                    class="hidden max-sm:flex items-center justify-center rounded-sm border border-[rgba(226,232,240,0.8)] bg-white/90 px-4 py-1.5 text-ink-muted transition-all duration-300">
                     <i class="fas fa-chevron-left text-gray-200"></i>
                 </button>
                 <div class="max-sm:ml-auto ml-3 flex items-center gap-2 text-base font-bold">
@@ -750,12 +738,12 @@
                     工作台
                 </div>
                 <button
-                    class="edit-mode-toggle ml-auto flex items-center justify-center rounded-sm border border-[rgba(226,232,240,0.8)] bg-white/90 px-3 py-2 text-ink-muted transition-all duration-300 max-sm:hidden"
+                    class="edit-mode-toggle ml-auto flex items-center justify-center rounded-sm border border-[rgba(226,232,240,0.8)] bg-white/90 px-3 py-1.5 text-ink-muted transition-all duration-300 max-sm:hidden"
                     id="edit-mode-toggle" title="专注编辑模式">
                     <i class="fas fa-expand-alt"></i>
                 </button>
                 <button id="mobile-input-confirm-btn"
-                    class="hidden max-sm:flex ml-auto items-center justify-center rounded-sm border border-[rgba(226,232,240,0.8)] bg-white/90 px-4 py-2 text-sm font-semibold text-ink-muted transition-all duration-300"
+                    class="hidden max-sm:flex ml-auto items-center justify-center rounded-sm border border-[rgba(226,232,240,0.8)] bg-white/90 px-4 py-1.5 text-sm font-semibold text-ink-muted transition-all duration-300"
                     title="确认">
                     <i class="fas fa-chevron-right"></i>
                 </button>

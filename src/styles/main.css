@@ -280,8 +280,16 @@
   }
 
   /* === 各状态切换类（JS classList 驱动） === */
+  .bg-mode-btn {
+    @apply flex-1 cursor-pointer rounded-sm border-none bg-none px-1 py-2 text-xs font-medium text-ink-muted transition-all duration-300 ease-normal hover:text-ink [&>i]:mb-1 [&>i]:block;
+  }
+
   .bg-mode-btn.active {
     @apply bg-white text-primary shadow-[0_1px_4px_rgba(0,0,0,0.05)];
+  }
+
+  .editor-tab {
+    @apply flex-1 cursor-pointer rounded-sm border-2 border-line border-transparent hover:border-primary bg-none px-2 py-2 text-xs font-medium text-ink-muted transition-all duration-300 ease-normal;
   }
 
   .editor-tab.active {
