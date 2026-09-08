@@ -131,23 +131,21 @@
 
         <!-- 模板编辑器（中列） -->
         <div class="editor-panel col-start-3 flex min-w-60 flex-col overflow-hidden rounded-xl border border-[rgba(226,232,240,0.8)] bg-white/95 shadow-[0_4px_20px_rgba(0,0,0,0.08)] max-xl:col-start-auto max-xl:h-150 max-xl:rounded-lg edit-mode:hidden">
-            <div class="@container flex min-h-0 flex-1 flex-col overflow-x-hidden p-3">
-                <div class="section-title">
-                    <div>
-                        <i class="fas fa-tools"></i>
-                        <span class="@max-[375px]:hidden">模板编辑</span>
-                    </div>
-                    <div class="ml-auto flex flex-row items-center gap-2 px-3">
-                        <button class="inline-flex w-auto cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-md border border-[rgba(226,232,240,0.8)] bg-white/95 px-3 py-1 text-xs font-semibold leading-none text-ink transition-all duration-300 ease-normal hover:-translate-y-0.5 hover:border-transparent hover:bg-linear-to-br hover:from-primary hover:via-[#8b5cf6] hover:to-[#d946ef] hover:text-white hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)] active:translate-y-0 active:shadow-[0_2px_8px_rgba(0,0,0,0.1)]" id="reset-template-btn">
-                            <i class="fas fa-undo"></i>
-                            <span class="@max-[375px]:hidden">恢复默认样式</span>
-                        </button>
-                        <button class="inline-flex w-auto cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-md border border-[rgba(220,53,69,0.2)] bg-[#fffcfc] px-3.5 py-1 text-xs font-medium leading-none text-[#dc3545] transition-all duration-300 ease-normal hover:-translate-y-0.5 hover:border-transparent hover:bg-linear-to-br hover:from-primary hover:via-[#8b5cf6] hover:to-[#d946ef] hover:text-white hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)]" id="reset-storage-btn">
-                            <i class="fas fa-trash-alt"></i>
-                            <span class="@max-[375px]:hidden">重置所有设置</span>
-                        </button>
-                    </div>
+            <div class="section-title flex h-12.5 items-center border-b border-line px-3">
+                <div class="max-sm:hidden">
+                    <i class="fas fa-tools"></i>
+                    <span>模板编辑</span>
                 </div>
+                <div class="ml-auto hidden max-sm:flex flex-1 items-center gap-2">
+                    <button id="mobile-template-back-btn" class="hidden max-sm:flex items-center justify-center rounded-sm border border-[rgba(226,232,240,0.8)] bg-white/90 px-4 py-2 text-ink-muted transition-all duration-300">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button id="mobile-template-confirm-btn" class="hidden max-sm:flex ml-auto items-center justify-center rounded-sm border border-[rgba(226,232,240,0.8)] bg-white/90 px-4 py-2 text-sm font-semibold text-ink-muted transition-all duration-300">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="@container flex min-h-0 flex-1 flex-col overflow-x-hidden p-3">
                 <div class="mb-4 flex gap-2 rounded-md border-b-2 border-[rgba(226,232,240,0.5)] bg-white/30 p-1">
                     <button class="editor-tab active flex-1 cursor-pointer rounded-sm border-none bg-none px-2 py-2 text-xs font-medium text-ink-muted transition-all duration-300 ease-normal hover:bg-primary/10 hover:text-primary" data-tab="templates">
                         <i class="fas fa-palette"></i>
@@ -171,6 +169,16 @@
                 <div class="editor-content active flex-1 min-h-0 overflow-x-hidden overflow-y-auto pr-1" id="template-editor">
                     <div class="flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto py-2 pr-1" id="template-list">
                         <!-- 模板列表将通过 JavaScript 动态生成 -->
+                    </div>
+                    <div class="mt-2 flex shrink-0 items-center gap-2 border-t border-[rgba(226,232,240,0.5)] pr-1 pt-2">
+                        <button class="inline-flex flex-1 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-md border border-[rgba(226,232,240,0.8)] bg-white/95 px-3 py-2 text-xs font-semibold leading-none text-ink transition-all duration-300 ease-normal hover:-translate-y-0.5 hover:border-transparent hover:bg-linear-to-br hover:from-primary hover:via-[#8b5cf6] hover:to-[#d946ef] hover:text-white hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)] active:translate-y-0 active:shadow-[0_2px_8px_rgba(0,0,0,0.1)]" id="reset-template-btn">
+                            <i class="fas fa-undo"></i>
+                            <span>恢复默认样式</span>
+                        </button>
+                        <button class="inline-flex flex-1 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-md border border-[rgba(220,53,69,0.2)] bg-[#fffcfc] px-3.5 py-2 text-xs font-medium leading-none text-[#dc3545] transition-all duration-300 ease-normal hover:-translate-y-0.5 hover:border-transparent hover:bg-linear-to-br hover:from-primary hover:via-[#8b5cf6] hover:to-[#d946ef] hover:text-white hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)]" id="reset-storage-btn">
+                            <i class="fas fa-trash-alt"></i>
+                            <span>重置所有设置</span>
+                        </button>
                     </div>
                 </div>
 
@@ -627,15 +635,6 @@
                     </div>
                 </div>
             </div>
-
-            <div class="hidden max-sm:flex items-center gap-3 border-t border-[rgba(226,232,240,0.6)] bg-white/95 p-3">
-                <button id="mobile-template-back-btn" class="flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-md border border-[rgba(226,232,240,0.8)] bg-white/95 px-4 py-2 text-sm font-semibold text-ink transition-all duration-300">
-                    <i class="fas fa-chevron-left"></i> 返回
-                </button>
-                <button id="mobile-template-confirm-btn" class="flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-md bg-linear-to-br from-primary via-[#8b5cf6] to-[#d946ef] px-4 py-2 text-sm font-semibold text-white transition-all duration-300">
-                    确认 <i class="fas fa-chevron-right"></i>
-                </button>
-            </div>
         </div>
 
         <div class="column-divider col-start-4 max-xl:hidden edit-mode:hidden" data-divider="2" title="拖动调整输入区宽度" aria-hidden="true"></div>
@@ -650,7 +649,9 @@
                 <button class="edit-mode-toggle ml-auto flex items-center justify-center rounded-sm border border-[rgba(226,232,240,0.8)] bg-white/90 px-3 py-2 text-ink-muted transition-all duration-300 max-sm:hidden" id="edit-mode-toggle" title="专注编辑模式">
                     <i class="fas fa-expand-alt"></i>
                 </button>
-                <button id="mobile-input-confirm-btn" class="hidden max-sm:flex ml-auto items-center justify-center rounded-sm border border-[rgba(226,232,240,0.8)] bg-white/90 px-4 py-2 text-sm font-semibold text-ink-muted transition-all duration-300" title="确认">确认</button>
+                <button id="mobile-input-confirm-btn" class="hidden max-sm:flex ml-auto items-center justify-center rounded-sm border border-[rgba(226,232,240,0.8)] bg-white/90 px-4 py-2 text-sm font-semibold text-ink-muted transition-all duration-300" title="确认">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
             </div>
             <div class="input-section relative flex flex-1 flex-col border-b border-[rgba(226,232,240,0.6)] p-5">
                 <div class="section-title">
