@@ -94,7 +94,7 @@
     <div class="main-container relative grid h-screen min-w-75 p-3 bg-linear-to-br from-secondary to-[#eef2ff] grid-cols-[minmax(240px,var(--preview-col))_var(--divider-w)_minmax(280px,var(--editor-col))_var(--divider-w)_minmax(300px,var(--input-col))] grid-rows-[minmax(0,1fr)] max-xl:grid-cols-2 max-xl:grid-rows-[auto_1fr] max-xl:h-auto max-xl:overflow-auto max-xl:bg-linear-to-b max-xl:gap-3 max-lg:grid-cols-1 max-lg:grid-rows-[auto_1fr_auto] max-lg:min-h-screen max-lg:gap-3 edit-mode:grid-cols-[minmax(540px,1fr)_minmax(600px,1fr)] edit-mode:gap-3 max-3xl:edit-mode:grid-cols-[minmax(500px,1fr)_minmax(500px,1fr)] 3xl:edit-mode:grid-cols-[minmax(560px,1fr)_minmax(700px,1fr)] 4xl:edit-mode:grid-cols-[minmax(640px,1fr)_minmax(800px,1fr)] max-xl:edit-mode:grid-cols-2 max-xl:edit-mode:grid-rows-[auto_1fr] max-xl:edit-mode:h-auto max-md:edit-mode:grid-cols-1 max-md:edit-mode:grid-rows-[auto_1fr_auto]">
         <!-- 预览区域（左列） -->
         <div class="preview-panel col-start-1 flex flex-col gap-3 overflow-hidden rounded-xl border-none bg-transparent shadow-none max-xl:col-start-auto max-xl:col-span-2 max-xl:h-150 max-xl:rounded-lg max-lg:col-span-1 max-lg:min-h-125 edit-mode:rounded-xl edit-mode:border edit-mode:border-[rgba(226,232,240,0.8)] edit-mode:bg-white/95 edit-mode:shadow-[0_4px_20px_rgba(0,0,0,0.08)] max-xl:edit-mode:border-none max-xl:edit-mode:bg-transparent max-md:edit-mode:min-h-75">
-            <div class="flex shrink-0 items-center justify-between border-b border-[rgba(226,232,240,0.6)] bg-white/95 px-5 py-4 max-sm:px-3">
+            <div class="section-title flex shrink-0 items-center justify-between border-b border-[rgba(226,232,240,0.6)] bg-white/95 px-5 py-4 max-sm:px-3">
                 <button id="mobile-preview-back-btn" class="hidden max-sm:flex items-center justify-center rounded-sm border border-[rgba(226,232,240,0.8)] bg-white/90 px-3 py-2 text-ink-muted transition-all duration-300" title="返回模板编辑">
                     <i class="fas fa-chevron-left"></i>
                 </button>
@@ -145,8 +145,8 @@
                     </button>
                 </div>
             </div>
-            <div class="@container flex min-h-0 flex-1 flex-col overflow-x-hidden p-3">
-                <div class="mb-4 flex gap-2 rounded-md border-b-2 border-[rgba(226,232,240,0.5)] bg-white/30 p-1">
+            <div class="@container flex min-h-0 flex-1 flex-col overflow-x-hidden px-3 pb-3">
+                <div class="mb-4 flex gap-2 rounded-md border-b-2 border-[rgba(226,232,240,0.5)] bg-white/30 p-1 pt-0">
                     <button class="editor-tab active flex-1 cursor-pointer rounded-sm border-none bg-none px-2 py-2 text-xs font-medium text-ink-muted transition-all duration-300 ease-normal hover:bg-primary/10 hover:text-primary" data-tab="templates">
                         <i class="fas fa-palette"></i>
                         <span class="@max-[375px]:hidden">选择模板</span>
@@ -640,8 +640,8 @@
         <div class="column-divider col-start-4 max-xl:hidden edit-mode:hidden" data-divider="2" title="拖动调整输入区宽度" aria-hidden="true"></div>
 
         <!-- 输入区域（右列） -->
-        <div class="left-panel col-start-5 flex min-w-75 flex-col overflow-hidden overflow-y-auto rounded-xl border border-[rgba(226,232,240,0.8)] bg-white/95 shadow-[0_4px_20px_rgba(0,0,0,0.08)] edit-mode:col-start-2 max-xl:col-start-auto max-xl:h-150 max-xl:rounded-lg max-lg:max-h-75 max-xl:edit-mode:h-150 max-md:edit-mode:h-100">
-            <div class="panel-header flex h-12.5 items-center border-b border-line px-3 edit-mode:px-4 edit-mode:py-3">
+        <div class="edit-panel col-start-5 flex min-w-75 flex-col overflow-hidden overflow-y-auto rounded-xl border border-[rgba(226,232,240,0.8)] bg-white/95 shadow-[0_4px_20px_rgba(0,0,0,0.08)] edit-mode:col-start-2 max-xl:col-start-auto max-xl:h-150 max-xl:rounded-lg max-lg:max-h-75 max-xl:edit-mode:h-150 max-md:edit-mode:h-100">
+            <div class="section-title flex h-12.5 items-center border-b border-line px-3 edit-mode:px-4 edit-mode:py-3">
                 <div class="ml-3 flex items-center gap-2 text-base font-bold">
                     <img src="/logo.png" alt="XHS-TextCard" width="20" height="20">
                     工作台
@@ -653,7 +653,7 @@
                     <i class="fas fa-chevron-right"></i>
                 </button>
             </div>
-            <div class="input-section relative flex flex-1 flex-col border-b border-[rgba(226,232,240,0.6)] p-5">
+            <div class="input-section relative flex flex-1 flex-col border-b border-[rgba(226,232,240,0.6)] px-5 pb-5">
                 <div class="section-title">
                     <i class="fas fa-edit"></i>
                     输入文字

@@ -65,7 +65,7 @@
   --text-area-height: 540px;
   --text-area-padding: 40px;
 
-  --left-panel-width: 320px;
+  --edit-panel-width: 320px;
   --template-panel-width: 200px;
   --editor-panel-width: 260px;
   --panel-gap: 12px;
@@ -97,7 +97,7 @@
 /* 面板宽度变量随窗口断点调整（原 grid.css 的媒体查询） */
 @media (max-width: 1600px) {
   :root {
-    --left-panel-width: 380px;
+    --edit-panel-width: 380px;
     --template-panel-width: 220px;
     --editor-panel-width: 260px;
   }
@@ -105,7 +105,7 @@
 
 @media (max-width: 1440px) {
   :root {
-    --left-panel-width: 320px;
+    --edit-panel-width: 320px;
     --template-panel-width: 200px;
     --editor-panel-width: 240px;
   }
@@ -236,7 +236,7 @@
 
   /* === 区块标题（图标渐变文字） === */
   .section-title {
-    @apply mb-4 flex items-center gap-2 text-base font-semibold text-ink;
+    @apply mb-2 flex h-12.5 items-center gap-2 text-base font-semibold text-ink;
   }
 
   .section-title i {
@@ -661,7 +661,7 @@
 
   .preview-panel,
   .editor-panel,
-  .left-panel {
+  .edit-panel {
     display: none;
     flex: 1;
     min-height: 0;
@@ -672,7 +672,7 @@
     box-shadow: none;
   }
 
-  body.mobile-step-input .left-panel,
+  body.mobile-step-input .edit-panel,
   body.mobile-step-template .editor-panel,
   body.mobile-step-preview .preview-panel {
     display: flex;
