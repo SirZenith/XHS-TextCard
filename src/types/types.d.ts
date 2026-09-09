@@ -116,9 +116,32 @@ export interface TableRowLayout {
     isHeaderRow: boolean;
 }
 
+type LayoutBlockType =
+    'render-error'
+    | 'cover'
+    | 'space'
+    | 'centerBlock'
+    | 'code-block'
+    | 'image'
+    | 'mathBlock'
+    | 'heading'
+    | 'hr'
+    | 'text'
+    | 'paragraph'
+    | 'blockquote'
+    | 'list'
+    | 'list-item'
+    | 'spacer'
+    | 'table'
+    | 'table-grid'
+    | 'code'
+    | 'divider'
+    | 'math-block'
+    | 'mermaid-block';
+
 /** 布局块：TextSplitter 的输出单元，CanvasRenderer 的绘制单元 */
 export interface LayoutBlock {
-    type: string;
+    type: LayoutBlockType;
     height: number;
     marginTop?: number;
     marginBottom?: number;

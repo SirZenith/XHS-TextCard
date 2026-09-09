@@ -402,38 +402,63 @@ export class CanvasRenderer {
                 currentY += layout.height;
                 continue;
             }
+
             const contentY = currentY + (layout.marginTop || 0);
-            if (layout.type === 'heading') {
-                this.drawStyledLines(ctx, layout.lines!, textAreaRect.x, contentY, config, templateId, textAreaRect.width, layout.align);
-            } else if (layout.type === 'blockquote') {
-                const indent = layout.indent || 20;
-                let quoteBarColor = config.accentColor || 'rgba(0,0,0,0.1)';
-                ctx.fillStyle = quoteBarColor;
-                ctx.fillRect(textAreaRect.x, contentY, templateId === 'deep-night' ? 2 : 3, layout.height - (layout.marginTop || 0) - (layout.marginBottom || 0));
-                this.drawStyledLines(ctx, layout.lines!, textAreaRect.x + indent, contentY, config, templateId, textAreaRect.width - indent, layout.align);
-            } else if (layout.type === 'list-item') {
-                const fontSize = Number(config.fontSize) || 16;
-                const fontFamily = config.fontFamily === 'inherit' ? "-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', sans-serif" : (config.fontFamily || "sans-serif");
-                ctx.font = `500 ${fontSize}px ${fontFamily}`;
-                let prefixColor = config.accentColor || config.textColor;
-                ctx.fillStyle = prefixColor;
-                ctx.fillText(layout.prefix || '', textAreaRect.x, contentY);
-                this.drawStyledLines(ctx, layout.lines!, textAreaRect.x + (layout.prefixWidth || 0), contentY, config, templateId, textAreaRect.width - (layout.prefixWidth || 0), layout.align);
-            } else if (layout.type === 'image') {
-                this.drawInlineImage(ctx, layout, textAreaRect.x, contentY);
-            } else if (layout.type === 'math-block') {
-                this.drawMathBlock(ctx, layout, textAreaRect.x, contentY, textAreaRect.width);
-            } else if (layout.type === 'mermaid-block') {
-                this.drawMermaidBlock(ctx, layout, textAreaRect.x, contentY, textAreaRect.width);
-            } else if (layout.type === 'table-grid') {
-                this.drawTableGrid(ctx, layout, textAreaRect.x, contentY, config, templateId);
-            } else if (layout.type === 'render-error') {
-                this.drawRenderError(ctx, layout, textAreaRect.x, contentY, textAreaRect.width, config);
-            } else if (layout.type === 'code-block') {
-                this.drawCodeBlock(ctx, layout, textAreaRect.x, contentY, config, templateId, textAreaRect.width);
-            } else if (layout.lines) {
-                this.drawStyledLines(ctx, layout.lines, textAreaRect.x, contentY, config, templateId, textAreaRect.width, layout.align);
+
+            switch (layout.type) {
+                case 'heading': {
+                    this.drawStyledLines(ctx, layout.lines!, textAreaRect.x, contentY, config, templateId, textAreaRect.width, layout.align);
+                    break;
+                }
+                case 'blockquote': {
+                    const indent = layout.indent || 20;
+                    let quoteBarColor = config.accentColor || 'rgba(0,0,0,0.1)';
+                    ctx.fillStyle = quoteBarColor;
+                    ctx.fillRect(textAreaRect.x, contentY, templateId === 'deep-night' ? 2 : 3, layout.height - (layout.marginTop || 0) - (layout.marginBottom || 0));
+                    this.drawStyledLines(ctx, layout.lines!, textAreaRect.x + indent, contentY, config, templateId, textAreaRect.width - indent, layout.align);
+                    break;
+                }
+                case 'list-item': {
+                    const fontSize = Number(config.fontSize) || 16;
+                    const fontFamily = config.fontFamily === 'inherit' ? "-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', sans-serif" : (config.fontFamily || "sans-serif");
+                    ctx.font = `500 ${fontSize}px ${fontFamily}`;
+                    let prefixColor = config.accentColor || config.textColor;
+                    ctx.fillStyle = prefixColor;
+                    ctx.fillText(layout.prefix || '', textAreaRect.x, contentY);
+                    this.drawStyledLines(ctx, layout.lines!, textAreaRect.x + (layout.prefixWidth || 0), contentY, config, templateId, textAreaRect.width - (layout.prefixWidth || 0), layout.align);
+                    break;
+                }
+                case 'image': {
+                    this.drawInlineImage(ctx, layout, textAreaRect.x, contentY);
+                    break;
+                }
+                case 'math-block': {
+                    this.drawMathBlock(ctx, layout, textAreaRect.x, contentY, textAreaRect.width);
+                    break;
+                }
+                case 'mermaid-block': {
+                    this.drawMermaidBlock(ctx, layout, textAreaRect.x, contentY, textAreaRect.width);
+                    break;
+                }
+                case 'table-grid': {
+                    this.drawTableGrid(ctx, layout, textAreaRect.x, contentY, config, templateId);
+                    break;
+                }
+                case 'render-error': {
+                    this.drawRenderError(ctx, layout, textAreaRect.x, contentY, textAreaRect.width, config);
+                    break;
+                }
+                case 'code-block': {
+                    this.drawCodeBlock(ctx, layout, textAreaRect.x, contentY, config, templateId, textAreaRect.width);
+                    break;
+                }
+                default:
+                    if (layout.lines) {
+                        this.drawStyledLines(ctx, layout.lines, textAreaRect.x, contentY, config, templateId, textAreaRect.width, layout.align);
+                    }
+                    break;
             }
+
             currentY += layout.height;
         }
         ctx.restore();
