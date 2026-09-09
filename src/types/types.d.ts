@@ -61,7 +61,7 @@ export interface EngineConfig {
 }
 
 /** 行内文本片段（layoutInlineText 的输出单元） */
-export interface TextSegment {
+export interface TextSegment<CustomArgs = unknown> {
     text?: string;
     fontSize?: number;
     fontWeight?: string;
@@ -75,12 +75,17 @@ export interface TextSegment {
     mathFallback?: boolean;
     textDecoration?: string;
     headingLevel?: number;
-    isHeader?: boolean;
     image?: HTMLImageElement;
     width?: number;
     height?: number;
     display?: boolean;
+
+    /** 该字段的值由模板生成文本段时提供，由模板使用 */
+    templateArgs?: CustomArgs;
 }
+
+type TextSegmentArray<T> = TextSegment<T>[];
+type LineArray<T> = Array<TextSegmentArray<T> | TextSegment<T>>
 
 /** 代码高亮片段 */
 export interface CodeSegment {
