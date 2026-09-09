@@ -236,7 +236,7 @@
 
   /* === 区块标题（图标渐变文字） === */
   .section-title {
-    @apply mb-2 flex h-12.5 items-center gap-2 text-base font-semibold text-ink;
+    @apply mb-2 flex h-12.5 items-center gap-2 border-b border-line px-3 text-base font-semibold text-ink;
   }
 
   .section-title i {
@@ -324,6 +324,10 @@
   .color-preset[data-color="#9290C3"] { @apply bg-[#9290C3]; }
   .color-preset[data-color="#7C9D96"] { @apply bg-[#7C9D96]; }
   .color-preset[data-color="#1a1a1b"] { @apply bg-[#1a1a1b]; }
+  .color-preset[data-color="#667eea"] { @apply bg-[#667eea]; }
+  .color-preset[data-color="#f472b6"] { @apply bg-[#f472b6]; }
+  .color-preset[data-color="#22d3ee"] { @apply bg-[#22d3ee]; }
+  .color-preset[data-color="#0f172a"] { @apply bg-[#0f172a]; }
 
   .color-preset:hover {
     @apply -translate-y-px shadow-[0_2px_8px_rgba(0,0,0,0.08)];
