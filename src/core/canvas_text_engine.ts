@@ -11,7 +11,7 @@ import { PREVIEW_WIDTH } from '../utils/constants';
 import { CANVAS_UTIL } from '../utils/canvas_utils';
 import type { CodeSegment, EngineConfig, ImageMeasureResult, LayoutBlock, MathRenderResult, TableCellLayout, TableRowLayout, TextSegment } from '../types/types';
 
-const NO_BREAK_CHAR_SET = new Set(',.!?，。！？');
+const NO_BREAK_CHAR_SET = new Set(',，.。!！?？:：、');
 
 export class CanvasTextEngine {
     private canvas: HTMLCanvasElement;
@@ -684,206 +684,206 @@ export class CanvasTextEngine {
         if (!token) return layouts;
 
         switch (token.type) {
-            case 'centerBlock': {
-                // 内部 tokens 是块级 token（paragraph, heading 等），逐个布局并标记居中
-                const childTokens = token.tokens || [];
-                for (const child of childTokens) {
-                    const childLayouts = await this.layoutToken(child);
-                    for (const layout of childLayouts) {
-                        layout.align = 'center';
-                        layouts.push(layout);
-                    }
+        case 'centerBlock': {
+            // 内部 tokens 是块级 token（paragraph, heading 等），逐个布局并标记居中
+            const childTokens = token.tokens || [];
+            for (const child of childTokens) {
+                const childLayouts = await this.layoutToken(child);
+                for (const layout of childLayouts) {
+                    layout.align = 'center';
+                    layouts.push(layout);
                 }
-                break;
             }
-            case 'image': {
-                const imgData = await this.measureImage(token.href || '');
-                const marginTop = 10, marginBottom = 20;
+            break;
+        }
+        case 'image': {
+            const imgData = await this.measureImage(token.href || '');
+            const marginTop = 10, marginBottom = 20;
+            layouts.push({
+                type: 'image',
+                src: token.href || '',
+                alt: token.text || '',
+                width: imgData.width,
+                height: (imgData.height || 100) + marginTop + marginBottom,
+                contentHeight: imgData.height || 100,
+                marginTop,
+                marginBottom
+            });
+            break;
+        }
+        case 'mathBlock': {
+            const fontSize = this.config.fontSize * 0.9;
+            const math = await this.renderMath(token.text || '', true, fontSize);
+            if (math && math.image) {
+                const maxWidth = this.drawWidth;
+                const mathWidth = math.width || 0;
+                const scale = mathWidth > maxWidth ? maxWidth / mathWidth : 1;
+                const width = mathWidth * scale;
+                const contentHeight = (math.height || 0) * scale;
+                const marginTop = 0;
+                const marginBottom = this.config.fontSize * 0.8;
                 layouts.push({
-                    type: 'image',
-                    src: token.href || '',
-                    alt: token.text || '',
-                    width: imgData.width,
-                    height: (imgData.height || 100) + marginTop + marginBottom,
-                    contentHeight: imgData.height || 100,
+                    type: 'math-block',
+                    image: math.image,
+                    width,
+                    contentHeight,
+                    height: contentHeight + marginTop + marginBottom,
                     marginTop,
-                    marginBottom
+                    marginBottom,
+                    align: 'center'
                 });
-                break;
-            }
-            case 'mathBlock': {
-                const fontSize = this.config.fontSize * 0.9;
-                const math = await this.renderMath(token.text || '', true, fontSize);
-                if (math && math.image) {
-                    const maxWidth = this.drawWidth;
-                    const mathWidth = math.width || 0;
-                    const scale = mathWidth > maxWidth ? maxWidth / mathWidth : 1;
-                    const width = mathWidth * scale;
-                    const contentHeight = (math.height || 0) * scale;
-                    const marginTop = 0;
-                    const marginBottom = this.config.fontSize * 0.8;
-                    layouts.push({
-                        type: 'math-block',
-                        image: math.image,
-                        width,
-                        contentHeight,
-                        height: contentHeight + marginTop + marginBottom,
-                        marginTop,
-                        marginBottom,
-                        align: 'center'
-                    });
-                } else {
-                    const lines = this.splitIntoLines(math ? math.text : (token.text || ''));
-                    const marginBottom = this.config.fontSize * 0.8;
-                    layouts.push({
-                        type: 'code-block',
-                        lines: lines.map(text => ({ text, fontSize: this.config.fontSize * 0.9, isCode: true })),
-                        height: (lines.length * baseLineHeight) + marginBottom,
-                        marginTop: 0,
-                        marginBottom
-                    });
-                }
-                break;
-            }
-            case 'heading': {
-                const scales: Record<number, number> = { 1: this.config.h1Scale || 1.6, 2: this.config.h2Scale || 1.4, 3: this.config.h3Scale || 1.2 };
-                const fontSize = this.config.fontSize * (scales[token.depth || 0] || 1.1);
-                const lines = await this.layoutInlineText(token.tokens || [{ type: 'text', text: token.text }], this.drawWidth, {
-                    fontSize, fontWeight: '800', headingLevel: token.depth
-                });
-
-                const marginTop = fontSize * 0.6, marginBottom = fontSize * 0.4;
-                layouts.push({
-                    type: 'heading', depth: token.depth, lines,
-                    height: marginTop + (lines.length * fontSize * this.config.lineHeight) + marginBottom,
-                    marginTop, marginBottom
-                });
-                break;
-            }
-            case 'hr': {
-                layouts.push({ type: 'divider', height: 20 });
-                break;
-            }
-            case 'text':
-            case 'paragraph': {
-                const tokens = token.tokens;
-
-                // 如果段落只包含一个图片，则直接作为图片处理
-                if (tokens && tokens.length === 1 && tokens[0].type === 'image') {
-                    return await this.layoutToken(tokens[0]);
-                }
-
-                // 如果段落包含多个图片和其他文本，提取出来作为独立块
-                const hasImage = !!(tokens && tokens.some(t => t.type === 'image'));
-                if (hasImage && tokens) {
-                    const subLayouts: LayoutBlock[] = [];
-                    let currentTextTokens: MarkedToken[] = [];
-
-                    for (const subToken of tokens) {
-                        if (subToken.type === 'image') {
-                            if (currentTextTokens.length > 0) {
-                                subLayouts.push(...await this.layoutToken({ type: 'paragraph', tokens: currentTextTokens, text: '' }));
-                                currentTextTokens = [];
-                            }
-                            subLayouts.push(...await this.layoutToken(subToken));
-                        } else {
-                            currentTextTokens.push(subToken);
-                        }
-                    }
-
-                    if (currentTextTokens.length > 0) {
-                        subLayouts.push(...await this.layoutToken({ type: 'paragraph', tokens: currentTextTokens, text: '' }));
-                    }
-                    return subLayouts;
-                }
-
-                const lines = await this.layoutInlineText(tokens || [{ type: 'text', text: token.text || '' }]);
+            } else {
+                const lines = this.splitIntoLines(math ? math.text : (token.text || ''));
                 const marginBottom = this.config.fontSize * 0.8;
-                layouts.push({
-                    type: 'paragraph', lines, height: (lines.length * baseLineHeight) + marginBottom,
-                    marginTop: 0, marginBottom
-                });
-                break;
-            }
-            case 'blockquote': {
-                const indent = 20;
-                const lines = await this.layoutInlineText(token.tokens || [{ type: 'text', text: token.text }], this.drawWidth - indent);
-                const marginBottom = this.config.fontSize * 0.8;
-                layouts.push({
-                    type: 'blockquote', lines, indent, height: (lines.length * baseLineHeight) + marginBottom,
-                    marginTop: 0, marginBottom
-                });
-                break;
-            }
-            case 'list': {
-                const items = token.items || [];
-                for (let i = 0; i < items.length; i++) {
-                    const item = items[i];
-                    const prefix = token.ordered ? `${i + 1}. ` : '• ';
-                    const prefixWidth = this.measureTextWidth(prefix);
-                    let inlineTokens = item.tokens || [];
-                    if (inlineTokens.length === 1 && inlineTokens[0].type === 'paragraph') {
-                        inlineTokens = inlineTokens[0].tokens || [];
-                    }
-
-                    const lines = await this.layoutInlineText(inlineTokens, this.drawWidth - prefixWidth);
-                    const marginBottom = this.config.fontSize * 0.8;
-                    layouts.push({
-                        type: 'list-item', prefix, prefixWidth, lines,
-                        height: (lines.length * baseLineHeight) + marginBottom,
-                        marginTop: 0, marginBottom
-                    });
-                }
-                break;
-            }
-            case 'spacer': {
-                // 自定义空白块：::: spacer {高度} :::
-                // 高度为 0~1 之间的小数时，视为页面（输出）高度的百分比；否则为像素高度。
-                // 超出单页可用高度时截断到最大可用高度。
-                const requested = Number(token.height) || 0;
-                if (requested > 0) {
-                    let height = requested;
-                    if (requested > 0 && requested < 1) {
-                        const pageHeight = Number(this.config.pageHeight) || 0;
-                        height = requested * (pageHeight || Number(this.config.maxBlockHeight) || 0);
-                    }
-                    const maxBlock = Number(this.config.maxBlockHeight) || height;
-                    layouts.push({ type: 'space', height: Math.min(height, maxBlock) });
-                }
-                break;
-            }
-            case 'table': {
-                const tableLayout = await this.layoutTable(token);
-                if (tableLayout) {
-                    layouts.push(tableLayout);
-                }
-                break;
-            }
-            case 'code': {
-                const language = String(token.lang || '').trim().toLowerCase();
-                if (language === 'mermaid') {
-                    const mermaidBlock = await this.renderMermaid(token.text || '');
-                    if (mermaidBlock) {
-                        layouts.push(mermaidBlock);
-                        break;
-                    }
-                }
-                await this.waitForHighlightJs();
-                const paddingX = 14;
-                const lines = this.splitCodeSegments(this.highlightCode(token.text || '', token.lang), this.drawWidth - (paddingX * 2));
-                const paddingY = 12;
-                const marginBottom = this.config.fontSize * 0.8;
-                const lineHeight = (this.config.fontSize * 0.82) * (Number(this.config.lineHeight) || 1.6);
                 layouts.push({
                     type: 'code-block',
-                    lines,
-                    paddingX,
-                    paddingY,
-                    height: (lines.length * lineHeight) + (paddingY * 2) + marginBottom,
+                    lines: lines.map(text => ({ text, fontSize: this.config.fontSize * 0.9, isCode: true })),
+                    height: (lines.length * baseLineHeight) + marginBottom,
+                    marginTop: 0,
+                    marginBottom
+                });
+            }
+            break;
+        }
+        case 'heading': {
+            const scales: Record<number, number> = { 1: this.config.h1Scale || 1.6, 2: this.config.h2Scale || 1.4, 3: this.config.h3Scale || 1.2 };
+            const fontSize = this.config.fontSize * (scales[token.depth || 0] || 1.1);
+            const lines = await this.layoutInlineText(token.tokens || [{ type: 'text', text: token.text }], this.drawWidth, {
+                fontSize, fontWeight: '800', headingLevel: token.depth
+            });
+
+            const marginTop = fontSize * 0.6, marginBottom = fontSize * 0.4;
+            layouts.push({
+                type: 'heading', depth: token.depth, lines,
+                height: marginTop + (lines.length * fontSize * this.config.lineHeight) + marginBottom,
+                marginTop, marginBottom
+            });
+            break;
+        }
+        case 'hr': {
+            layouts.push({ type: 'divider', height: 20 });
+            break;
+        }
+        case 'text':
+        case 'paragraph': {
+            const tokens = token.tokens;
+
+            // 如果段落只包含一个图片，则直接作为图片处理
+            if (tokens && tokens.length === 1 && tokens[0].type === 'image') {
+                return await this.layoutToken(tokens[0]);
+            }
+
+            // 如果段落包含多个图片和其他文本，提取出来作为独立块
+            const hasImage = !!(tokens && tokens.some(t => t.type === 'image'));
+            if (hasImage && tokens) {
+                const subLayouts: LayoutBlock[] = [];
+                let currentTextTokens: MarkedToken[] = [];
+
+                for (const subToken of tokens) {
+                    if (subToken.type === 'image') {
+                        if (currentTextTokens.length > 0) {
+                            subLayouts.push(...await this.layoutToken({ type: 'paragraph', tokens: currentTextTokens, text: '' }));
+                            currentTextTokens = [];
+                        }
+                        subLayouts.push(...await this.layoutToken(subToken));
+                    } else {
+                        currentTextTokens.push(subToken);
+                    }
+                }
+
+                if (currentTextTokens.length > 0) {
+                    subLayouts.push(...await this.layoutToken({ type: 'paragraph', tokens: currentTextTokens, text: '' }));
+                }
+                return subLayouts;
+            }
+
+            const lines = await this.layoutInlineText(tokens || [{ type: 'text', text: token.text || '' }]);
+            const marginBottom = this.config.fontSize * 0.8;
+            layouts.push({
+                type: 'paragraph', lines, height: (lines.length * baseLineHeight) + marginBottom,
+                marginTop: 0, marginBottom
+            });
+            break;
+        }
+        case 'blockquote': {
+            const indent = 20;
+            const lines = await this.layoutInlineText(token.tokens || [{ type: 'text', text: token.text }], this.drawWidth - indent);
+            const marginBottom = this.config.fontSize * 0.8;
+            layouts.push({
+                type: 'blockquote', lines, indent, height: (lines.length * baseLineHeight) + marginBottom,
+                marginTop: 0, marginBottom
+            });
+            break;
+        }
+        case 'list': {
+            const items = token.items || [];
+            for (let i = 0; i < items.length; i++) {
+                const item = items[i];
+                const prefix = token.ordered ? `${i + 1}. ` : '• ';
+                const prefixWidth = this.measureTextWidth(prefix);
+                let inlineTokens = item.tokens || [];
+                if (inlineTokens.length === 1 && inlineTokens[0].type === 'paragraph') {
+                    inlineTokens = inlineTokens[0].tokens || [];
+                }
+
+                const lines = await this.layoutInlineText(inlineTokens, this.drawWidth - prefixWidth);
+                const marginBottom = this.config.fontSize * 0.8;
+                layouts.push({
+                    type: 'list-item', prefix, prefixWidth, lines,
+                    height: (lines.length * baseLineHeight) + marginBottom,
                     marginTop: 0, marginBottom
                 });
-                break;
             }
+            break;
+        }
+        case 'spacer': {
+            // 自定义空白块：::: spacer {高度} :::
+            // 高度为 0~1 之间的小数时，视为页面（输出）高度的百分比；否则为像素高度。
+            // 超出单页可用高度时截断到最大可用高度。
+            const requested = Number(token.height) || 0;
+            if (requested > 0) {
+                let height = requested;
+                if (requested > 0 && requested < 1) {
+                    const pageHeight = Number(this.config.pageHeight) || 0;
+                    height = requested * (pageHeight || Number(this.config.maxBlockHeight) || 0);
+                }
+                const maxBlock = Number(this.config.maxBlockHeight) || height;
+                layouts.push({ type: 'space', height: Math.min(height, maxBlock) });
+            }
+            break;
+        }
+        case 'table': {
+            const tableLayout = await this.layoutTable(token);
+            if (tableLayout) {
+                layouts.push(tableLayout);
+            }
+            break;
+        }
+        case 'code': {
+            const language = String(token.lang || '').trim().toLowerCase();
+            if (language === 'mermaid') {
+                const mermaidBlock = await this.renderMermaid(token.text || '');
+                if (mermaidBlock) {
+                    layouts.push(mermaidBlock);
+                    break;
+                }
+            }
+            await this.waitForHighlightJs();
+            const paddingX = 14;
+            const lines = this.splitCodeSegments(this.highlightCode(token.text || '', token.lang), this.drawWidth - (paddingX * 2));
+            const paddingY = 12;
+            const marginBottom = this.config.fontSize * 0.8;
+            const lineHeight = (this.config.fontSize * 0.82) * (Number(this.config.lineHeight) || 1.6);
+            layouts.push({
+                type: 'code-block',
+                lines,
+                paddingX,
+                paddingY,
+                height: (lines.length * lineHeight) + (paddingY * 2) + marginBottom,
+                marginTop: 0, marginBottom
+            });
+            break;
+        }
         }
         return layouts;
     }
