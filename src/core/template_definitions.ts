@@ -7,19 +7,19 @@
  */
 import type { ContentBox, TemplateConfig } from '../types/types';
 import type { Template } from '../types/template';
-import { AuraGradient } from '../templates/AuraGradient';
-import { Blank } from '../templates/Blank';
-import { CinematicFilm } from '../templates/CinematicFilm';
-import { DeepNight } from '../templates/DeepNight';
-import { ElegantBook } from '../templates/ElegantBook';
-import { IosMemo } from '../templates/IosMemo';
-import { MinimalistMagazine } from '../templates/MinimalistMagazine';
-import { NotionStyle } from '../templates/NotionStyle';
-import { Polaroid } from '../templates/Polaroid';
-import { ProDoc } from '../templates/ProDoc';
-import { StarryNight } from '../templates/StarryNight';
-import { SwissStudio } from '../templates/SwissStudio';
-import { Luli } from '../templates/Luli';
+import { AuraGradient } from '../templates/aura_gradient';
+import { Blank } from '../templates/blank';
+import { CinematicFilm } from '../templates/cinematic_film';
+import { DeepNight } from '../templates/deep_night';
+import { ElegantBook } from '../templates/elegant_book';
+import { IosMemo } from '../templates/ios_memo';
+import { MinimalistMagazine } from '../templates/minimalist_magazine';
+import { NotionStyle } from '../templates/notion_style';
+import { Polaroid } from '../templates/polaroid';
+import { ProDoc } from '../templates/pro_doc';
+import { StarryNight } from '../templates/starry_night';
+import { SwissStudio } from '../templates/swiss_studio';
+import { Luli } from '../templates/luli';
 
 export namespace TEMPLATE_DEFINITIONS {
     const templateClasses: Array<new () => Template> = [

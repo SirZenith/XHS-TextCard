@@ -8,7 +8,7 @@
  */
 import { PREVIEW_HEIGHT, PREVIEW_WIDTH } from '../utils/constants';
 import { TEMPLATE_DEFINITIONS } from './template_definitions';
-import { CanvasTextEngine } from './CanvasTextEngine';
+import { CanvasTextEngine } from './canvas_text_engine';
 import { MARKDOWN_UTIL } from '../utils/markdown_util';
 import type { ContentBox, LayoutBlock, TemplateConfig } from '../types/types';
 

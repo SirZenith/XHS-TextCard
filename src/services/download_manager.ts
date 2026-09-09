@@ -6,7 +6,7 @@
  * 2. 离线生成：完全在客户端通过 Canvas 渲染高清图片，无需后端。
  * 3. 批量支持：集成 JSZip 实现多页卡片的一键打包下载。
  */
-import { CanvasRenderer } from '../core/CanvasRenderer';
+import { CanvasRenderer } from '../core/canvas_renderer';
 import { OUTPUT_WIDTH, PREVIEW_HEIGHT, PREVIEW_WIDTH } from '../utils/constants';
 import type { LayoutBlock, TemplateConfig } from '../types/types';
 

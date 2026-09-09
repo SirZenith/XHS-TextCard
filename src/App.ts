@@ -7,12 +7,12 @@
  * 2. 状态管理：维护当前模板、配置及分发后的页面数据。
  * 3. 响应式更新：处理输入抖动 (Debounce)，确保 UI 响应流畅。
  */
-import { DownloadManager } from './services/DownloadManager';
-import { EditorController } from './services/EditorController';
-import { LayoutResizer } from './services/LayoutResizer';
-import { PreviewGenerator } from './services/PreviewGenerator';
-import { TemplateManager } from './services/TemplateManager';
-import { TextSplitter } from './core/TextSplitter';
+import { DownloadManager } from './services/download_manager';
+import { EditorController } from './services/editor_controller';
+import { LayoutResizer } from './services/layout_resizer';
+import { PreviewGenerator } from './services/preview_generator';
+import { TemplateManager } from './services/template_manager';
+import { TextSplitter } from './core/text_splitter';
 import { MARKDOWN_UTIL } from './utils/markdown_util';
 import type { AppElements, ColorPresetType, LayoutBlock, PaletteEntry, TemplateConfig } from './types/types';
 import { DEFAULT_TEMPLATE } from './utils/constants';
@@ -339,7 +339,7 @@ export class App {
             let lastId = this.currentTemplate;
             try {
                 lastId = localStorage.getItem('xhs_last_template_id') || this.currentTemplate;
-            } catch (e) { }
+            } catch (e) {}
 
             await this.selectTemplate(lastId);
         } catch (error) {
@@ -387,7 +387,7 @@ export class App {
         args: {
             type: ColorPresetType,
             colorPickerId: string,
-            dataPath: string
+            dataPath: string;
         }
     ): Promise<void> {
         if (!rootElem) {
@@ -410,7 +410,7 @@ export class App {
                 item.setAttribute('style', `background: ${entry.color}`);
                 item.setAttribute('data-color', color);
                 item.setAttribute('title', entry.name);
-                item.setAttribute('role', 'button')
+                item.setAttribute('role', 'button');
                 item.setAttribute('aria-label', entry.label);
                 item.setAttribute('tabindex', '0');
 

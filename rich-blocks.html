@@ -1,14 +1,16 @@
 <!doctype html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="utf-8">
     <title>Rich block layout tests</title>
 </head>
+
 <body>
     <pre id="results">Running…</pre>
     <script src="/third-party/marked.umd.min.js"></script>
     <script type="module">
-        import { CanvasTextEngine } from '/src/core/CanvasTextEngine';
+        import {CanvasTextEngine} from '/src/core/canvas_text_engine';
 
         const results = [];
         const assert = (condition, message) => {
@@ -17,14 +19,14 @@
         const test = async (name, fn) => {
             try {
                 await fn();
-                results.push({ name, status: 'pass' });
+                results.push({name, status: 'pass'});
             } catch (error) {
-                results.push({ name, status: 'fail', error: error.message });
+                results.push({name, status: 'fail', error: error.message});
             }
         };
 
         window.mermaid = {
-            initialize() {},
+            initialize() { },
             async render(id, source) {
                 if (source.includes('INVALID')) throw new Error('Parse error');
                 return {
@@ -87,4 +89,5 @@
         })();
     </script>
 </body>
+
 </html>

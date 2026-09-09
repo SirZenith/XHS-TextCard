@@ -32,29 +32,6 @@
     <meta property="og:image:height" content="1260">
     <meta property="og:image:alt" content="文字卡生成器工作台界面预览">
 
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebPage",
-      "name": "工作台",
-      "description": "文字卡的核心创作工具，支持将 Markdown 文字转化为精美的卡片图。",
-      "breadcrumb": {
-        "@type": "BreadcrumbList",
-        "itemListElement": [{
-          "@type": "ListItem",
-          "position": 1,
-          "name": "首页",
-          "item": "https://xhs-textcard.site/"
-        },{
-          "@type": "ListItem",
-          "position": 2,
-          "name": "使用指南",
-          "item": "https://xhs-textcard.site/guide.html"
-        }]
-      }
-    }
-    </script>
-
     <script src="/third-party/jszip.min.js"></script>
     <script src="/third-party/marked.umd.min.js"></script>
     <script src="/third-party/mermaid.min.js?v=10.9.1"></script>
@@ -70,7 +47,7 @@
             return mermaid;
         });
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.11.1/lib/common.min.js"></script>
+    <script src="/third-party/highlight@11.11.1.common.min.js"></script>
     <script>
         window.MathJax = {
             startup: {typeset: false},
@@ -81,7 +58,7 @@
             }
         };
     </script>
-    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+    <script async src="/third-party/mathjax@3.tex-svg.js"></script>
     <!-- Pickr -->
     <script src="/third-party/pickr.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -104,8 +81,7 @@
         <!-- 预览区域（左列） -->
         <div
             class="preview-panel col-start-1 flex flex-col gap-1 overflow-hidden rounded-xl border-none bg-transparent shadow-none max-xl:col-start-auto max-xl:col-span-2 max-xl:h-150 max-xl:rounded-lg max-lg:col-span-1 max-lg:min-h-125 edit-mode:rounded-xl edit-mode:border edit-mode:border-[rgba(226,232,240,0.8)] edit-mode:bg-white/95 edit-mode:shadow-[0_4px_20px_rgba(0,0,0,0.08)] max-xl:edit-mode:border-none max-xl:edit-mode:bg-transparent max-md:edit-mode:min-h-75">
-            <div
-                class="section-title shrink-0 justify-between px-5 py-4 max-sm:px-3">
+            <div class="section-title shrink-0 justify-between px-5 py-4 max-sm:px-3">
                 <button id="mobile-preview-back-btn"
                     class="hidden max-sm:flex items-center justify-center rounded-sm border border-[rgba(226,232,240,0.8)] bg-white/90 px-4 py-1.5 text-ink-muted transition-all duration-300"
                     title="返回模板编辑">
@@ -238,8 +214,7 @@
                                 <span>背景颜色 / 渐变</span>
                             </label>
 
-                            <div class="flex w-full flex-wrap items-center gap-1 p-1" role="group"
-                                aria-label="背景颜色选择">
+                            <div class="flex w-full flex-wrap items-center gap-1 p-1" role="group" aria-label="背景颜色选择">
                                 <!-- 纯色预设 (莫兰迪色系 + 活力色系) -->
                                 <div id="palette-bg-pure-color" class="solid-presets flex min-w-max flex-nowrap gap-1">
                                     <!-- 由数据文件内容动态生成 -->
@@ -285,16 +260,16 @@
 
                             <div class="mb-3.75">
                                 <label class="form-label mb-2 text-xs text-[#666]">正文颜色</label>
-                                <div id="palette-text" class="flex w-full flex-wrap items-center gap-1 p-1" id="text-color-presets"
-                                    role="group" aria-label="文字颜色选择">
+                                <div id="palette-text" class="flex w-full flex-wrap items-center gap-1 p-1"
+                                    id="text-color-presets" role="group" aria-label="文字颜色选择">
                                     <!-- 由数据文件内容动态生成 -->
                                 </div>
                             </div>
 
                             <div class="mb-3.75">
                                 <label class="form-label mb-2 text-xs text-[#666]">强调颜色</label>
-                                <div id="palette-accent" class="flex w-full flex-wrap items-center gap-1 p-1" id="accent-color-presets"
-                                    role="group" aria-label="强调颜色选择">
+                                <div id="palette-accent" class="flex w-full flex-wrap items-center gap-1 p-1"
+                                    id="accent-color-presets" role="group" aria-label="强调颜色选择">
                                     <!-- 由数据文件内容动态生成 -->
                                 </div>
                             </div>

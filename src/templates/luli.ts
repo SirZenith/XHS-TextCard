@@ -28,7 +28,7 @@ export class Luli implements Template {
             [
                 { text: `全文 ${charCnt} 字 | 估计阅读时间：${eta} 分钟`, fontSize, templateArgs: { isHeader: true } }
             ]
-        ]
+        ];
 
         return [
             { type: 'space', height: Math.round(context.contentBox.height * 0.1) },
