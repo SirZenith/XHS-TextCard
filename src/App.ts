@@ -14,7 +14,7 @@ import { PreviewGenerator } from './services/PreviewGenerator';
 import { TemplateManager } from './services/TemplateManager';
 import { TextSplitter } from './core/TextSplitter';
 import { MARKDOWN_UTIL } from './utils/markdown_util';
-import type { AppElements, LayoutBlock, TemplateConfig } from './types/types';
+import type { AppElements, ColorPresetType, LayoutBlock, PaletteEntry, TemplateConfig } from './types/types';
 import { DEFAULT_TEMPLATE } from './utils/constants';
 
 export class App {
@@ -48,10 +48,10 @@ export class App {
         this.splitter = null;
     }
 
-    init() {
+    async init() {
         try {
             MARKDOWN_UTIL.init();
-            this.initElements();
+            await this.initElements();
             this.bindEvents();
             this.setMobileStep('input');
             this.layoutResizer.init();
@@ -93,10 +93,14 @@ export class App {
         }
     }
 
-    initElements() {
+    async initElements() {
         this.elements = {
             textInput: document.getElementById('text-input') as HTMLTextAreaElement,
             templateList: document.getElementById('template-list')!,
+            paletteBgPureColor: document.getElementById('palette-bg-pure-color')!,
+            paletteBgGradient: document.getElementById('palette-bg-gradient')!,
+            paletteText: document.getElementById('palette-text')!,
+            paletteAccent: document.getElementById('palette-accent')!,
             downloadAllBtn: document.getElementById('download-all-btn') as HTMLButtonElement,
             previewList: document.getElementById('preview-list')!,
             previewCount: document.getElementById('preview-count')!,
@@ -138,6 +142,8 @@ export class App {
             mobileDownloadAllBtn: document.getElementById('mobile-download-all-btn') as HTMLButtonElement
         };
 
+        await this.setupPalette();
+
         this.downloadManager.setLoadingElement(this.elements.loading);
         this.editorController.init(this.elements);
         this.editorController.setOnConfigChange((config) => {
@@ -150,7 +156,6 @@ export class App {
 
             // 实时保存当前模板配置到本地（排除 coverImage，避免 LocalStorage 超限）
             if (this.currentTemplate) {
-                console.log(config);
                 const { coverImage, ...safeConfig } = config;
                 localStorage.setItem(`xhs_tpl_config_${this.currentTemplate}`, JSON.stringify(safeConfig));
             }
@@ -334,7 +339,7 @@ export class App {
             let lastId = this.currentTemplate;
             try {
                 lastId = localStorage.getItem('xhs_last_template_id') || this.currentTemplate;
-            } catch (e) {}
+            } catch (e) { }
 
             await this.selectTemplate(lastId);
         } catch (error) {
@@ -366,6 +371,74 @@ export class App {
             item.addEventListener('click', () => this.selectTemplate(template.id));
             this.elements.templateList.appendChild(item);
         });
+    }
+
+    private async setupPalette() {
+        await Promise.allSettled([
+            this.renderPaletteList(this.elements.paletteBgPureColor, { type: 'bg', colorPickerId: 'bg-pure-color-color-picker', dataPath: '/data/palettes/bg-pure-color.json' }),
+            this.renderPaletteList(this.elements.paletteBgGradient, { type: 'bg', colorPickerId: 'bg-gradient-color-picker', dataPath: '/data/palettes/bg-gradient.json' }),
+            this.renderPaletteList(this.elements.paletteText, { type: 'text', colorPickerId: 'text-color-picker', dataPath: '/data/palettes/text.json' }),
+            this.renderPaletteList(this.elements.paletteAccent, { type: 'accent', colorPickerId: 'accent-color-picker', dataPath: '/data/palettes/accent.json' }),
+        ]);
+    }
+
+    private async renderPaletteList(
+        rootElem: HTMLElement | undefined,
+        args: {
+            type: ColorPresetType,
+            colorPickerId: string,
+            dataPath: string
+        }
+    ): Promise<void> {
+        if (!rootElem) {
+            return;
+        }
+
+        try {
+            const type = args.type;
+            const response = await fetch(args.dataPath);
+            const list = await response.json() as PaletteEntry[];
+
+            rootElem.innerHTML = '';
+
+            for (const entry of list) {
+                const item = document.createElement('div');
+                item.className = 'color-preset color-block';
+                // if (template.id === this.currentTemplate) item.classList.add('active');
+
+                const color = entry.color;
+                item.setAttribute('style', `background: ${entry.color}`);
+                item.setAttribute('data-color', color);
+                item.setAttribute('title', entry.name);
+                item.setAttribute('role', 'button')
+                item.setAttribute('aria-label', entry.label);
+                item.setAttribute('tabindex', '0');
+
+                item.addEventListener('click', () => this.editorController.onClickColorPreset(type, color));
+                rootElem.appendChild(item);
+            }
+
+            rootElem.appendChild(this.createPaletteColorPickerEntry(args.colorPickerId));
+
+        } catch (error) {
+            console.error(`[App] Failed to load palette ${args.dataPath}:`, error);
+        }
+    }
+
+    private createPaletteColorPickerEntry(colorPickerId: string): HTMLElement {
+        const colorPicker = document.createElement('div');
+        colorPicker.className = 'color-picker-wrapper';
+        colorPicker.id = colorPickerId + '-container';
+
+        const button = document.createElement('div');
+        button.id = colorPickerId;
+        colorPicker.appendChild(button);
+
+        const icon = document.createElement('i');
+        icon.className = 'fas fa-plus';
+        colorPicker.appendChild(icon);
+
+        return colorPicker;
     }
 
     async selectTemplate(templateId: string) {

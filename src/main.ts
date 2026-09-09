@@ -18,9 +18,6 @@ window.onunhandledrejection = function (event: PromiseRejectionEvent) {
     if (loading) loading.classList.remove('active');
 };
 
-const app = new App();
-app.init();
-
 // 生产环境注册 Service Worker（离线缓存 + 移动端可安装为 Web App）
 if ('serviceWorker' in navigator && import.meta.env.PROD) {
     window.addEventListener('load', () => {
@@ -29,3 +26,6 @@ if ('serviceWorker' in navigator && import.meta.env.PROD) {
         });
     });
 }
+
+const app = new App();
+await app.init();

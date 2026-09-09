@@ -212,6 +212,12 @@ export interface TemplateIndex {
     templates: TemplateIndexEntry[];
 }
 
+export interface PaletteEntry {
+    color: string;
+    name: string;
+    label: string;
+}
+
 /** CanvasRenderer.render 参数 */
 export interface RenderOptions {
     layouts: LayoutBlock[];
@@ -240,6 +246,10 @@ export interface AppElements {
     [key: string]: any;
     textInput: HTMLTextAreaElement;
     templateList: HTMLElement;
+    paletteBgPureColor: HTMLElement;
+    paletteBgGradient: HTMLElement;
+    paletteText: HTMLElement;
+    paletteAccent: HTMLElement;
     downloadAllBtn: HTMLButtonElement;
     previewList: HTMLElement;
     previewCount: HTMLElement;
@@ -280,3 +290,5 @@ export interface AppElements {
     mobileDownloadSingleBtn: HTMLButtonElement;
     mobileDownloadAllBtn: HTMLButtonElement;
 }
+
+type ColorPresetType = 'bg' | 'text' | 'accent';

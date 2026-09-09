@@ -1,0 +1,12 @@
+[
+    { "color": "#FF9500", "name": "经典橙", "label": "橙色强调" },
+    { "color": "#FF2D55", "name": "活力红", "label": "红色强调" },
+    { "color": "#007AFF", "name": "商务蓝", "label": "蓝色强调" },
+    { "color": "#34C759", "name": "清新绿", "label": "绿色强调" },
+    { "color": "#5856D6", "name": "优雅紫", "label": "紫色强调" },
+    { "color": "#00F5FF", "name": "赛博青", "label": "青色强调" },
+    { "color": "#FF4500", "name": "瑞士红", "label": "橙红色强调" },
+    { "color": "#000000", "name": "纯黑" , "label": "黑色强调" },
+    { "color": "#fbbf24", "name": "星光金", "label": "金色强调" },
+    { "color": "#f472b6", "name": "玫瑰粉", "label": "粉色强调" }
+]

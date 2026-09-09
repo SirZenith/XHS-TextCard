@@ -1,0 +1,10 @@
+[
+    { "color": "#333333", "name": "深灰", "label": "深灰色文字" },
+    { "color": "#000000", "name": "纯黑", "label": "黑色文字" },
+    { "color": "#495057", "name": "中灰", "label": "中灰色文字" },
+    { "color": "#1c7ed6", "name": "极光蓝", "label": "极光蓝色文字" },
+    { "color": "#d6336c", "name": "玫瑰红", "label": "玫瑰红色文字" },
+    { "color": "#37b24d", "name": "森林绿", "label": "森林绿色文字" },
+    { "color": "#f08c00", "name": "琥珀橙", "label": "琥珀色文字" },
+    { "color": "#ffffff", "name": "纯白", "label": "白色文字" }
+]

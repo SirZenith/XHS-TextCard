@@ -6,7 +6,7 @@
  * 2. 交互一致性：通过 configMap 映射控件类型与事件，减少重复逻辑。
  * 3. 颜色管理：集成 Pickr 取色器，并支持 Solid 与 Gradient 模式的无缝切换。
  */
-import type { AppElements, TemplateConfig } from '../types/types';
+import type { AppElements, ColorPresetType, TemplateConfig } from '../types/types';
 
 /** 配置映射表条目：键名, 控件类型, 类型转换 */
 interface ConfigMapEntry {
@@ -75,7 +75,8 @@ export class EditorController {
      */
     initPickrs() {
         const pickrConfigs = [
-            { id: '#bg-color-picker', key: 'bgColor', default: '#ffffff', type: 'bg' },
+            { id: '#bg-pure-color-color-picker', key: 'bgColor', default: '#ffffff', type: 'bg' },
+            // { id: '#bg-gradient-color-picker', key: 'bgColor', default: '#ffffff', type: 'bg' },
             { id: '#text-color-picker', key: 'textColor', default: '#333333', type: 'text' },
             { id: '#accent-color-picker', key: 'accentColor', default: null, type: 'accent' },
             { id: '#gradient-start-picker', key: 'gradStart', default: '#f5f7fa', type: 'grad' },
@@ -98,6 +99,11 @@ export class EditorController {
                 this.notifyConfigChange();
             });
         });
+    }
+
+    public onClickColorPreset(type: ColorPresetType, color: string): void {
+        this.handleColorSelection(type, color);
+        this.notifyConfigChange();
     }
 
     /**
@@ -145,7 +151,7 @@ export class EditorController {
      * 渐变编辑器弹窗逻辑
      */
     initGradientEditor() {
-        const plusBtn = document.querySelector('#bg-color-picker-container .fa-plus');
+        const plusBtn = document.querySelector('#bg-gradient-color-picker-container div');
         const popup = document.getElementById('gradient-editor-panel');
         if (!plusBtn || !popup) return;
 

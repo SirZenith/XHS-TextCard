@@ -1,0 +1,14 @@
+[
+    { "color": "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)", "name": "晨曦", "label": "晨曦渐变" },
+    { "color": "linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%)", "name": "晴空", "label": "晴空渐变" },
+    { "color": "linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)", "name": "蜜桃", "label": "蜜桃渐变" },
+    { "color": "linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%)", "name": "梦幻", "label": "梦幻渐变" },
+    { "color": "linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%)", "name": "木质", "label": "木质渐变" },
+    { "color": "linear-gradient(135deg, #cfd9df 0%, #e2ebf0 100%)", "name": "素雅", "label": "素雅渐变" },
+    { "color": "linear-gradient(135deg, #667eea 0%, #764ba2 100%)", "name": "流光", "label": "流光渐变" },
+    { "color": "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)", "name": "粉橙", "label": "粉橙渐变" },
+    { "color": "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)", "name": "赛博", "label": "赛博渐变" },
+    { "color": "linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%)", "name": "星空", "label": "星空渐变" },
+    { "color": "linear-gradient(135deg, #fa709a 0%, #fee140 100%)", "name": "日出", "label": "日出渐变" },
+    { "color": "linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)", "name": "樱花", "label": "樱花渐变" }
+]

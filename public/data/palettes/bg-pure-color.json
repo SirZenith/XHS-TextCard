@@ -1,0 +1,14 @@
+[
+    { "color": "#ffffff", "name": "纯白", "label": "白色背景" },
+    { "color": "#E8D5C4", "name": "浅杏", "label": "浅杏色背景" },
+    { "color": "#B5C0D0", "name": "灰蓝", "label": "灰蓝色背景" },
+    { "color": "#CCD3CA", "name": "豆沙绿", "label": "豆沙绿色背景" },
+    { "color": "#F5E8DD", "name": "浅咖", "label": "浅咖色背景" },
+    { "color": "#9290C3", "name": "莫兰紫", "label": "莫兰紫色背景" },
+    { "color": "#7C9D96", "name": "灰绿", "label": "灰绿色背景" },
+    { "color": "#1a1a1b", "name": "暗黑", "label": "暗黑色背景" },
+    { "color": "#667eea", "name": "渐变蓝", "label": "渐变蓝色背景" },
+    { "color": "#f472b6", "name": "玫瑰粉", "label": "玫瑰粉色背景" },
+    { "color": "#22d3ee", "name": "赛博青", "label": "赛博青色背景" },
+    { "color": "#0f172a", "name": "深空蓝", "label": "深空蓝背景" }
+]

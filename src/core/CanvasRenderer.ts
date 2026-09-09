@@ -65,10 +65,7 @@ export class CanvasRenderer {
                 this.imageCache.set(src, img);
                 resolve(img);
             };
-            img.onerror = (...args) => {
-                console.log(src, args);
-                resolve(null);
-            };
+            img.onerror = () => resolve(null);
             img.src = src;
         });
     }
